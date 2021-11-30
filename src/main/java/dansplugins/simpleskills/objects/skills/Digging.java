@@ -13,6 +13,7 @@ public class Digging extends Skill {
 
     private void initialize() {
         HashSet<Material> materials = new HashSet<>();
+        materials.add(Material.GRASS_BLOCK);
         materials.add(Material.DIRT);
         materials.add(Material.GRAVEL);
         materials.add(Material.SAND);
