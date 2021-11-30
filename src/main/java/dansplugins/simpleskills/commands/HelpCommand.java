@@ -24,6 +24,7 @@ public class HelpCommand extends AbstractCommand {
     @Override
     public boolean execute(CommandSender commandSender) {
         commandSender.sendMessage(ChatColor.AQUA + "/ss help");
+        commandSender.sendMessage(ChatColor.AQUA + "/ss info");
         return true;
     }
 

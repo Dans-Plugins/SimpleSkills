@@ -11,8 +11,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class InfoCommand extends AbstractCommand {
-    private ArrayList<String> names = new ArrayList<>(Collections.singletonList("help"));
-    private ArrayList<String> permissions = new ArrayList<>(Collections.singletonList("ss.help"));
+    private ArrayList<String> names = new ArrayList<>(Collections.singletonList("info"));
+    private ArrayList<String> permissions = new ArrayList<>(Collections.singletonList("ss.info"));
 
     @Override
     public ArrayList<String> getNames() {

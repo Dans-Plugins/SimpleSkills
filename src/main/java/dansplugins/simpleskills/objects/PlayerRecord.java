@@ -8,6 +8,7 @@ import org.bukkit.command.CommandSender;
 import preponderous.ponder.modifiers.Cacheable;
 import preponderous.ponder.modifiers.Savable;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.UUID;
@@ -15,6 +16,7 @@ import java.util.UUID;
 public class PlayerRecord implements Savable, Cacheable {
     private UUID playerUUID;
     private HashSet<Integer> knownSkills = new HashSet<>();
+    private HashMap<Integer, Integer> skillLevels = new HashMap<>(); // TODO: implement methods for this field
 
     public PlayerRecord(UUID playerUUID) {
         this.playerUUID = playerUUID;
