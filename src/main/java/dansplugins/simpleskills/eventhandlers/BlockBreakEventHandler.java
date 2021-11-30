@@ -29,7 +29,7 @@ public class BlockBreakEventHandler implements Listener {
 
         for (Skill skill : PersistentData.getInstance().getSkills()) {
             if (skill.isMaterialAssociated(material)) {
-                Logger.getInstance().log("A block was broken that is associated with the " + skill.getName() + " skill.");
+                Logger.getInstance().log("A block was broken by " + player.getName() + " that is associated with the " + skill.getName() + " skill.");
                 if (!playerRecord.isKnown(skill)) {
                     playerRecord.addKnownSkill(skill);
                     player.sendMessage(ChatColor.GREEN + "You've learned the " + skill.getName() + " skill.");
