@@ -10,3 +10,11 @@ commands:
 permissions:
   ss.help:
     default: true
+  ss.info:
+    default: true
+  ss.top:
+    default: true
+  ss.stats:
+    default: true
+  ss.config:
+    default: op

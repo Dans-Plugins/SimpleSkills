@@ -1,5 +1,6 @@
 package dansplugins.simpleskills.commands;
 
+import dansplugins.simpleskills.data.PersistentData;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import preponderous.ponder.misc.AbstractCommand;
@@ -7,9 +8,9 @@ import preponderous.ponder.misc.AbstractCommand;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class HelpCommand extends AbstractCommand {
-    private ArrayList<String> names = new ArrayList<>(Collections.singletonList("help"));
-    private ArrayList<String> permissions = new ArrayList<>(Collections.singletonList("ss.help"));
+public class StatsCommand extends AbstractCommand {
+    private ArrayList<String> names = new ArrayList<>(Collections.singletonList("stats"));
+    private ArrayList<String> permissions = new ArrayList<>(Collections.singletonList("ss.stats"));
 
     @Override
     public ArrayList<String> getNames() {
@@ -23,11 +24,8 @@ public class HelpCommand extends AbstractCommand {
 
     @Override
     public boolean execute(CommandSender commandSender) {
-        commandSender.sendMessage(ChatColor.AQUA + "/ss help");
-        commandSender.sendMessage(ChatColor.AQUA + "/ss info");
-        commandSender.sendMessage(ChatColor.AQUA + "/ss top");
-        commandSender.sendMessage(ChatColor.AQUA + "/ss config");
-        commandSender.sendMessage(ChatColor.AQUA + "/ss stats");
+        commandSender.sendMessage(ChatColor.AQUA + "Number of skills: " + PersistentData.getInstance().getSkills().size());
+        commandSender.sendMessage(ChatColor.AQUA + "Number of player records: " + PersistentData.getInstance().getPlayerRecords().size());
         return true;
     }
 
