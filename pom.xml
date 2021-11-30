@@ -6,7 +6,7 @@
 
     <groupId>dansplugins</groupId>
     <artifactId>SimpleSkills</artifactId>
-    <version>v0.4-alpha-2</version>
+    <version>v0.4</version>
     <packaging>jar</packaging>
 
     <name>SimpleSkills</name>
