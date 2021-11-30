@@ -1,7 +1,7 @@
 package dansplugins.simpleskills.managers;
 
 import dansplugins.simpleskills.data.PersistentData;
-import dansplugins.simpleskills.objects.Skill;
+import dansplugins.simpleskills.objects.skills.Woodcutting;
 
 public class SkillManager {
     private static SkillManager instance;
@@ -19,6 +19,6 @@ public class SkillManager {
 
     public void initializeSkills() {
         // woodcutting
-        PersistentData.getInstance().addSkill(new Skill(2, "Woodcutting", 100));
+        PersistentData.getInstance().addSkill(new Woodcutting());
     }
 }

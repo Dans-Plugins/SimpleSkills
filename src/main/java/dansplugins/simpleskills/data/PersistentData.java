@@ -1,7 +1,7 @@
 package dansplugins.simpleskills.data;
 
 import dansplugins.simpleskills.managers.SkillManager;
-import dansplugins.simpleskills.objects.Skill;
+import dansplugins.simpleskills.objects.skills.Skill;
 import dansplugins.simpleskills.objects.PlayerRecord;
 
 import java.util.HashSet;
@@ -25,6 +25,15 @@ public class PersistentData {
 
     public HashSet<Skill> getSkills() {
         return skills;
+    }
+
+    public Skill getSkill(int ID) {
+        for (Skill skill : skills) {
+            if (skill.getID() == ID) {
+                return skill;
+            }
+        }
+        return null;
     }
 
     public boolean addSkill(Skill skill) {

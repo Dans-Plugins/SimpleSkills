@@ -1,7 +1,10 @@
 package dansplugins.simpleskills.commands;
 
+import dansplugins.simpleskills.data.PersistentData;
+import dansplugins.simpleskills.objects.PlayerRecord;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import preponderous.ponder.misc.AbstractCommand;
 
 import java.util.ArrayList;
@@ -23,15 +26,18 @@ public class InfoCommand extends AbstractCommand {
 
     @Override
     public boolean execute(CommandSender commandSender) {
-        commandSender.sendMessage(ChatColor.RED + "This command isn't implemented yet.");
-        // TODO: implement
-        return false;
+        if (!(commandSender instanceof Player)) {
+            commandSender.sendMessage("Only players can use this command.");
+            return false;
+        }
+        Player player = (Player) commandSender;
+        PlayerRecord playerRecord = PersistentData.getInstance().getPlayerRecord(player.getUniqueId());
+        playerRecord.sendInfo(commandSender);
+        return true;
     }
 
     @Override
     public boolean execute(CommandSender commandSender, String[] strings) {
-        // TODO: implement
-        commandSender.sendMessage(ChatColor.RED + "This command isn't implemented yet.");
-        return false;
+        return execute(commandSender);
     }
 }
