@@ -1,6 +1,8 @@
 package dansplugins.simpleskills.data;
 
-import dansplugins.simpleskills.objects.skills.Skill;
+import dansplugins.simpleskills.objects.skills.Mining;
+import dansplugins.simpleskills.objects.skills.Quarrying;
+import dansplugins.simpleskills.objects.skills.abs.Skill;
 import dansplugins.simpleskills.objects.PlayerRecord;
 import dansplugins.simpleskills.objects.skills.Woodcutting;
 import dansplugins.simpleskills.utils.Logger;
@@ -62,5 +64,7 @@ public class PersistentData {
     private void initializeSkills() {
         // woodcutting
         addSkill(new Woodcutting());
+        addSkill(new Quarrying());
+        addSkill(new Mining());
     }
 }

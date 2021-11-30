@@ -2,7 +2,7 @@ package dansplugins.simpleskills.eventhandlers;
 
 import dansplugins.simpleskills.data.PersistentData;
 import dansplugins.simpleskills.objects.PlayerRecord;
-import dansplugins.simpleskills.objects.skills.Skill;
+import dansplugins.simpleskills.objects.skills.abs.Skill;
 import dansplugins.simpleskills.utils.Logger;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;

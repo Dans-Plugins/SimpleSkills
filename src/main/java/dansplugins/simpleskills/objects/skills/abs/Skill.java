@@ -1,4 +1,4 @@
-package dansplugins.simpleskills.objects.skills;
+package dansplugins.simpleskills.objects.skills.abs;
 
 import org.bukkit.Material;
 

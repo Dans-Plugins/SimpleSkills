@@ -1,5 +1,5 @@
 name: SimpleSkills
-version: v0.2
+version: v0.3-alpha-1
 main: dansplugins.simpleskills.SimpleSkills
 api-version: 1.13
 

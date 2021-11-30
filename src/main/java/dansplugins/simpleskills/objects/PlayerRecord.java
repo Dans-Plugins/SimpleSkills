@@ -2,7 +2,7 @@ package dansplugins.simpleskills.objects;
 
 import dansplugins.simpleskills.SimpleSkills;
 import dansplugins.simpleskills.data.PersistentData;
-import dansplugins.simpleskills.objects.skills.Skill;
+import dansplugins.simpleskills.objects.skills.abs.Skill;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import preponderous.ponder.modifiers.Cacheable;
