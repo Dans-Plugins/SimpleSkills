@@ -19,6 +19,11 @@ public class BlockBreakEventHandler implements Listener {
         Player player = event.getPlayer();
         PlayerRecord playerRecord = PersistentData.getInstance().getPlayerRecord(player.getUniqueId());
 
+        if (playerRecord == null) {
+            Logger.getInstance().log("A player record wasn't found for " + player.getName() + ".");
+            return;
+        }
+
         Block block = event.getBlock();
         Material material = block.getType();
 
