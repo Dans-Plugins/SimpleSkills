@@ -1,0 +1,12 @@
+name: ExamplePonderPlugin
+version: v0.1
+main: dansplugins.simpleskills.ExamplePonderPlugin
+api-version: 1.13
+
+commands:
+  simpleskills:
+  ss:
+
+permissions:
+  ss.help:
+    default: true
