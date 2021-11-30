@@ -23,11 +23,11 @@ public class HelpCommand extends AbstractCommand {
 
     @Override
     public boolean execute(CommandSender commandSender) {
-        commandSender.sendMessage(ChatColor.AQUA + "/ss help");
-        commandSender.sendMessage(ChatColor.AQUA + "/ss info");
-        commandSender.sendMessage(ChatColor.AQUA + "/ss top");
-        commandSender.sendMessage(ChatColor.AQUA + "/ss config");
-        commandSender.sendMessage(ChatColor.AQUA + "/ss stats");
+        commandSender.sendMessage(ChatColor.AQUA + "/ss help - View a list of helpful commands.");
+        commandSender.sendMessage(ChatColor.AQUA + "/ss info <IGN> - View your record or another player's record.");
+        commandSender.sendMessage(ChatColor.AQUA + "/ss top \"skill name\" - View the leaderboard for a skill.");
+        commandSender.sendMessage(ChatColor.AQUA + "/ss config - View or set config options.");
+        commandSender.sendMessage(ChatColor.AQUA + "/ss stats - View various statistics associated with the plugin.");
         return true;
     }
 
