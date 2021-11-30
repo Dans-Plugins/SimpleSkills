@@ -1,12 +1,10 @@
 package dansplugins.simpleskills;
 
-import dansplugins.simpleskills.commands.InfoCommand;
+import dansplugins.simpleskills.commands.*;
 import dansplugins.simpleskills.eventhandlers.BlockBreakEventHandler;
 import dansplugins.simpleskills.eventhandlers.JoinHandler;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import dansplugins.simpleskills.commands.DefaultCommand;
-import dansplugins.simpleskills.commands.HelpCommand;
 import org.bukkit.event.Listener;
 import preponderous.ponder.AbstractPonderPlugin;
 import preponderous.ponder.misc.PonderAPI_Integrator;
@@ -95,7 +93,10 @@ public class SimpleSkills extends AbstractPonderPlugin {
     private void initializeCommandService() {
         ArrayList<ICommand> commands = new ArrayList<>(Arrays.asList(
                 new HelpCommand(),
-                new InfoCommand()
+                new InfoCommand(),
+                new TopCommand(),
+                new ConfigCommand(),
+                new StatsCommand()
         ));
         getPonderAPI().getCommandService().initialize(commands, "That command wasn't found.");
     }
