@@ -6,8 +6,8 @@ import org.bukkit.Material;
 import java.util.HashSet;
 
 public class Woodcutting extends Skill {
-    public Woodcutting() {
-        super(0, "Woodcutting", 100);
+    public Woodcutting(int ID) {
+        super(ID, "Woodcutting", 100);
         initialize();
     }
 

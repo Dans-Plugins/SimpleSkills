@@ -5,18 +5,18 @@ import org.bukkit.Material;
 
 import java.util.HashSet;
 
-public class Quarrying extends Skill {
-    public Quarrying(int ID) {
-        super(ID, "Quarrying", 100);
+public class Digging extends Skill {
+    public Digging(int ID) {
+        super(ID, "Digging", 100);
         initialize();
     }
 
     private void initialize() {
         HashSet<Material> materials = new HashSet<>();
-        materials.add(Material.STONE);
-        materials.add(Material.ANDESITE);
-        materials.add(Material.DIORITE);
-        materials.add(Material.GRANITE);
+        materials.add(Material.DIRT);
+        materials.add(Material.GRAVEL);
+        materials.add(Material.SAND);
+        materials.add(Material.SOUL_SAND);
         super.initializeAssociatedMaterials(materials);
     }
 }

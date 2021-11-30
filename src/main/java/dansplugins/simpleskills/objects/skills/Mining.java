@@ -6,8 +6,8 @@ import org.bukkit.Material;
 import java.util.HashSet;
 
 public class Mining extends Skill {
-    public Mining() {
-        super(2, "Mining", 100);
+    public Mining(int ID) {
+        super(ID, "Mining", 100);
         initialize();
     }
 
