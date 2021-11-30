@@ -30,6 +30,9 @@ public class BlockBreakEventHandler implements Listener {
                     player.sendMessage(ChatColor.GREEN + "You've learned the " + skill.getName() + " skill.");
                     Logger.getInstance().log(player.getName() + " learned the " + skill.getName() + " skill.");
                 }
+                else {
+                    playerRecord.incrementSkillLevel(skill.getID());
+                }
             }
         }
     }

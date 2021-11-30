@@ -3,6 +3,7 @@ package dansplugins.simpleskills.data;
 import dansplugins.simpleskills.objects.skills.Skill;
 import dansplugins.simpleskills.objects.PlayerRecord;
 import dansplugins.simpleskills.objects.skills.Woodcutting;
+import dansplugins.simpleskills.utils.Logger;
 
 import java.util.HashSet;
 import java.util.UUID;
@@ -37,6 +38,7 @@ public class PersistentData {
     }
 
     public boolean addSkill(Skill skill) {
+        Logger.getInstance().log("Added skill: " + skill.getName());
         return skills.add(skill);
     }
 
