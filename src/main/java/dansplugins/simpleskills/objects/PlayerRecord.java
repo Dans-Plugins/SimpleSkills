@@ -7,17 +7,21 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.UUID;
 
-public class SkillRecord implements Savable, Cacheable {
+public class PlayerRecord implements Savable, Cacheable {
     private UUID playerUUID;
     private HashSet<Integer> knownSkills = new HashSet<>();
 
-    public SkillRecord(UUID playerUUID) {
+    public PlayerRecord(UUID playerUUID) {
         this.playerUUID = playerUUID;
+    }
+
+    public UUID getPlayerUUID() {
+        return playerUUID;
     }
 
     @Override
     public Object getKey() {
-        return playerUUID;
+        return getPlayerUUID();
     }
 
     public HashSet<Integer> getKnownSkills() {

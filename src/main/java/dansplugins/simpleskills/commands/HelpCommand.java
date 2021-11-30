@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class HelpCommand extends AbstractCommand {
-
     private ArrayList<String> names = new ArrayList<>(Collections.singletonList("help"));
     private ArrayList<String> permissions = new ArrayList<>(Collections.singletonList("ss.help"));
 
