@@ -1,5 +1,8 @@
 package dansplugins.simpleskills.objects;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import dansplugins.simpleskills.SimpleSkills;
 import dansplugins.simpleskills.data.PersistentData;
 import dansplugins.simpleskills.objects.skills.abs.Skill;
@@ -11,6 +14,8 @@ import org.bukkit.entity.Player;
 import preponderous.ponder.modifiers.Cacheable;
 import preponderous.ponder.modifiers.Savable;
 
+import java.lang.reflect.Type;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -23,6 +28,10 @@ public class PlayerRecord implements Savable, Cacheable {
 
     public PlayerRecord(UUID playerUUID) {
         this.playerUUID = playerUUID;
+    }
+
+    public PlayerRecord(Map<String, String> data) {
+        this.load(data);
     }
 
     public UUID getPlayerUUID() {
@@ -98,14 +107,27 @@ public class PlayerRecord implements Savable, Cacheable {
         }
     }
 
-    @Override
+    @Override()
     public Map<String, String> save() {
-        // TODO: implement
-        return null;
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+
+        Map<String, String> saveMap = new HashMap<>();
+        saveMap.put("playerUUID", gson.toJson(playerUUID));
+        saveMap.put("knownSkills", gson.toJson(knownSkills));
+        saveMap.put("skillLevels", gson.toJson(skillLevels));
+
+        return saveMap;
     }
 
-    @Override
-    public void load(Map<String, String> map) {
-        // TODO: implement
+    @Override()
+    public void load(Map<String, String> data) {
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+
+        Type integerSetType = new TypeToken<HashSet<Integer>>(){}.getType();
+        Type integerToIntegerMapType = new TypeToken<HashMap<Integer, Integer>>(){}.getType();
+
+        playerUUID = UUID.fromString(gson.fromJson(data.get("playerUUID"), String.class));
+        knownSkills = gson.fromJson(data.get("knownSkills"), integerSetType);
+        skillLevels = gson.fromJson(data.get("skillLevels"), integerToIntegerMapType);
     }
 }

@@ -49,6 +49,10 @@ public class PersistentData {
         return playerRecords;
     }
 
+    public void setPlayerRecords(HashSet<PlayerRecord> playerRecords) {
+        this.playerRecords = playerRecords;
+    }
+
     public boolean addPlayerRecord(PlayerRecord playerRecord) {
         return playerRecords.add(playerRecord);
     }
