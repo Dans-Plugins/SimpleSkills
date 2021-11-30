@@ -1,6 +1,6 @@
-name: ExamplePonderPlugin
+name: SimpleSkills
 version: v0.2-alpha-2
-main: dansplugins.simpleskills.ExamplePonderPlugin
+main: dansplugins.simpleskills.SimpleSkills
 api-version: 1.13
 
 commands:
