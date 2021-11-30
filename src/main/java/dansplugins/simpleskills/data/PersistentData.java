@@ -1,8 +1,8 @@
 package dansplugins.simpleskills.data;
 
-import dansplugins.simpleskills.managers.SkillManager;
 import dansplugins.simpleskills.objects.skills.Skill;
 import dansplugins.simpleskills.objects.PlayerRecord;
+import dansplugins.simpleskills.objects.skills.Woodcutting;
 
 import java.util.HashSet;
 import java.util.UUID;
@@ -13,7 +13,7 @@ public class PersistentData {
     private HashSet<PlayerRecord> playerRecords = new HashSet<>();
 
     private PersistentData() {
-        SkillManager.getInstance().initializeSkills();
+        initializeSkills();
     }
 
     public static PersistentData getInstance() {
@@ -55,5 +55,10 @@ public class PersistentData {
             }
         }
         return null;
+    }
+
+    private void initializeSkills() {
+        // woodcutting
+        PersistentData.getInstance().addSkill(new Woodcutting());
     }
 }
