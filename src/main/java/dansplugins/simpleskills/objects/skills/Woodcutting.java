@@ -13,6 +13,18 @@ public class Woodcutting extends Skill {
 
     private void initialize() {
         HashSet<Material> woodcuttingMaterials = new HashSet<>();
+        woodcuttingMaterials.add(Material.ACACIA_LOG);
+        woodcuttingMaterials.add(Material.BIRCH_LOG);
+        woodcuttingMaterials.add(Material.DARK_OAK_LOG);
+        woodcuttingMaterials.add(Material.JUNGLE_LOG);
+        woodcuttingMaterials.add(Material.OAK_LOG);
+        woodcuttingMaterials.add(Material.SPRUCE_LOG);
+        woodcuttingMaterials.add(Material.STRIPPED_ACACIA_LOG);
+        woodcuttingMaterials.add(Material.STRIPPED_BIRCH_LOG);
+        woodcuttingMaterials.add(Material.STRIPPED_DARK_OAK_LOG);
+        woodcuttingMaterials.add(Material.STRIPPED_JUNGLE_LOG);
+        woodcuttingMaterials.add(Material.STRIPPED_OAK_LOG);
+        woodcuttingMaterials.add(Material.STRIPPED_SPRUCE_LOG);
         woodcuttingMaterials.add(Material.ACACIA_WOOD);
         woodcuttingMaterials.add(Material.BIRCH_WOOD);
         woodcuttingMaterials.add(Material.DARK_OAK_WOOD);
