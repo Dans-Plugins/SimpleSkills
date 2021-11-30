@@ -3,6 +3,7 @@ package dansplugins.simpleskills;
 import dansplugins.simpleskills.commands.*;
 import dansplugins.simpleskills.eventhandlers.BlockBreakEventHandler;
 import dansplugins.simpleskills.eventhandlers.JoinHandler;
+import dansplugins.simpleskills.managers.StorageManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.Listener;
@@ -33,11 +34,13 @@ public class SimpleSkills extends AbstractPonderPlugin {
         registerEventHandlers();
         initializeCommandService();
         getPonderAPI().setDebug(false);
+
+        StorageManager.getInstance().load();
     }
 
     @Override
     public void onDisable() {
-
+        StorageManager.getInstance().save();
     }
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
