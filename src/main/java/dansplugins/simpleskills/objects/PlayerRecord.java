@@ -62,6 +62,10 @@ public class PlayerRecord implements Savable, Cacheable {
     }
 
     public void sendInfo(CommandSender commandSender) {
+        if (knownSkills.size() == 0) {
+            commandSender.sendMessage(ChatColor.RED + "No skills known.");
+            return;
+        }
         commandSender.sendMessage(ChatColor.AQUA + "=== Skills of" + SimpleSkills.getInstance().getToolbox().getUUIDChecker().findPlayerNameBasedOnUUID(playerUUID) + " === ");
         for (int skillID : knownSkills) {
             Skill skill = PersistentData.getInstance().getSkill(skillID);
