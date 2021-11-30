@@ -62,7 +62,6 @@ public class PersistentData {
     }
 
     private void initializeSkills() {
-        // woodcutting
         addSkill(new Woodcutting());
         addSkill(new Quarrying());
         addSkill(new Mining());

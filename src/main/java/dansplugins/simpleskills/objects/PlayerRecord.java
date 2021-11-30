@@ -3,8 +3,11 @@ package dansplugins.simpleskills.objects;
 import dansplugins.simpleskills.SimpleSkills;
 import dansplugins.simpleskills.data.PersistentData;
 import dansplugins.simpleskills.objects.skills.abs.Skill;
+import dansplugins.simpleskills.utils.Logger;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import preponderous.ponder.modifiers.Cacheable;
 import preponderous.ponder.modifiers.Savable;
 
@@ -37,6 +40,13 @@ public class PlayerRecord implements Savable, Cacheable {
     public boolean addKnownSkill(Skill skill) {
         boolean success = knownSkills.add(skill.getID());
         setSkillLevel(skill.getID(), 0);
+
+        // attempt to inform player
+        Player player = Bukkit.getPlayer(playerUUID);
+        if (player != null) {
+            player.sendMessage(ChatColor.GREEN + "You've learned the " + skill.getName() + " skill. Type /ss info to view your skills.");
+        }
+        Logger.getInstance().log(SimpleSkills.getInstance().getToolbox().getUUIDChecker().findPlayerNameBasedOnUUID(playerUUID) + " learned the " + skill.getName() + " skill.");
         return success;
     }
 
