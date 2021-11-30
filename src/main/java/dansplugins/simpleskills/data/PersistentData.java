@@ -59,6 +59,6 @@ public class PersistentData {
 
     private void initializeSkills() {
         // woodcutting
-        PersistentData.getInstance().addSkill(new Woodcutting());
+        addSkill(new Woodcutting());
     }
 }

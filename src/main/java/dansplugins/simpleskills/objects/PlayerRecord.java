@@ -26,11 +26,6 @@ public class PlayerRecord implements Savable, Cacheable {
         return playerUUID;
     }
 
-    @Override
-    public Object getKey() {
-        return getPlayerUUID();
-    }
-
     public HashSet<Integer> getKnownSkills() {
         return knownSkills;
     }
@@ -45,6 +40,25 @@ public class PlayerRecord implements Savable, Cacheable {
 
     public boolean isKnown(Skill skill) {
         return knownSkills.contains(skill.getID());
+    }
+
+    public HashMap<Integer, Integer> getSkillLevels() {
+        return skillLevels;
+    }
+
+    public void setSkillLevels(HashMap<Integer, Integer> skillLevels) {
+        this.skillLevels = skillLevels;
+    }
+
+    public void getSkillLevel(int ID) {
+        // TODO: implement
+    }
+
+    // ---
+
+    @Override
+    public Object getKey() {
+        return getPlayerUUID();
     }
 
     public void sendInfo(CommandSender commandSender) {
