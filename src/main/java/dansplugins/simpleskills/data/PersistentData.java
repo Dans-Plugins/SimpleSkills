@@ -80,5 +80,6 @@ public class PersistentData {
         addSkill(new Floriculture(6));
         addSkill(new Crafting(7));
         addSkill(new Fishing(8));
+        addSkill(new Hardiness(9));
     }
 }
