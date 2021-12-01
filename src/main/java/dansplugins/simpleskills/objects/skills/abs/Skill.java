@@ -9,13 +9,17 @@ public abstract class Skill {
     private String name;
     private int maxLevel;
     private boolean active;
+    private int baseExperienceRequirement;
+    private double experienceIncreaseFactor;
     private HashSet<Material> associatedMaterials = new HashSet<>();
 
-    public Skill(int ID, String name, int maxLevel) {
+    public Skill(int ID, String name, int maxLevel, int baseExperienceRequirement, int experienceIncreaseFactor) {
         this.ID = ID;
         this.name = name;
         this.maxLevel = maxLevel;
         this.active = true;
+        this.baseExperienceRequirement = baseExperienceRequirement;
+        this.experienceIncreaseFactor = experienceIncreaseFactor;
     }
 
     public int getID() {
@@ -48,6 +52,22 @@ public abstract class Skill {
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    public int getBaseExperienceRequirement() {
+        return baseExperienceRequirement;
+    }
+
+    public void setBaseExperienceRequirement(int baseExperienceRequirement) {
+        this.baseExperienceRequirement = baseExperienceRequirement;
+    }
+
+    public double getExperienceIncreaseFactor() {
+        return experienceIncreaseFactor;
+    }
+
+    public void setExperienceIncreaseFactor(double experienceIncreaseFactor) {
+        this.experienceIncreaseFactor = experienceIncreaseFactor;
     }
 
     public void initializeAssociatedMaterials(HashSet<Material> associatedMaterials) {

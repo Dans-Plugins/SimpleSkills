@@ -7,7 +7,7 @@ import java.util.HashSet;
 
 public class Woodcutting extends Skill {
     public Woodcutting(int ID) {
-        super(ID, "Woodcutting", 100);
+        super(ID, "Woodcutting", 100, 10, 2);
         initialize();
     }
 

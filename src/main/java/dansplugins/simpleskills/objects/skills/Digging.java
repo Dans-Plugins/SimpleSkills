@@ -7,7 +7,7 @@ import java.util.HashSet;
 
 public class Digging extends Skill {
     public Digging(int ID) {
-        super(ID, "Digging", 100);
+        super(ID, "Digging", 100, 10, 2);
         initialize();
     }
 
