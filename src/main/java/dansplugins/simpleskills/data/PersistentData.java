@@ -42,6 +42,15 @@ public class PersistentData {
         return null;
     }
 
+    public Skill getSkill(String skillName) {
+        for (Skill skill : skills) {
+            if (skill.getName().equalsIgnoreCase(skillName)) {
+                return skill;
+            }
+        }
+        return null;
+    }
+
     public boolean addSkill(Skill skill) {
         Logger.getInstance().log("Added skill: " + skill.getName());
         return skills.add(skill);

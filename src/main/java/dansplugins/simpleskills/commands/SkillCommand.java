@@ -1,5 +1,8 @@
 package dansplugins.simpleskills.commands;
 
+import dansplugins.simpleskills.SimpleSkills;
+import dansplugins.simpleskills.data.PersistentData;
+import dansplugins.simpleskills.objects.skills.abs.Skill;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import preponderous.ponder.misc.AbstractCommand;
@@ -26,15 +29,20 @@ public class SkillCommand extends AbstractCommand {
 
     @Override
     public boolean execute(CommandSender commandSender) {
-        // TODO: implement
-        commandSender.sendMessage(ChatColor.RED + "This command isn't implemented yet.");
+        commandSender.sendMessage(ChatColor.RED + "Usage: /ss skill \"skill name\"");
         return false;
     }
 
     @Override
-    public boolean execute(CommandSender commandSender, String[] strings) {
-        // TODO: implement
-        commandSender.sendMessage(ChatColor.RED + "This command isn't implemented yet.");
-        return false;
+    public boolean execute(CommandSender commandSender, String[] args) {
+        ArrayList<String> doubleQuoteArgs = SimpleSkills.getInstance().getToolbox().getArgumentParser().getArgumentsInsideDoubleQuotes(args);
+        if (doubleQuoteArgs.size() == 0) {
+            commandSender.sendMessage(ChatColor.RED + "Skill name must be designated between double quotes.");
+            return false;
+        }
+        String skillName = doubleQuoteArgs.get(0);
+        Skill skill = PersistentData.getInstance().getSkill(skillName);
+        skill.sendInfo(commandSender);
+        return true;
     }
 }
