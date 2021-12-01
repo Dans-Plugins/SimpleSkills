@@ -112,6 +112,7 @@ public class PlayerRecord implements Savable, Cacheable {
 
     public void incrementExperience(int ID) {
         setExperience(ID, getExperience(ID) + 1);
+        checkForLevelUp(ID);
     }
 
     // ---
@@ -128,8 +129,23 @@ public class PlayerRecord implements Savable, Cacheable {
         }
         commandSender.sendMessage(ChatColor.AQUA + "=== Skills of " + SimpleSkills.getInstance().getToolbox().getUUIDChecker().findPlayerNameBasedOnUUID(playerUUID) + " === ");
         for (int skillID : knownSkills) {
+            int currentLevel = getSkillLevel(skillID);
+            int currentExperience = getExperience(skillID);
             Skill skill = PersistentData.getInstance().getSkill(skillID);
-            commandSender.sendMessage(ChatColor.AQUA + skill.getName() + ": " + getSkillLevel(skill.getID()));
+            int experienceRequired = getExperienceRequired(getSkillLevel(skillID), skill.getBaseExperienceRequirement(), skill.getExperienceIncreaseFactor());
+            commandSender.sendMessage(ChatColor.AQUA + skill.getName() + "- LEVEL: " + currentLevel + " - EXP: " + currentExperience + "/" + experienceRequired);
+        }
+    }
+
+    public void checkForLevelUp(int ID) {
+        int level = getSkillLevel(ID);
+        int experience = getExperience(ID);
+        Skill skill = PersistentData.getInstance().getSkill(ID);
+        int experienceRequiredForLevelUp = getExperienceRequired(level, skill.getBaseExperienceRequirement(), skill.getExperienceIncreaseFactor());
+        if (experience >= experienceRequiredForLevelUp) {
+            // level up
+            incrementSkillLevel(ID);
+            setExperience(ID, getExperience(ID) - experienceRequiredForLevelUp);
         }
     }
 
@@ -155,5 +171,9 @@ public class PlayerRecord implements Savable, Cacheable {
         playerUUID = UUID.fromString(gson.fromJson(data.get("playerUUID"), String.class));
         knownSkills = gson.fromJson(data.get("knownSkills"), integerSetType);
         skillLevels = gson.fromJson(data.get("skillLevels"), integerToIntegerMapType);
+    }
+
+    private int getExperienceRequired(int currentLevel, int baseExperienceRequirement, double experienceIncreaseFactor) {
+        return (int) (baseExperienceRequirement * Math.pow(experienceIncreaseFactor, currentLevel));
     }
 }

@@ -33,7 +33,7 @@ public class BlockBreakEventHandler implements Listener {
                     playerRecord.addKnownSkill(skill);
                 }
                 else {
-                    playerRecord.incrementSkillLevel(skill.getID());
+                    playerRecord.incrementExperience(skill.getID());
                 }
             }
         }
