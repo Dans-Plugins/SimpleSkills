@@ -99,7 +99,8 @@ public class SimpleSkills extends AbstractPonderPlugin {
                 new InfoCommand(),
                 new TopCommand(),
                 new ConfigCommand(),
-                new StatsCommand()
+                new StatsCommand(),
+                new WipeCommand()
         ));
         getPonderAPI().getCommandService().initialize(commands, "That command wasn't found.");
     }

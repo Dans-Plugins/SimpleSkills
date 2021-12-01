@@ -19,3 +19,5 @@ permissions:
     default: true
   ss.config:
     default: op
+  ss.wipe:
+    default: op
