@@ -1,13 +1,14 @@
 package dansplugins.simpleskills.objects.skills;
 
+import dansplugins.simpleskills.objects.skills.abs.BlockBreakingSkill;
 import dansplugins.simpleskills.objects.skills.abs.Skill;
 import org.bukkit.Material;
 
 import java.util.HashSet;
 
-public class Quarrying extends Skill {
+public class Quarrying extends BlockBreakingSkill {
     public Quarrying(int ID) {
-        super(ID, "Quarrying", 100);
+        super(ID, "Quarrying", 100, 10, 2);
         initialize();
     }
 
