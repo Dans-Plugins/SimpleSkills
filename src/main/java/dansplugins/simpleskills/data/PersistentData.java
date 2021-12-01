@@ -1,6 +1,7 @@
 package dansplugins.simpleskills.data;
 
 import dansplugins.simpleskills.SimpleSkills;
+import dansplugins.simpleskills.SupportedSkill;
 import dansplugins.simpleskills.objects.PlayerRecord;
 import dansplugins.simpleskills.objects.skills.*;
 import dansplugins.simpleskills.objects.skills.abs.Skill;
@@ -71,15 +72,16 @@ public class PersistentData {
     }
 
     private void initializeSkills() {
-        addSkill(new Woodcutting(0));
-        addSkill(new Quarrying(1));
-        addSkill(new Mining(2));
-        addSkill(new Digging(3));
-        addSkill(new Farming(4));
-        addSkill(new Foraging(5));
-        addSkill(new Floriculture(6));
-        addSkill(new Crafting(7));
-        addSkill(new Fishing(8));
-        addSkill(new Hardiness(9));
+        addSkill(new Woodcutting(SupportedSkill.WOODCUTTING.ordinal()));
+        addSkill(new Quarrying(SupportedSkill.QUARRYING.ordinal()));
+        addSkill(new Mining(SupportedSkill.MINING.ordinal()));
+        addSkill(new Digging(SupportedSkill.DIGGING.ordinal()));
+        addSkill(new Farming(SupportedSkill.FARMING.ordinal()));
+        addSkill(new Foraging(SupportedSkill.FORAGING.ordinal()));
+        addSkill(new Floriculture(SupportedSkill.FLORICULTURE.ordinal()));
+        addSkill(new Crafting(SupportedSkill.CRAFTING.ordinal()));
+        addSkill(new Fishing(SupportedSkill.FISHING.ordinal()));
+        addSkill(new Hardiness(SupportedSkill.HARDINESS.ordinal()));
+        addSkill(new Enchanting(SupportedSkill.ENCHANTING.ordinal()));
     }
 }

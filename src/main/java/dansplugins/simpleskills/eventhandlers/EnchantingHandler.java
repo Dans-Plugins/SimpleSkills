@@ -7,20 +7,17 @@ import dansplugins.simpleskills.objects.PlayerRecord;
 import dansplugins.simpleskills.utils.Logger;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.inventory.CraftItemEvent;
+import org.bukkit.event.enchantment.EnchantItemEvent;
 
 /**
  * @author Daniel Stephenson
  */
-public class CraftingHandler extends SkillHandler {
+public class EnchantingHandler extends SkillHandler {
 
     @EventHandler()
-    public void handle(CraftItemEvent event) {
-        if (!(event.getWhoClicked() instanceof Player)) {
-            return;
-        }
-        Player player = (Player) event.getWhoClicked();
-        incrementExperience(player, SupportedSkill.CRAFTING.ordinal());
+    public void handle(EnchantItemEvent event) {
+        Player player = event.getEnchanter();
+        incrementExperience(player, SupportedSkill.ENCHANTING.ordinal());
     }
 
 }
