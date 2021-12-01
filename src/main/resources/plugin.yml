@@ -17,6 +17,8 @@ permissions:
     default: true
   ss.stats:
     default: true
+  ss.skill:
+    default: true
   ss.config:
     default: op
   ss.wipe:
