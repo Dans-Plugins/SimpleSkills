@@ -1,9 +1,7 @@
 package dansplugins.simpleskills;
 
 import dansplugins.simpleskills.commands.*;
-import dansplugins.simpleskills.eventhandlers.BlockBreakEventHandler;
-import dansplugins.simpleskills.eventhandlers.CraftingHandler;
-import dansplugins.simpleskills.eventhandlers.JoinHandler;
+import dansplugins.simpleskills.eventhandlers.*;
 import dansplugins.simpleskills.managers.StorageManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -95,6 +93,9 @@ public class SimpleSkills extends AbstractPonderPlugin {
         listeners.add(new JoinHandler());
         listeners.add(new BlockBreakEventHandler());
         listeners.add(new CraftingHandler());
+        listeners.add(new DamageHandler());
+        listeners.add(new FishingHandler());
+        listeners.add(new EnchantingHandler());
         getToolbox().getEventHandlerRegistry().registerEventHandlers(listeners, this);
     }
 
