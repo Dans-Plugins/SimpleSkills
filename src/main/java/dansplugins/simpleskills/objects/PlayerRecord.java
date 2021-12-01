@@ -168,6 +168,7 @@ public class PlayerRecord implements Savable, Cacheable {
         saveMap.put("playerUUID", gson.toJson(playerUUID));
         saveMap.put("knownSkills", gson.toJson(knownSkills));
         saveMap.put("skillLevels", gson.toJson(skillLevels));
+        saveMap.put("experience", gson.toJson(experience));
 
         return saveMap;
     }
@@ -182,6 +183,7 @@ public class PlayerRecord implements Savable, Cacheable {
         playerUUID = UUID.fromString(gson.fromJson(data.get("playerUUID"), String.class));
         knownSkills = gson.fromJson(data.get("knownSkills"), integerSetType);
         skillLevels = gson.fromJson(data.get("skillLevels"), integerToIntegerMapType);
+        experience = gson.fromJson(data.get("experience"), integerToIntegerMapType);
     }
 
     private int getExperienceRequired(int currentLevel, int baseExperienceRequirement, double experienceIncreaseFactor) {
