@@ -1,5 +1,6 @@
 package dansplugins.simpleskills.data;
 
+import dansplugins.simpleskills.SimpleSkills;
 import dansplugins.simpleskills.objects.PlayerRecord;
 import dansplugins.simpleskills.objects.skills.Digging;
 import dansplugins.simpleskills.objects.skills.Mining;
@@ -66,7 +67,10 @@ public class PersistentData {
                 return record;
             }
         }
-        return null;
+        Logger.getInstance().log("A player record wasn't found for " + SimpleSkills.getInstance().getToolbox().getUUIDChecker().findPlayerNameBasedOnUUID(playerUUID) + " wasn't found. One is being created for them.");
+        PlayerRecord record = new PlayerRecord(playerUUID);
+        addPlayerRecord(record);
+        return record;
     }
 
     private void initializeSkills() {
