@@ -1,5 +1,8 @@
 package dansplugins.simpleskills;
 
+/**
+ * @author Daniel Stephenson
+ */
 public enum SupportedSkill {
     WOODCUTTING,
     QUARRYING,

@@ -5,6 +5,9 @@ import org.bukkit.Material;
 
 import java.util.HashSet;
 
+/**
+ * @author Daniel Stephenson
+ */
 public class Foraging extends BlockBreakingSkill {
     public Foraging(int ID) {
         super(ID, "Foraging", 100, 10, 2);

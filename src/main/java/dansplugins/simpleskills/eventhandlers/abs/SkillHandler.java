@@ -6,6 +6,9 @@ import dansplugins.simpleskills.utils.Logger;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 
+/**
+ * @author Daniel Stephenson
+ */
 public abstract class SkillHandler implements Listener {
     protected void incrementExperience(Player player, int skillID) {
         PlayerRecord playerRecord = PersistentData.getInstance().getPlayerRecord(player.getUniqueId());
