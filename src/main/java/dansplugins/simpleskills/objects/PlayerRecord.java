@@ -144,7 +144,7 @@ public class PlayerRecord implements Savable, Cacheable {
             int currentExperience = getExperience(skillID);
             Skill skill = PersistentData.getInstance().getSkill(skillID);
             int experienceRequired = getExperienceRequired(getSkillLevel(skillID), skill.getBaseExperienceRequirement(), skill.getExperienceIncreaseFactor());
-            commandSender.sendMessage(ChatColor.AQUA + skill.getName() + "- LEVEL: " + currentLevel + " - EXP: " + currentExperience + "/" + experienceRequired);
+            commandSender.sendMessage(ChatColor.AQUA + skill.getName() + " - LEVEL: " + currentLevel + " - EXP: " + currentExperience + "/" + experienceRequired);
         }
     }
 
@@ -154,9 +154,20 @@ public class PlayerRecord implements Savable, Cacheable {
         Skill skill = PersistentData.getInstance().getSkill(ID);
         int experienceRequiredForLevelUp = getExperienceRequired(level, skill.getBaseExperienceRequirement(), skill.getExperienceIncreaseFactor());
         if (experience >= experienceRequiredForLevelUp) {
-            // level up
-            incrementSkillLevel(ID);
-            setExperience(ID, getExperience(ID) - experienceRequiredForLevelUp);
+            levelUp(ID, experienceRequiredForLevelUp);
+        }
+    }
+
+    private void levelUp(int ID, int experienceRequiredForLevelUp) {
+        // level up
+        incrementSkillLevel(ID);
+        setExperience(ID, getExperience(ID) - experienceRequiredForLevelUp);
+
+        // attempt to inform player
+        Player player = Bukkit.getPlayer(playerUUID);
+        if (player != null) {
+            Skill skill = PersistentData.getInstance().getSkill(ID);
+            player.sendMessage(ChatColor.GREEN + "You've leveled up your " + skill.getName() + " skill to " + getSkillLevel(ID));
         }
     }
 
