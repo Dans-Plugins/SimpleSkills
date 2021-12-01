@@ -7,9 +7,12 @@ import preponderous.ponder.misc.AbstractCommand;
 import java.util.ArrayList;
 import java.util.Collections;
 
+/**
+ * @author Daniel Stephenson
+ */
 public class SkillCommand extends AbstractCommand {
-    private ArrayList<String> names = new ArrayList<>(Collections.singletonList("skill"));
-    private ArrayList<String> permissions = new ArrayList<>(Collections.singletonList("ss.skill"));
+    private final ArrayList<String> names = new ArrayList<>(Collections.singletonList("skill"));
+    private final ArrayList<String> permissions = new ArrayList<>(Collections.singletonList("ss.skill"));
 
     @Override
     public ArrayList<String> getNames() {

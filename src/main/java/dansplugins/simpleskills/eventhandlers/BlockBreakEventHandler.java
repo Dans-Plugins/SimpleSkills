@@ -5,7 +5,6 @@ import dansplugins.simpleskills.objects.PlayerRecord;
 import dansplugins.simpleskills.objects.skills.abs.BlockBreakingSkill;
 import dansplugins.simpleskills.objects.skills.abs.Skill;
 import dansplugins.simpleskills.utils.Logger;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;

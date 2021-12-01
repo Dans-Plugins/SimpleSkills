@@ -13,7 +13,7 @@ public class StorageManager {
     private static StorageManager instance;
     private final static String FILE_PATH = "./plugins/SimpleSkills/";
     private final static String PLAYER_RECORDS_FILE_NAME = "playerRecords.json";
-    private JsonWriterReader jsonWriterReader = new JsonWriterReader();
+    private final JsonWriterReader jsonWriterReader = new JsonWriterReader();
 
     private StorageManager() {
         jsonWriterReader.initialize(FILE_PATH);

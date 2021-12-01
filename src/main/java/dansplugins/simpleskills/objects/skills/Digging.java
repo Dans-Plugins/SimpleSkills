@@ -1,7 +1,6 @@
 package dansplugins.simpleskills.objects.skills;
 
 import dansplugins.simpleskills.objects.skills.abs.BlockBreakingSkill;
-import dansplugins.simpleskills.objects.skills.abs.Skill;
 import org.bukkit.Material;
 
 import java.util.HashSet;

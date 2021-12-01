@@ -1,9 +1,5 @@
 package dansplugins.simpleskills.objects.skills.abs;
 
-import org.bukkit.Material;
-
-import java.util.HashSet;
-
 public abstract class Skill {
     private int ID;
     private String name;

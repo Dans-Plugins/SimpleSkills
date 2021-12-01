@@ -9,9 +9,12 @@ import preponderous.ponder.misc.AbstractCommand;
 import java.util.ArrayList;
 import java.util.Collections;
 
+/**
+ * @author Daniel Stephenson
+ */
 public class WipeCommand extends AbstractCommand {
-    private ArrayList<String> names = new ArrayList<>(Collections.singletonList("wipe"));
-    private ArrayList<String> permissions = new ArrayList<>(Collections.singletonList("ss.wipe"));
+    private final ArrayList<String> names = new ArrayList<>(Collections.singletonList("wipe"));
+    private final ArrayList<String> permissions = new ArrayList<>(Collections.singletonList("ss.wipe"));
 
     @Override
     public ArrayList<String> getNames() {

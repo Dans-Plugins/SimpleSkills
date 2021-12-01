@@ -12,6 +12,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.UUID;
 
+/**
+ * @author Daniel Stephenson
+ */
 public class InfoCommand extends AbstractCommand {
     private ArrayList<String> names = new ArrayList<>(Collections.singletonList("info"));
     private ArrayList<String> permissions = new ArrayList<>(Collections.singletonList("ss.info"));

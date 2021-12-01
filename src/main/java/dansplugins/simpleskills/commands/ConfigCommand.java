@@ -7,9 +7,12 @@ import preponderous.ponder.misc.AbstractCommand;
 import java.util.ArrayList;
 import java.util.Collections;
 
+/**
+ * @author Daniel Stephenson
+ */
 public class ConfigCommand extends AbstractCommand {
-    private ArrayList<String> names = new ArrayList<>(Collections.singletonList("config"));
-    private ArrayList<String> permissions = new ArrayList<>(Collections.singletonList("ss.config"));
+    private final ArrayList<String> names = new ArrayList<>(Collections.singletonList("config"));
+    private final ArrayList<String> permissions = new ArrayList<>(Collections.singletonList("ss.config"));
 
     @Override
     public ArrayList<String> getNames() {

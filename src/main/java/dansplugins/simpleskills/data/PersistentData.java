@@ -1,11 +1,11 @@
 package dansplugins.simpleskills.data;
 
+import dansplugins.simpleskills.objects.PlayerRecord;
 import dansplugins.simpleskills.objects.skills.Digging;
 import dansplugins.simpleskills.objects.skills.Mining;
 import dansplugins.simpleskills.objects.skills.Quarrying;
-import dansplugins.simpleskills.objects.skills.abs.Skill;
-import dansplugins.simpleskills.objects.PlayerRecord;
 import dansplugins.simpleskills.objects.skills.Woodcutting;
+import dansplugins.simpleskills.objects.skills.abs.Skill;
 import dansplugins.simpleskills.utils.Logger;
 
 import java.util.HashSet;
@@ -13,7 +13,7 @@ import java.util.UUID;
 
 public class PersistentData {
     private static PersistentData instance;
-    private HashSet<Skill> skills = new HashSet<>();
+    private final HashSet<Skill> skills = new HashSet<>();
     private HashSet<PlayerRecord> playerRecords = new HashSet<>();
 
     private PersistentData() {
