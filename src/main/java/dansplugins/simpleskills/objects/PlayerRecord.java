@@ -76,6 +76,10 @@ public class PlayerRecord implements Savable, Cacheable {
     }
 
     public int getSkillLevel(int ID) {
+        if (!skillLevels.containsKey(ID)) {
+            skillLevels.put(ID, -1);
+            return -1;
+        }
         return skillLevels.get(ID);
     }
 
@@ -101,6 +105,10 @@ public class PlayerRecord implements Savable, Cacheable {
     }
 
     public int getExperience(int ID) {
+        if (!experience.containsKey(ID)) {
+            experience.put(ID, 0);
+            return 0;
+        }
         return experience.get(ID);
     }
 
