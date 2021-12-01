@@ -2,6 +2,7 @@ package dansplugins.simpleskills;
 
 import dansplugins.simpleskills.commands.*;
 import dansplugins.simpleskills.eventhandlers.BlockBreakEventHandler;
+import dansplugins.simpleskills.eventhandlers.CraftingHandler;
 import dansplugins.simpleskills.eventhandlers.JoinHandler;
 import dansplugins.simpleskills.managers.StorageManager;
 import org.bukkit.command.Command;
@@ -93,6 +94,7 @@ public class SimpleSkills extends AbstractPonderPlugin {
         ArrayList<Listener> listeners = new ArrayList<>();
         listeners.add(new JoinHandler());
         listeners.add(new BlockBreakEventHandler());
+        listeners.add(new CraftingHandler());
         getToolbox().getEventHandlerRegistry().registerEventHandlers(listeners, this);
     }
 
