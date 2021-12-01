@@ -30,6 +30,7 @@ public class WipeCommand extends AbstractCommand {
     public boolean execute(CommandSender commandSender) {
         if (commandSender instanceof Player) {
             commandSender.sendMessage(ChatColor.RED + "This command can only be used from the console.");
+            return false;
         }
         PersistentData.getInstance().getPlayerRecords().clear();
         commandSender.sendMessage("Player records have been cleared.");
