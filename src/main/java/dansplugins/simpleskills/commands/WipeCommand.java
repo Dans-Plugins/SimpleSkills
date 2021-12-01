@@ -1,7 +1,9 @@
 package dansplugins.simpleskills.commands;
 
+import dansplugins.simpleskills.data.PersistentData;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import preponderous.ponder.misc.AbstractCommand;
 
 import java.util.ArrayList;
@@ -23,15 +25,16 @@ public class WipeCommand extends AbstractCommand {
 
     @Override
     public boolean execute(CommandSender commandSender) {
-        // TODO: implement
-        commandSender.sendMessage(ChatColor.RED + "This command isn't implemented yet.");
-        return false;
+        if (commandSender instanceof Player) {
+            commandSender.sendMessage(ChatColor.RED + "This command can only be used from the console.");
+        }
+        PersistentData.getInstance().getPlayerRecords().clear();
+        commandSender.sendMessage("Player records have been cleared.");
+        return true;
     }
 
     @Override
     public boolean execute(CommandSender commandSender, String[] strings) {
-        // TODO: implement
-        commandSender.sendMessage(ChatColor.RED + "This command isn't implemented yet.");
-        return false;
+        return execute(commandSender);
     }
 }
