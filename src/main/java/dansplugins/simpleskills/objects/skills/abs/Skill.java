@@ -11,7 +11,6 @@ public abstract class Skill {
     private boolean active;
     private int baseExperienceRequirement;
     private double experienceIncreaseFactor;
-    private HashSet<Material> associatedMaterials = new HashSet<>();
 
     public Skill(int ID, String name, int maxLevel, int baseExperienceRequirement, int experienceIncreaseFactor) {
         this.ID = ID;
@@ -68,13 +67,5 @@ public abstract class Skill {
 
     public void setExperienceIncreaseFactor(double experienceIncreaseFactor) {
         this.experienceIncreaseFactor = experienceIncreaseFactor;
-    }
-
-    public void initializeAssociatedMaterials(HashSet<Material> associatedMaterials) {
-        this.associatedMaterials = associatedMaterials;
-    }
-
-    public boolean isMaterialAssociated(Material material) {
-        return associatedMaterials.contains(material);
     }
 }
