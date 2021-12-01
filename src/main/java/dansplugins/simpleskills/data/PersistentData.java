@@ -2,10 +2,7 @@ package dansplugins.simpleskills.data;
 
 import dansplugins.simpleskills.SimpleSkills;
 import dansplugins.simpleskills.objects.PlayerRecord;
-import dansplugins.simpleskills.objects.skills.Digging;
-import dansplugins.simpleskills.objects.skills.Mining;
-import dansplugins.simpleskills.objects.skills.Quarrying;
-import dansplugins.simpleskills.objects.skills.Woodcutting;
+import dansplugins.simpleskills.objects.skills.*;
 import dansplugins.simpleskills.objects.skills.abs.Skill;
 import dansplugins.simpleskills.utils.Logger;
 
@@ -78,5 +75,7 @@ public class PersistentData {
         addSkill(new Quarrying(1));
         addSkill(new Mining(2));
         addSkill(new Digging(3));
+        addSkill(new Farming(4));
+        addSkill(new Foraging(5));
     }
 }
