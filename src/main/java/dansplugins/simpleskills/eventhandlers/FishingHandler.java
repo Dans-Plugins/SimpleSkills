@@ -6,19 +6,16 @@ import dansplugins.simpleskills.utils.Logger;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.CraftItemEvent;
+import org.bukkit.event.player.PlayerFishEvent;
 
 /**
  * @author Daniel Stephenson
  */
-public class CraftingHandler implements Listener {
+public class FishingHandler implements Listener {
 
     @EventHandler()
-    public void handle(CraftItemEvent event) {
-        if (!(event.getWhoClicked() instanceof Player)) {
-            return;
-        }
-        Player player = (Player) event.getWhoClicked();
+    public void handle(PlayerFishEvent event) {
+        Player player = event.getPlayer();
         PlayerRecord playerRecord = PersistentData.getInstance().getPlayerRecord(player.getUniqueId());
 
         if (playerRecord == null) {
@@ -26,7 +23,9 @@ public class CraftingHandler implements Listener {
             return;
         }
 
-        playerRecord.incrementExperience(7); // crafting
+        if (event.getState() == PlayerFishEvent.State.CAUGHT_ENTITY) {
+            playerRecord.incrementExperience(8); // fishing
+        }
     }
 
 }
