@@ -52,6 +52,7 @@ public class PlayerRecord implements Savable, Cacheable {
     public boolean addKnownSkill(Skill skill) {
         boolean success = knownSkills.add(skill.getID());
         setSkillLevel(skill.getID(), 0);
+        setExperience(skill.getID(), 1);
 
         // attempt to inform player
         Player player = Bukkit.getPlayer(playerUUID);
