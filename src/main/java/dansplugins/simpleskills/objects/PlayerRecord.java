@@ -20,6 +20,9 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.UUID;
 
+/**
+ * @author Daniel Stephenson
+ */
 public class PlayerRecord implements Savable, Cacheable {
     private UUID playerUUID;
     private HashSet<Integer> knownSkills = new HashSet<>();

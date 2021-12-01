@@ -4,6 +4,9 @@ import org.bukkit.Material;
 
 import java.util.HashSet;
 
+/**
+ * @author Daniel Stephenson
+ */
 public abstract class BlockBreakingSkill extends Skill {
     private HashSet<Material> associatedMaterials = new HashSet<>();
 

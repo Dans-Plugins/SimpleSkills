@@ -2,6 +2,9 @@ package dansplugins.simpleskills.utils;
 
 import dansplugins.simpleskills.SimpleSkills;
 
+/**
+ * @author Daniel Stephenson
+ */
 public class Logger {
 
     private static Logger instance;

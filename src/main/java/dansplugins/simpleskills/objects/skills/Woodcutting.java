@@ -5,6 +5,9 @@ import org.bukkit.Material;
 
 import java.util.HashSet;
 
+/**
+ * @author Daniel Stephenson
+ */
 public class Woodcutting extends BlockBreakingSkill {
     public Woodcutting(int ID) {
         super(ID, "Woodcutting", 100, 10, 2);

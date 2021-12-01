@@ -11,6 +11,9 @@ import dansplugins.simpleskills.utils.Logger;
 import java.util.HashSet;
 import java.util.UUID;
 
+/**
+ * @author Daniel Stephenson
+ */
 public class PersistentData {
     private static PersistentData instance;
     private final HashSet<Skill> skills = new HashSet<>();

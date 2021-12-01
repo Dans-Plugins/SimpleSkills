@@ -16,6 +16,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
+/**
+ * @author Daniel Stephenson
+ */
 public class SimpleSkills extends AbstractPonderPlugin {
     private static SimpleSkills instance;
     private String version = "v0.5-alpha-1";

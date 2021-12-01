@@ -5,6 +5,9 @@ import org.bukkit.Material;
 
 import java.util.HashSet;
 
+/**
+ * @author Daniel Stephenson
+ */
 public class Quarrying extends BlockBreakingSkill {
     public Quarrying(int ID) {
         super(ID, "Quarrying", 100, 10, 2);

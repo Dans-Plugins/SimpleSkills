@@ -5,6 +5,9 @@ import org.bukkit.Material;
 
 import java.util.HashSet;
 
+/**
+ * @author Daniel Stephenson
+ */
 public class Mining extends BlockBreakingSkill {
     public Mining(int ID) {
         super(ID, "Mining", 100, 10, 2);
