@@ -5,6 +5,7 @@ import dansplugins.simpleskills.SupportedSkill;
 import dansplugins.simpleskills.objects.PlayerRecord;
 import dansplugins.simpleskills.objects.skills.*;
 import dansplugins.simpleskills.objects.skills.abs.Skill;
+import dansplugins.simpleskills.objects.skills.blockbreaking.*;
 import dansplugins.simpleskills.utils.Logger;
 
 import java.util.HashSet;

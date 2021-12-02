@@ -1,4 +1,4 @@
-package dansplugins.simpleskills.objects.skills;
+package dansplugins.simpleskills.objects.skills.blockbreaking;
 
 import dansplugins.simpleskills.objects.skills.abs.BlockBreakingSkill;
 import org.bukkit.Material;
