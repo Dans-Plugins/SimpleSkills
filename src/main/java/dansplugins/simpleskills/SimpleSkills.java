@@ -1,8 +1,7 @@
 package dansplugins.simpleskills;
 
 import dansplugins.simpleskills.commands.*;
-import dansplugins.simpleskills.eventhandlers.BlockBreakEventHandler;
-import dansplugins.simpleskills.eventhandlers.JoinHandler;
+import dansplugins.simpleskills.eventhandlers.*;
 import dansplugins.simpleskills.managers.StorageManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -21,7 +20,7 @@ import java.util.HashMap;
  */
 public class SimpleSkills extends AbstractPonderPlugin {
     private static SimpleSkills instance;
-    private String version = "v0.6-alpha-2";
+    private String version = "v0.6-alpha-3";
 
     public static SimpleSkills getInstance() {
         return instance;
@@ -93,6 +92,10 @@ public class SimpleSkills extends AbstractPonderPlugin {
         ArrayList<Listener> listeners = new ArrayList<>();
         listeners.add(new JoinHandler());
         listeners.add(new BlockBreakEventHandler());
+        listeners.add(new CraftingHandler());
+        listeners.add(new DamageHandler());
+        listeners.add(new FishingHandler());
+        listeners.add(new EnchantingHandler());
         getToolbox().getEventHandlerRegistry().registerEventHandlers(listeners, this);
     }
 

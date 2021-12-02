@@ -1,6 +1,7 @@
 package dansplugins.simpleskills.eventhandlers;
 
 import dansplugins.simpleskills.data.PersistentData;
+import dansplugins.simpleskills.eventhandlers.abs.SkillHandler;
 import dansplugins.simpleskills.objects.PlayerRecord;
 import dansplugins.simpleskills.objects.skills.abs.BlockBreakingSkill;
 import dansplugins.simpleskills.objects.skills.abs.Skill;
@@ -9,13 +10,12 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 
 /**
  * @author Daniel Stephenson
  */
-public class BlockBreakEventHandler implements Listener {
+public class BlockBreakEventHandler extends SkillHandler {
 
     @EventHandler()
     public void handle(BlockBreakEvent event) {

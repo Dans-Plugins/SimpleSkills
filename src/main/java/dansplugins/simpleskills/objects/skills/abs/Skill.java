@@ -1,5 +1,8 @@
 package dansplugins.simpleskills.objects.skills.abs;
 
+import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
+
 /**
  * @author Daniel Stephenson
  */
@@ -66,5 +69,15 @@ public abstract class Skill {
 
     public void setExperienceIncreaseFactor(double experienceIncreaseFactor) {
         this.experienceIncreaseFactor = experienceIncreaseFactor;
+    }
+
+    // ---
+
+    public void sendInfo(CommandSender commandSender) {
+        commandSender.sendMessage(ChatColor.AQUA + "=== " + getName() + " ===");
+        commandSender.sendMessage(ChatColor.AQUA + "Max Level: " + getMaxLevel());
+        commandSender.sendMessage(ChatColor.AQUA + "Active: " + isActive());
+        commandSender.sendMessage(ChatColor.AQUA + "Base Experience Requirement: " + getBaseExperienceRequirement());
+        commandSender.sendMessage(ChatColor.AQUA + "Experience Increase Factor: " + getExperienceIncreaseFactor());
     }
 }
