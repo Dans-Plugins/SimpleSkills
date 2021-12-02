@@ -70,8 +70,8 @@ public class PlayerRecord implements Savable, Cacheable {
 
     public int getSkillLevel(int ID) {
         if (!skillLevels.containsKey(ID)) {
-            skillLevels.put(ID, -1);
-            return -1;
+            skillLevels.put(ID, 0);
+            return 0;
         }
         return skillLevels.get(ID);
     }
