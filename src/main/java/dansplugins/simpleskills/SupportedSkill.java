@@ -14,5 +14,6 @@ public enum SupportedSkill {
     CRAFTING,
     FISHING,
     HARDINESS,
-    ENCHANTING
+    ENCHANTING,
+    DUELING
 }

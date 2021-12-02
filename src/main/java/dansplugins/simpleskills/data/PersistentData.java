@@ -112,5 +112,6 @@ public class PersistentData {
         addSkill(new Fishing(SupportedSkill.FISHING.ordinal()));
         addSkill(new Hardiness(SupportedSkill.HARDINESS.ordinal()));
         addSkill(new Enchanting(SupportedSkill.ENCHANTING.ordinal()));
+        addSkill(new Dueling(SupportedSkill.DUELING.ordinal()));
     }
 }

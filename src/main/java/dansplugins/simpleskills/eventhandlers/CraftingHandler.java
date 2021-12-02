@@ -9,7 +9,7 @@ import org.bukkit.event.inventory.CraftItemEvent;
 /**
  * @author Daniel Stephenson
  */
-public class CraftingHandler extends SkillHandler { // TODO: fix
+public class CraftingHandler extends SkillHandler {
 
     @EventHandler()
     public void handle(CraftItemEvent event) {
