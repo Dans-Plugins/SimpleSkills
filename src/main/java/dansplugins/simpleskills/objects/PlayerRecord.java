@@ -44,18 +44,6 @@ public class PlayerRecord implements Savable, Cacheable {
         return skillLevels.keySet();
     }
 
-    public void addKnownSkill(Skill skill) {
-        setSkillLevel(skill.getID(), 0);
-        setExperience(skill.getID(), 1);
-
-        // attempt to inform player
-        Player player = Bukkit.getPlayer(playerUUID);
-        if (player != null) {
-            player.sendMessage(ChatColor.GREEN + "You've learned the " + skill.getName() + " skill. Type /ss info to view your skills.");
-        }
-        Logger.getInstance().log(SimpleSkills.getInstance().getToolbox().getUUIDChecker().findPlayerNameBasedOnUUID(playerUUID) + " learned the " + skill.getName() + " skill.");
-    }
-
     public boolean isKnown(Skill skill) {
         return getKnownSkills().contains(skill.getID());
     }
@@ -70,7 +58,7 @@ public class PlayerRecord implements Savable, Cacheable {
 
     public int getSkillLevel(int ID) {
         if (!skillLevels.containsKey(ID)) {
-            skillLevels.put(ID, 0);
+            learnSkill(ID);
             return 0;
         }
         return skillLevels.get(ID);
@@ -149,6 +137,27 @@ public class PlayerRecord implements Savable, Cacheable {
         if (experience >= experienceRequiredForLevelUp) {
             levelUp(ID, experienceRequiredForLevelUp);
         }
+    }
+
+    public boolean learnSkill(int skillID) {
+        Skill skill = PersistentData.getInstance().getSkill(skillID);
+        if (skill != null) {
+            learnSkill(skill);
+            return true;
+        }
+        return false;
+    }
+
+    public void learnSkill(Skill skill) {
+        setSkillLevel(skill.getID(), 0);
+        setExperience(skill.getID(), 1);
+
+        // attempt to inform player
+        Player player = Bukkit.getPlayer(playerUUID);
+        if (player != null) {
+            player.sendMessage(ChatColor.GREEN + "You've learned the " + skill.getName() + " skill. Type /ss info to view your skills.");
+        }
+        Logger.getInstance().log(SimpleSkills.getInstance().getToolbox().getUUIDChecker().findPlayerNameBasedOnUUID(playerUUID) + " learned the " + skill.getName() + " skill.");
     }
 
     private void levelUp(int ID, int experienceRequiredForLevelUp) {

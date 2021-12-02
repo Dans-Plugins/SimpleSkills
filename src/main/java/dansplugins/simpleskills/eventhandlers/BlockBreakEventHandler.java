@@ -36,12 +36,7 @@ public class BlockBreakEventHandler extends SkillHandler {
 
                 // check if material is associated
                 if (blockBreakingSkill.isMaterialAssociated(material)) {
-                    if (!playerRecord.isKnown(blockBreakingSkill)) {
-                        playerRecord.addKnownSkill(blockBreakingSkill);
-                    }
-                    else {
-                        playerRecord.incrementExperience(blockBreakingSkill.getID());
-                    }
+                    playerRecord.incrementExperience(blockBreakingSkill.getID());
                 }
             }
         }
