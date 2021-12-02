@@ -105,7 +105,7 @@ public class PersistentData {
         addSkill(new Quarrying(SupportedSkill.QUARRYING.ordinal()));
         addSkill(new Mining(SupportedSkill.MINING.ordinal()));
         addSkill(new Digging(SupportedSkill.DIGGING.ordinal()));
-        addSkill(new Farming(SupportedSkill.FARMING.ordinal()));
+        addSkill(new Harvesting(SupportedSkill.FARMING.ordinal()));
         addSkill(new Foraging(SupportedSkill.FORAGING.ordinal()));
         addSkill(new Floriculture(SupportedSkill.FLORICULTURE.ordinal()));
         addSkill(new Crafting(SupportedSkill.CRAFTING.ordinal()));

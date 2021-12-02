@@ -8,9 +8,9 @@ import java.util.HashSet;
 /**
  * @author Daniel Stephenson
  */
-public class Farming extends BlockBreakingSkill {
-    public Farming(int ID) {
-        super(ID, "Farming", 100, 10, 2);
+public class Harvesting extends BlockBreakingSkill {
+    public Harvesting(int ID) {
+        super(ID, "Harvesting", 100, 10, 2);
         initialize();
     }
 
