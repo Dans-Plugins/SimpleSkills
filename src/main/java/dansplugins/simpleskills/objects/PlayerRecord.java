@@ -15,7 +15,10 @@ import preponderous.ponder.modifiers.Cacheable;
 import preponderous.ponder.modifiers.Savable;
 
 import java.lang.reflect.Type;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 
 /**
  * @author Daniel Stephenson
@@ -177,7 +180,6 @@ public class PlayerRecord implements Savable, Cacheable {
     public void load(Map<String, String> data) {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
-        Type integerSetType = new TypeToken<HashSet<Integer>>(){}.getType();
         Type integerToIntegerMapType = new TypeToken<HashMap<Integer, Integer>>(){}.getType();
 
         playerUUID = UUID.fromString(gson.fromJson(data.get("playerUUID"), String.class));
