@@ -80,6 +80,25 @@ public class PersistentData {
         return record;
     }
 
+    // ---
+
+    public int getNumUnknownSkills() {
+        return skills.size() - getNumKnownSkills();
+    }
+
+    public int getNumKnownSkills() {
+        int knownSkills = 0;
+        for (Skill skill : skills) {
+            for (PlayerRecord record : playerRecords) {
+                if (record.isKnown(skill)) {
+                    knownSkills++;
+                    break;
+                }
+            }
+        }
+        return knownSkills;
+    }
+
     private void initializeSkills() {
         addSkill(new Woodcutting(SupportedSkill.WOODCUTTING.ordinal()));
         addSkill(new Quarrying(SupportedSkill.QUARRYING.ordinal()));
