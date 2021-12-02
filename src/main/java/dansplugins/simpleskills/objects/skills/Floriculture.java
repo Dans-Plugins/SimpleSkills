@@ -10,7 +10,7 @@ import java.util.HashSet;
  */
 public class Floriculture extends BlockBreakingSkill {
     public Floriculture(int ID) {
-        super(ID, "Gardening", 100, 10, 2);
+        super(ID, "Floriculture", 100, 10, 2);
         initialize();
     }
 

@@ -15,17 +15,13 @@ import preponderous.ponder.modifiers.Cacheable;
 import preponderous.ponder.modifiers.Savable;
 
 import java.lang.reflect.Type;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * @author Daniel Stephenson
  */
 public class PlayerRecord implements Savable, Cacheable {
     private UUID playerUUID;
-    private HashSet<Integer> knownSkills = new HashSet<>();
     private HashMap<Integer, Integer> skillLevels = new HashMap<>();
     private HashMap<Integer, Integer> experience = new HashMap<>();
 
@@ -41,16 +37,11 @@ public class PlayerRecord implements Savable, Cacheable {
         return playerUUID;
     }
 
-    public HashSet<Integer> getKnownSkills() {
-        return knownSkills;
+    public Set<Integer> getKnownSkills() {
+        return skillLevels.keySet();
     }
 
-    public void setKnownSkills(HashSet<Integer> knownSkills) {
-        this.knownSkills = knownSkills;
-    }
-
-    public boolean addKnownSkill(Skill skill) {
-        boolean success = knownSkills.add(skill.getID());
+    public void addKnownSkill(Skill skill) {
         setSkillLevel(skill.getID(), 0);
         setExperience(skill.getID(), 1);
 
@@ -60,11 +51,10 @@ public class PlayerRecord implements Savable, Cacheable {
             player.sendMessage(ChatColor.GREEN + "You've learned the " + skill.getName() + " skill. Type /ss info to view your skills.");
         }
         Logger.getInstance().log(SimpleSkills.getInstance().getToolbox().getUUIDChecker().findPlayerNameBasedOnUUID(playerUUID) + " learned the " + skill.getName() + " skill.");
-        return success;
     }
 
     public boolean isKnown(Skill skill) {
-        return knownSkills.contains(skill.getID());
+        return getKnownSkills().contains(skill.getID());
     }
 
     public HashMap<Integer, Integer> getSkillLevels() {
@@ -134,12 +124,12 @@ public class PlayerRecord implements Savable, Cacheable {
     }
 
     public void sendInfo(CommandSender commandSender) {
-        if (knownSkills.size() == 0) {
+        if (getKnownSkills().size() == 0) {
             commandSender.sendMessage(ChatColor.RED + "No skills known.");
             return;
         }
         commandSender.sendMessage(ChatColor.AQUA + "=== Skills of " + SimpleSkills.getInstance().getToolbox().getUUIDChecker().findPlayerNameBasedOnUUID(playerUUID) + " === ");
-        for (int skillID : knownSkills) {
+        for (int skillID : getKnownSkills()) {
             int currentLevel = getSkillLevel(skillID);
             int currentExperience = getExperience(skillID);
             Skill skill = PersistentData.getInstance().getSkill(skillID);
@@ -177,7 +167,6 @@ public class PlayerRecord implements Savable, Cacheable {
 
         Map<String, String> saveMap = new HashMap<>();
         saveMap.put("playerUUID", gson.toJson(playerUUID));
-        saveMap.put("knownSkills", gson.toJson(knownSkills));
         saveMap.put("skillLevels", gson.toJson(skillLevels));
         saveMap.put("experience", gson.toJson(experience));
 
@@ -192,7 +181,6 @@ public class PlayerRecord implements Savable, Cacheable {
         Type integerToIntegerMapType = new TypeToken<HashMap<Integer, Integer>>(){}.getType();
 
         playerUUID = UUID.fromString(gson.fromJson(data.get("playerUUID"), String.class));
-        knownSkills = gson.fromJson(data.get("knownSkills"), integerSetType);
         skillLevels = gson.fromJson(data.get("skillLevels"), integerToIntegerMapType);
         experience = gson.fromJson(data.get("experience"), integerToIntegerMapType);
     }
