@@ -1,5 +1,6 @@
 package dansplugins.simpleskills;
 
+import dansplugins.simpleskills.bstats.Metrics;
 import dansplugins.simpleskills.commands.*;
 import dansplugins.simpleskills.eventhandlers.*;
 import dansplugins.simpleskills.managers.StorageManager;
@@ -29,6 +30,11 @@ public class SimpleSkills extends AbstractPonderPlugin {
     @Override
     public void onEnable() {
         instance = this;
+
+        // bStats
+        int pluginId = 13470;
+        Metrics metrics = new Metrics(this, pluginId);
+
         ponderAPI_integrator = new PonderAPI_Integrator(this);
         toolbox = getPonderAPI().getToolbox();
         initializeConfigService();
