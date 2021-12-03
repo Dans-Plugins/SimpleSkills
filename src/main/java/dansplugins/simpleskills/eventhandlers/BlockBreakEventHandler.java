@@ -46,8 +46,8 @@ public class BlockBreakEventHandler extends SkillHandler {
                     // handle double drop benefit
                     if (blockBreakingSkill.hasBenefit(SupportedBenefit.DOUBLE_DROP.ordinal())) {
                         if (DoubleDrop.roll(playerRecord, blockBreakingSkill)) {
-                            player.getWorld().dropItem(player.getLocation(), new ItemStack(material));
-                            player.sendMessage(ChatColor.GREEN + "You've experienced a double drop.");
+                            player.getInventory().addItem(new ItemStack(material));
+                            player.sendMessage(ChatColor.GREEN + "You manage to extract more resources than usual.");
                         }
                     }
                 }
