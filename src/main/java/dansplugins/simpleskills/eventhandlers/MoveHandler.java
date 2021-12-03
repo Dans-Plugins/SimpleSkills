@@ -15,7 +15,7 @@ public class MoveHandler extends SkillHandler {
         }
         if (!event.getFrom().getChunk().equals(event.getTo().getChunk())) {
             Player player = event.getPlayer();
-            if (player.isSprinting()) {
+            if (player.isSprinting() || player.isSwimming()) {
                 incrementExperience(player, SupportedSkill.CARDIO.ordinal());
             }
         }
