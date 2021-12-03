@@ -16,5 +16,7 @@ public enum SupportedSkill {
     HARDINESS,
     ENCHANTING,
     DUELING,
-    CARDIO
+    CARDIO,
+    BOATING,
+    HORSEBACK_RIDING
 }
