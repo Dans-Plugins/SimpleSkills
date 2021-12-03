@@ -27,7 +27,8 @@ public class DoubleDrop extends Benefit {
         double maxLevel = skill.getMaxLevel();
         double chance = skillLevel/maxLevel;
         double result = random.nextDouble() * maxLevel;
-        double threshold = maxLevel * chance;
+        double nerfFactor = 0.25;
+        double threshold = maxLevel * chance * nerfFactor;
         return (result < threshold);
     }
 }
