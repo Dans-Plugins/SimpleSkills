@@ -101,17 +101,17 @@ public class PersistentData {
     }
 
     private void initializeSkills() {
-        addSkill(new Woodcutting(SupportedSkill.WOODCUTTING.ordinal()));
-        addSkill(new Quarrying(SupportedSkill.QUARRYING.ordinal()));
-        addSkill(new Mining(SupportedSkill.MINING.ordinal()));
-        addSkill(new Digging(SupportedSkill.DIGGING.ordinal()));
-        addSkill(new Harvesting(SupportedSkill.FARMING.ordinal()));
-        addSkill(new Foraging(SupportedSkill.FORAGING.ordinal()));
-        addSkill(new Floriculture(SupportedSkill.FLORICULTURE.ordinal()));
-        addSkill(new Crafting(SupportedSkill.CRAFTING.ordinal()));
-        addSkill(new Fishing(SupportedSkill.FISHING.ordinal()));
-        addSkill(new Hardiness(SupportedSkill.HARDINESS.ordinal()));
-        addSkill(new Enchanting(SupportedSkill.ENCHANTING.ordinal()));
-        addSkill(new Dueling(SupportedSkill.DUELING.ordinal()));
+        addSkill(new Woodcutting());
+        addSkill(new Quarrying());
+        addSkill(new Mining());
+        addSkill(new Digging());
+        addSkill(new Harvesting());
+        addSkill(new Foraging());
+        addSkill(new Floriculture());
+        addSkill(new Crafting());
+        addSkill(new Fishing());
+        addSkill(new Hardiness());
+        addSkill(new Enchanting());
+        addSkill(new Dueling());
     }
 }

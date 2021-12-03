@@ -10,17 +10,25 @@ public abstract class Skill {
     private int ID;
     private String name;
     private int maxLevel;
-    private boolean active;
     private int baseExperienceRequirement;
     private double experienceIncreaseFactor;
+    private boolean active;
+    public static final int defaultMaxLevel = 100;
+    public static final int defaultBaseExperienceRequirement = 10;
+    public static final double defaultExperienceIncreaseFactor = 1.2;
 
-    public Skill(int ID, String name, int maxLevel, int baseExperienceRequirement, int experienceIncreaseFactor) {
+
+    public Skill(int ID, String name, int maxLevel, int baseExperienceRequirement, double experienceIncreaseFactor) {
         this.ID = ID;
         this.name = name;
         this.maxLevel = maxLevel;
         this.active = true;
         this.baseExperienceRequirement = baseExperienceRequirement;
         this.experienceIncreaseFactor = experienceIncreaseFactor;
+    }
+
+    public Skill(int ID, String name) {
+        this(ID, name, Skill.defaultMaxLevel, Skill.defaultBaseExperienceRequirement, Skill.defaultExperienceIncreaseFactor);
     }
 
     public int getID() {

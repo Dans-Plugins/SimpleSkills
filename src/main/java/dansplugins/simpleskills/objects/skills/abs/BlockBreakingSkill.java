@@ -10,8 +10,12 @@ import java.util.HashSet;
 public abstract class BlockBreakingSkill extends Skill {
     private HashSet<Material> associatedMaterials = new HashSet<>();
 
-    public BlockBreakingSkill(int ID, String name, int maxLevel, int baseExperienceRequirement, int experienceIncreaseFactor) {
+    public BlockBreakingSkill(int ID, String name, int maxLevel, int baseExperienceRequirement, double experienceIncreaseFactor) {
         super(ID, name, maxLevel, baseExperienceRequirement, experienceIncreaseFactor);
+    }
+
+    public BlockBreakingSkill(int ID, String name) {
+        super(ID, name);
     }
 
     public void initializeAssociatedMaterials(HashSet<Material> associatedMaterials) {

@@ -8,7 +8,7 @@ public enum SupportedSkill {
     QUARRYING,
     MINING,
     DIGGING,
-    FARMING,
+    HARVESTING,
     FORAGING,
     FLORICULTURE,
     CRAFTING,

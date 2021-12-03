@@ -1,5 +1,6 @@
 package dansplugins.simpleskills.objects.skills.blockbreaking;
 
+import dansplugins.simpleskills.SupportedSkill;
 import dansplugins.simpleskills.objects.skills.abs.BlockBreakingSkill;
 import org.bukkit.Material;
 
@@ -9,8 +10,8 @@ import java.util.HashSet;
  * @author Daniel Stephenson
  */
 public class Digging extends BlockBreakingSkill {
-    public Digging(int ID) {
-        super(ID, "Digging", 100, 10, 2);
+    public Digging() {
+        super(SupportedSkill.DIGGING.ordinal(), "Digging");
         initialize();
     }
 
