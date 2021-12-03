@@ -28,6 +28,6 @@ public class DoubleDrop extends Benefit {
         double chance = skillLevel/maxLevel;
         double result = random.nextDouble() * maxLevel;
         double threshold = maxLevel * chance;
-        return (result > threshold);
+        return (result < threshold);
     }
 }
