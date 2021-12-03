@@ -1,4 +1,4 @@
-package dansplugins.simpleskills;
+package dansplugins.simpleskills.enums;
 
 /**
  * @author Daniel Stephenson

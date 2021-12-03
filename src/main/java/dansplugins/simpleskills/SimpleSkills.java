@@ -21,7 +21,7 @@ import java.util.HashMap;
  */
 public class SimpleSkills extends AbstractPonderPlugin {
     private static SimpleSkills instance;
-    private String version = "v0.7";
+    private String version = "v0.8";
 
     public static SimpleSkills getInstance() {
         return instance;

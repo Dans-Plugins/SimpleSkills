@@ -1,7 +1,8 @@
 package dansplugins.simpleskills.objects.skills.blockbreaking;
 
-import dansplugins.simpleskills.SupportedSkill;
-import dansplugins.simpleskills.objects.skills.abs.BlockBreakingSkill;
+import dansplugins.simpleskills.enums.SupportedSkill;
+import dansplugins.simpleskills.objects.abs.BlockBreakingSkill;
+import dansplugins.simpleskills.objects.benefits.DoubleDrop;
 import org.bukkit.Material;
 
 import java.util.HashSet;
@@ -16,6 +17,8 @@ public class Harvesting extends BlockBreakingSkill {
     }
 
     private void initialize() {
+        addBenefit(new DoubleDrop());
+
         HashSet<Material> materials = new HashSet<>();
         materials.add(Material.WHEAT);
         materials.add(Material.BEETROOT);

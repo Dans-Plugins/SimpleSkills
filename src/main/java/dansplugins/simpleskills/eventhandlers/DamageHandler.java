@@ -1,6 +1,6 @@
 package dansplugins.simpleskills.eventhandlers;
 
-import dansplugins.simpleskills.SupportedSkill;
+import dansplugins.simpleskills.enums.SupportedSkill;
 import dansplugins.simpleskills.eventhandlers.abs.SkillHandler;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;

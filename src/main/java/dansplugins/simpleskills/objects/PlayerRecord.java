@@ -5,7 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import dansplugins.simpleskills.SimpleSkills;
 import dansplugins.simpleskills.data.PersistentData;
-import dansplugins.simpleskills.objects.skills.abs.Skill;
+import dansplugins.simpleskills.objects.abs.Skill;
 import dansplugins.simpleskills.utils.Logger;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
