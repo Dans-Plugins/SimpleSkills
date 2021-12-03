@@ -102,6 +102,7 @@ public class SimpleSkills extends AbstractPonderPlugin {
         listeners.add(new DamageHandler());
         listeners.add(new FishingHandler());
         listeners.add(new EnchantingHandler());
+        listeners.add(new MoveHandler());
         getToolbox().getEventHandlerRegistry().registerEventHandlers(listeners, this);
     }
 
