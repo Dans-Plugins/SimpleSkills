@@ -1,5 +1,8 @@
 package dansplugins.simpleskills.objects.abs;
 
+/**
+ * @author Daniel Stephenson
+ */
 public abstract class Benefit {
     private int ID;
     private String name;
