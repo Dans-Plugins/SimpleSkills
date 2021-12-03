@@ -1,5 +1,6 @@
 package dansplugins.simpleskills.objects.abs;
 
+import dansplugins.simpleskills.enums.SupportedBenefit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
@@ -100,6 +101,19 @@ public abstract class Skill {
         benefits.remove(benefit);
     }
 
+    public Benefit getBenefit(int benefitID) {
+        for (Benefit benefit : benefits) {
+            if (benefit.getID() == benefitID) {
+                return benefit;
+            }
+        }
+        return null;
+    }
+
+    public boolean hasBenefit(int benefitID) {
+        return (getBenefit(benefitID) != null);
+    }
+
     // ---
 
     public void sendInfo(CommandSender commandSender) {
@@ -108,5 +122,6 @@ public abstract class Skill {
         commandSender.sendMessage(ChatColor.AQUA + "Active: " + isActive());
         commandSender.sendMessage(ChatColor.AQUA + "Base Experience Requirement: " + getBaseExperienceRequirement());
         commandSender.sendMessage(ChatColor.AQUA + "Experience Increase Factor: " + getExperienceIncreaseFactor());
+        commandSender.sendMessage(ChatColor.AQUA + "Number of benefits: " + getBenefits().size());
     }
 }
