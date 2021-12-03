@@ -5,7 +5,6 @@ import dansplugins.simpleskills.enums.SupportedBenefit;
 import dansplugins.simpleskills.objects.PlayerRecord;
 import dansplugins.simpleskills.objects.abs.Benefit;
 import dansplugins.simpleskills.objects.abs.Skill;
-import org.bukkit.entity.Player;
 
 import java.util.Random;
 import java.util.UUID;
@@ -27,7 +26,7 @@ public class DoubleDrop extends Benefit {
         double maxLevel = skill.getMaxLevel();
         double chance = skillLevel/maxLevel;
         double result = random.nextDouble() * maxLevel;
-        double nerfFactor = 0.25;
+        double nerfFactor = 0.10;
         double threshold = maxLevel * chance * nerfFactor;
         return (result < threshold);
     }

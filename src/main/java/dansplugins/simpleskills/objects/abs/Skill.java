@@ -1,6 +1,5 @@
 package dansplugins.simpleskills.objects.abs;
 
-import dansplugins.simpleskills.enums.SupportedBenefit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
