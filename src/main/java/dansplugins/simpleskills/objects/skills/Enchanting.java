@@ -8,6 +8,6 @@ import dansplugins.simpleskills.objects.abs.Skill;
  */
 public class Enchanting extends Skill {
     public Enchanting() {
-        super(SupportedSkill.ENCHANTING.ordinal(), "Enchanting", 100, 10, 2);
+        super(SupportedSkill.ENCHANTING.ordinal(), "Enchanting");
     }
 }

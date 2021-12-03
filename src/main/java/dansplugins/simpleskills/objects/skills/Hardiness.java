@@ -8,6 +8,6 @@ import dansplugins.simpleskills.objects.abs.Skill;
  */
 public class Hardiness extends Skill {
     public Hardiness() {
-        super(SupportedSkill.HARDINESS.ordinal(), "Hardiness", 100, 10, 2);
+        super(SupportedSkill.HARDINESS.ordinal(), "Hardiness");
     }
 }

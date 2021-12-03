@@ -15,5 +15,6 @@ public enum SupportedSkill {
     FISHING,
     HARDINESS,
     ENCHANTING,
-    DUELING
+    DUELING,
+    CARDIO
 }

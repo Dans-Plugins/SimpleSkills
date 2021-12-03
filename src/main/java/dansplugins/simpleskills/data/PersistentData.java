@@ -112,5 +112,6 @@ public class PersistentData {
         addSkill(new Hardiness());
         addSkill(new Enchanting());
         addSkill(new Dueling());
+        addSkill(new Cardio());
     }
 }
