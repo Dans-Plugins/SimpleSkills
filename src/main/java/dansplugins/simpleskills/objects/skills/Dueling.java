@@ -1,7 +1,7 @@
 package dansplugins.simpleskills.objects.skills;
 
-import dansplugins.simpleskills.SupportedSkill;
-import dansplugins.simpleskills.objects.skills.abs.Skill;
+import dansplugins.simpleskills.enums.SupportedSkill;
+import dansplugins.simpleskills.objects.abs.Skill;
 
 /**
  * @author Daniel Stephenson

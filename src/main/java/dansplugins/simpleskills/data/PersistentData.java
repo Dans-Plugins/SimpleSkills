@@ -1,10 +1,9 @@
 package dansplugins.simpleskills.data;
 
 import dansplugins.simpleskills.SimpleSkills;
-import dansplugins.simpleskills.SupportedSkill;
 import dansplugins.simpleskills.objects.PlayerRecord;
 import dansplugins.simpleskills.objects.skills.*;
-import dansplugins.simpleskills.objects.skills.abs.Skill;
+import dansplugins.simpleskills.objects.abs.Skill;
 import dansplugins.simpleskills.objects.skills.blockbreaking.*;
 import dansplugins.simpleskills.utils.Logger;
 
