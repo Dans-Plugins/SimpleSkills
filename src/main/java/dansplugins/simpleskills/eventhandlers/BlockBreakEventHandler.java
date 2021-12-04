@@ -45,7 +45,7 @@ public class BlockBreakEventHandler extends SkillHandler {
 
                     // handle double drop benefit
                     if (blockBreakingSkill.hasBenefit(SupportedBenefit.RESOURCE_EXTRACTION.ordinal())) {
-                        if (ResourceExtraction.roll(playerRecord, blockBreakingSkill)) {
+                        if (ResourceExtraction.roll(playerRecord, blockBreakingSkill, 0.10)) {
                             player.getInventory().addItem(new ItemStack(material));
                             player.sendMessage(ChatColor.GREEN + "Due to your " + blockBreakingSkill.getName() + " skill, you manage to extract more resources than usual.");
                         }

@@ -3,10 +3,10 @@ package dansplugins.simpleskills.data;
 import dansplugins.simpleskills.SimpleSkills;
 import dansplugins.simpleskills.objects.PlayerRecord;
 import dansplugins.simpleskills.objects.abs.Skill;
-import dansplugins.simpleskills.objects.skills.movement.Boating;
-import dansplugins.simpleskills.objects.skills.movement.Cardio;
 import dansplugins.simpleskills.objects.skills.*;
 import dansplugins.simpleskills.objects.skills.blockbreaking.*;
+import dansplugins.simpleskills.objects.skills.movement.Boating;
+import dansplugins.simpleskills.objects.skills.movement.Cardio;
 import dansplugins.simpleskills.objects.skills.movement.HorsebackRiding;
 import dansplugins.simpleskills.utils.Logger;
 

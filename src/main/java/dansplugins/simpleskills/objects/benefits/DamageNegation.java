@@ -6,8 +6,8 @@ import dansplugins.simpleskills.objects.abs.Benefit;
 /**
  * @author Daniel Stephenson
  */
-public class ResourceExtraction extends Benefit {
-    public ResourceExtraction() {
-        super(SupportedBenefit.RESOURCE_EXTRACTION.ordinal(), "Resource Extraction");
+public class DamageNegation extends Benefit {
+    public DamageNegation() {
+        super(SupportedBenefit.DAMAGE_NEGATION.ordinal(), "Damage Negation");
     }
 }
