@@ -95,14 +95,16 @@ public class SimpleSkills extends AbstractPonderPlugin {
     }
 
     private void registerEventHandlers() {
-        ArrayList<Listener> listeners = new ArrayList<>();
-        listeners.add(new JoinHandler());
-        listeners.add(new BlockBreakEventHandler());
-        listeners.add(new CraftingHandler());
-        listeners.add(new DamageHandler());
-        listeners.add(new FishingHandler());
-        listeners.add(new EnchantingHandler());
-        listeners.add(new MoveHandler());
+        ArrayList<Listener> listeners = new ArrayList<>(Arrays.asList(
+                new JoinHandler(),
+                new BlockBreakEventHandler(),
+                new CraftingHandler(),
+                new DamageHandler(),
+                new FishingHandler(),
+                new EnchantingHandler(),
+                new MoveHandler(),
+                new BreedingHandler()
+        ));
         getToolbox().getEventHandlerRegistry().registerEventHandlers(listeners, this);
     }
 

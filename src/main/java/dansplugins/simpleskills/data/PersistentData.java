@@ -118,5 +118,6 @@ public class PersistentData {
         addSkill(new Cardio());
         addSkill(new Boating());
         addSkill(new HorsebackRiding());
+        addSkill(new AnimalBreeding());
     }
 }
