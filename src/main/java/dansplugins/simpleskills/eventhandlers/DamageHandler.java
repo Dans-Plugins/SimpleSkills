@@ -39,7 +39,7 @@ public class DamageHandler extends SkillHandler {
         }
 
         // handle damage reduction benefit
-        if (hardinessSkill.hasBenefit(SupportedBenefit.DAMAGE_NEGATION.ordinal()) && ResourceExtraction.roll(playerRecord, hardinessSkill, 0.05)) {
+        if (hardinessSkill.hasBenefit(SupportedBenefit.DAMAGE_REDUCTION.ordinal()) && ResourceExtraction.roll(playerRecord, hardinessSkill, 0.05)) {
             event.setDamage(event.getDamage() / 2);
             player.sendMessage(ChatColor.GREEN + "Due to your " + hardinessSkill.getName() + " skill, you manage to take reduced damage.");
             return;
