@@ -60,17 +60,8 @@ public class DamageHandler extends SkillHandler {
         Player player = (Player) damagingEntity;
         Entity damagedEntity = event.getEntity();
 
-        if (damagedEntity instanceof Player) {
+        if (damagedEntity instanceof Player || damagedEntity instanceof Monster) {
             incrementExperience(player, SupportedSkill.STRENGTH.ordinal());
-            if (damagedEntity.isDead()) { // TODO: fix this not working?
-                incrementExperience(player, SupportedSkill.DUELING.ordinal());
-            }
-        }
-        else if (damagedEntity instanceof Monster) {
-            incrementExperience(player, SupportedSkill.STRENGTH.ordinal());
-            if (damagedEntity.isDead()) { // TODO: fix this not working?
-                incrementExperience(player, SupportedSkill.MONSTER_HUNTING.ordinal());
-            }
         }
     }
 
