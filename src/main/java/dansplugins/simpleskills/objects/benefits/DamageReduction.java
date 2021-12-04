@@ -5,7 +5,6 @@ import dansplugins.simpleskills.objects.abs.Benefit;
 
 /**
  * @author Daniel Stephenson
- * @note Not currently used.
  */
 public class DamageReduction extends Benefit {
     public DamageReduction() {

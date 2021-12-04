@@ -6,6 +6,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDeathEvent;
 
+/**
+ * @author Daniel Stephenson
+ */
 public class DeathHandler extends SkillHandler {
 
     @EventHandler()

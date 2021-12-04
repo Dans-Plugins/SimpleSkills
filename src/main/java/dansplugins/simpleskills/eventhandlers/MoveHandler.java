@@ -8,6 +8,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerMoveEvent;
 
+/**
+ * @author Daniel Stephenson
+ */
 public class MoveHandler extends SkillHandler {
 
     @EventHandler()
