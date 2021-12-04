@@ -102,6 +102,20 @@ public class PersistentData {
         return knownSkills;
     }
 
+    public int getNumUselessSkills() {
+        return skills.size() - getNumUsefulSkills();
+    }
+
+    public int getNumUsefulSkills() {
+        int count = 0;
+        for (Skill skill : skills) {
+            if (skill.getBenefits().size() > 0) {
+                count++;
+            }
+        }
+        return count;
+    }
+
     private void initializeSkills() {
         addSkill(new Woodcutting());
         addSkill(new Quarrying());

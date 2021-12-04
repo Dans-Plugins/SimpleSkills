@@ -31,6 +31,7 @@ public class StatsCommand extends AbstractCommand {
         commandSender.sendMessage(ChatColor.AQUA + "Number of skills: " + PersistentData.getInstance().getSkills().size());
         commandSender.sendMessage(ChatColor.AQUA + "Number of player records: " + PersistentData.getInstance().getPlayerRecords().size());
         commandSender.sendMessage(ChatColor.AQUA + "Unknown skills: " + PersistentData.getInstance().getNumUnknownSkills());
+        commandSender.sendMessage(ChatColor.AQUA + "Useless skills: " + PersistentData.getInstance().getNumUselessSkills());
         return true;
     }
 
