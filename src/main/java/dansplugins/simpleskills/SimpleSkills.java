@@ -103,7 +103,8 @@ public class SimpleSkills extends AbstractPonderPlugin {
                 new FishingHandler(),
                 new EnchantingHandler(),
                 new MoveHandler(),
-                new BreedingHandler()
+                new BreedingHandler(),
+                new DeathHandler()
         ));
         getToolbox().getEventHandlerRegistry().registerEventHandlers(listeners, this);
     }
