@@ -11,9 +11,9 @@ This open source Minecraft plugin is intended to introduce simple skills into th
 3) Restart your server.
 
 ## Usage
-- [User Guide](https://github.com/dmccoystephenson/SimpleSkills/wiki/Guide)
-- [List of Commands](https://github.com/dmccoystephenson/SimpleSkills/wiki/Commands)
-- [FAQ](https://github.com/dmccoystephenson/SimpleSkills/wiki/FAQ)
+- [User Guide](https://github.com/dmccoystephenson/SimpleSkills/wiki/Guide) (coming soon)
+- [List of Commands](https://github.com/dmccoystephenson/SimpleSkills/wiki/Commands) (coming soon)
+- [FAQ](https://github.com/dmccoystephenson/SimpleSkills/wiki/FAQ) (coming soon)
 
 ## Support
 You can find the support discord server [here](https://discord.gg/xXtuAQ2).
@@ -27,7 +27,7 @@ Please fill out a bug report [here](https://github.com/dmccoystephenson/SimpleSk
 - [Planned Improvements](https://github.com/dmccoystephenson/SimpleSkills/issues?q=is%3Aopen+is%3Aissue+label%3Aenhancement)
 
 ## Contributing
-- [Notes for Developers (coming soon)](https://github.com/dmccoystephenson/SimpleSkills/wiki/Developer-Notes)
+- [Notes for Developers](https://github.com/dmccoystephenson/SimpleSkills/wiki/Developer-Notes) (coming soon)
 
 ## Authors and acknowledgement
 Name | Main Contributions
