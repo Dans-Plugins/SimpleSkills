@@ -105,6 +105,10 @@ public class PlayerRecord implements Savable, Cacheable {
 
     public void incrementExperience(int ID) {
         setExperience(ID, getExperience(ID) + 1);
+        Skill skill = PersistentData.getInstance().getSkill(ID);
+        if (skill == null || (getSkillLevel(ID) >= skill.getMaxLevel())) {
+            return;
+        }
         checkForLevelUp(ID);
     }
 
