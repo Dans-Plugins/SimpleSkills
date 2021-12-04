@@ -18,5 +18,6 @@ public enum SupportedSkill {
     DUELING,
     CARDIO,
     BOATING,
-    HORSEBACK_RIDING
+    HORSEBACK_RIDING,
+    ANIMAL_BREEDING
 }
