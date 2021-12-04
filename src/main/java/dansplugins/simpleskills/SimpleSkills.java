@@ -115,7 +115,8 @@ public class SimpleSkills extends AbstractPonderPlugin {
                 new InfoCommand(),
                 new StatsCommand(),
                 new WipeCommand(),
-                new SkillCommand()
+                new SkillCommand(),
+                new TopCommand()
         ));
         getPonderAPI().getCommandService().initialize(commands, "That command wasn't found.");
     }

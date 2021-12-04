@@ -116,6 +116,19 @@ public class PersistentData {
         return count;
     }
 
+    public PlayerRecord getTopPlayerRecord(int skillID) {
+        PlayerRecord toReturn = null;
+        int max = 0;
+        for (PlayerRecord playerRecord : playerRecords) {
+            int skillLevel = playerRecord.getSkillLevel(skillID);
+            if (skillLevel > max) {
+                toReturn = playerRecord;
+                max = skillLevel;
+            }
+        }
+        return toReturn;
+    }
+
     private void initializeSkills() {
         addSkill(new Woodcutting());
         addSkill(new Quarrying());
