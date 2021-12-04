@@ -68,6 +68,9 @@ public class DamageHandler extends SkillHandler {
         }
         else if (damagedEntity instanceof Monster) {
             incrementExperience(player, SupportedSkill.STRENGTH.ordinal());
+            if (damagedEntity.isDead()) {
+                incrementExperience(player, SupportedSkill.MONSTER_HUNTING.ordinal());
+            }
         }
     }
 
