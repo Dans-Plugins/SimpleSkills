@@ -1,7 +1,10 @@
 # SimpleSkills
 
 ## Description
-This open source Minecraft plugin is intended to systematically introduce skills into the game. There are both useful and useless skills, and the qualification depends on the number of benefits that a skill has. An external API is planned in the future which would allow developers to create expansions or integrate this plugin with another. It is also planned to allow for teh addition of skills and benefits through config files.
+This open source Minecraft plugin is intended to systematically introduce skills into the game. There are both useful and useless skills, and the qualification depends on the number of benefits that a skill has. An external API is planned in the future which would allow developers to create expansions or integrate this plugin with another. It is also planned to allow for the addition and configuration of skills and benefits through config files and in-game commands.
+
+## Design Philosophy
+The general design philosophy for this plugin is to create a systematic, easy to use, expandable and configurable system that server owners can utilize to add flavor to their servers. An external API is planned and will be able to be utilized for expansion and integration purposes. 
 
 ## Installation
 1) You can download the plugin from [this page](https://www.spigotmc.org/resources/simpleskills-early-access.98039/).
