@@ -15,7 +15,7 @@ The general design philosophy for this project is to create a systematic, easy t
 
 ## Usage
 - [User Guide](https://github.com/dmccoystephenson/SimpleSkills/wiki/Guide) (coming soon)
-- [List of Commands](https://github.com/dmccoystephenson/SimpleSkills/wiki/Commands) (coming soon)
+- [List of Commands](https://github.com/dmccoystephenson/SimpleSkills/wiki/Commands)
 - [FAQ](https://github.com/dmccoystephenson/SimpleSkills/wiki/FAQ) (coming soon)
 
 ## Support
