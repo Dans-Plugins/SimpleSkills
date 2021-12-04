@@ -31,7 +31,6 @@ public class HelpCommand extends AbstractCommand {
         commandSender.sendMessage(ChatColor.AQUA + "/ss skill \"skill name\" - View information about a skill.");
         commandSender.sendMessage(ChatColor.RED + "/ss top \"skill name\" - View the leaderboard for a skill.");
         commandSender.sendMessage(ChatColor.AQUA + "/ss stats - View various statistics associated with the plugin.");
-        commandSender.sendMessage(ChatColor.RED + "/ss config - View or set config options.");
         commandSender.sendMessage(ChatColor.AQUA + "/ss wipe - Wipe the data for the plugin.");
         return true;
     }

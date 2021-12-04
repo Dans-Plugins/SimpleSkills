@@ -7,6 +7,7 @@ import dansplugins.simpleskills.eventhandlers.abs.SkillHandler;
 import dansplugins.simpleskills.objects.PlayerRecord;
 import dansplugins.simpleskills.objects.abs.Skill;
 import dansplugins.simpleskills.objects.benefits.ResourceExtraction;
+import dansplugins.simpleskills.utils.ChanceCalculator;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Monster;
@@ -33,14 +34,14 @@ public class DamageHandler extends SkillHandler {
         Skill hardinessSkill = PersistentData.getInstance().getSkill(SupportedSkill.HARDINESS.ordinal());
 
         // handle damage negation benefit
-        if (hardinessSkill.hasBenefit(SupportedBenefit.DAMAGE_NEGATION.ordinal()) && ResourceExtraction.roll(playerRecord, hardinessSkill, 0.01)) {
+        if (hardinessSkill.hasBenefit(SupportedBenefit.DAMAGE_NEGATION.ordinal()) && ChanceCalculator.getInstance().roll(playerRecord, hardinessSkill, 0.01)) {
             event.setCancelled(true);
             player.sendMessage(ChatColor.GREEN + "Due to your " + hardinessSkill.getName() + " skill, you manage to avoid taking damage.");
             return;
         }
 
         // handle damage reduction benefit
-        if (hardinessSkill.hasBenefit(SupportedBenefit.DAMAGE_REDUCTION.ordinal()) && ResourceExtraction.roll(playerRecord, hardinessSkill, 0.05)) {
+        if (hardinessSkill.hasBenefit(SupportedBenefit.DAMAGE_REDUCTION.ordinal()) && ChanceCalculator.getInstance().roll(playerRecord, hardinessSkill, 0.05)) {
             event.setDamage(event.getDamage() / 2);
             player.sendMessage(ChatColor.GREEN + "Due to your " + hardinessSkill.getName() + " skill, you manage to take reduced damage.");
             return;

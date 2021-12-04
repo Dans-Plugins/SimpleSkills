@@ -2,6 +2,8 @@ package dansplugins.simpleskills.utils;
 
 import dansplugins.simpleskills.SimpleSkills;
 
+import java.util.logging.Level;
+
 /**
  * @author Daniel Stephenson
  */
@@ -22,7 +24,7 @@ public class Logger {
 
     public void log(String message) {
         if (SimpleSkills.getInstance().isDebugEnabled()) {
-            System.out.println("[SimpleSkills] " + message);
+            SimpleSkills.getInstance().getLogger().log(Level.INFO, "[SimpleSkills] " + message);
         }
     }
 

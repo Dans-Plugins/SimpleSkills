@@ -113,8 +113,6 @@ public class SimpleSkills extends AbstractPonderPlugin {
         ArrayList<ICommand> commands = new ArrayList<>(Arrays.asList(
                 new HelpCommand(),
                 new InfoCommand(),
-                new TopCommand(),
-                new ConfigCommand(),
                 new StatsCommand(),
                 new WipeCommand(),
                 new SkillCommand()

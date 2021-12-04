@@ -30,6 +30,8 @@ public class DefaultCommand extends AbstractCommand {
         commandSender.sendMessage(ChatColor.AQUA + "SimpleSkills " + SimpleSkills.getInstance().getVersion());
         commandSender.sendMessage(ChatColor.AQUA + "Developed by: Daniel Stephenson");
         commandSender.sendMessage(ChatColor.AQUA + "Wiki: https://github.com/dmccoystephenson/SimpleSkills/wiki");
+        commandSender.sendMessage("");
+        commandSender.sendMessage(ChatColor.AQUA + "To view a list of commands, type /ss help.");
         return true;
     }
 

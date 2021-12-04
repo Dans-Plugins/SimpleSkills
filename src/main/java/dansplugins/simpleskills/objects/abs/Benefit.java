@@ -43,22 +43,4 @@ public abstract class Benefit {
     public void setActive(boolean active) {
         this.active = active;
     }
-
-    // ---
-
-    public static boolean roll(UUID playerUUID, int skillID, double nerfFactor) {
-        PlayerRecord playerRecord = PersistentData.getInstance().getPlayerRecord(playerUUID);
-        Skill skill = PersistentData.getInstance().getSkill(skillID);
-        return roll(playerRecord, skill, nerfFactor);
-    }
-
-    public static boolean roll(PlayerRecord playerRecord, Skill skill, double nerfFactor) {
-        Random random = new Random();
-        double skillLevel = playerRecord.getSkillLevel(skill.getID());
-        double maxLevel = skill.getMaxLevel();
-        double chance = skillLevel/maxLevel;
-        double result = random.nextDouble() * maxLevel;
-        double threshold = maxLevel * chance * nerfFactor;
-        return (result < threshold);
-    }
 }

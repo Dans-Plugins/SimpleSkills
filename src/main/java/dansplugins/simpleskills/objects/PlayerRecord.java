@@ -6,6 +6,7 @@ import com.google.gson.reflect.TypeToken;
 import dansplugins.simpleskills.SimpleSkills;
 import dansplugins.simpleskills.data.PersistentData;
 import dansplugins.simpleskills.objects.abs.Skill;
+import dansplugins.simpleskills.utils.ExperienceCalculator;
 import dansplugins.simpleskills.utils.Logger;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -124,7 +125,7 @@ public class PlayerRecord implements Savable, Cacheable {
             int currentLevel = getSkillLevel(skillID);
             int currentExperience = getExperience(skillID);
             Skill skill = PersistentData.getInstance().getSkill(skillID);
-            int experienceRequired = getExperienceRequired(getSkillLevel(skillID), skill.getBaseExperienceRequirement(), skill.getExperienceIncreaseFactor());
+            int experienceRequired = ExperienceCalculator.getInstance().getExperienceRequiredForLevelUp(getSkillLevel(skillID), skill.getBaseExperienceRequirement(), skill.getExperienceIncreaseFactor());
             commandSender.sendMessage(ChatColor.AQUA + skill.getName() + " - LVL: " + currentLevel + " - EXP: " + currentExperience + "/" + experienceRequired);
         }
     }
@@ -133,7 +134,7 @@ public class PlayerRecord implements Savable, Cacheable {
         int level = getSkillLevel(ID);
         int experience = getExperience(ID);
         Skill skill = PersistentData.getInstance().getSkill(ID);
-        int experienceRequiredForLevelUp = getExperienceRequired(level, skill.getBaseExperienceRequirement(), skill.getExperienceIncreaseFactor());
+        int experienceRequiredForLevelUp = ExperienceCalculator.getInstance().getExperienceRequiredForLevelUp(level, skill.getBaseExperienceRequirement(), skill.getExperienceIncreaseFactor());
         if (experience >= experienceRequiredForLevelUp) {
             levelUp(ID, experienceRequiredForLevelUp);
         }
@@ -194,9 +195,5 @@ public class PlayerRecord implements Savable, Cacheable {
         playerUUID = UUID.fromString(gson.fromJson(data.get("playerUUID"), String.class));
         skillLevels = gson.fromJson(data.get("skillLevels"), integerToIntegerMapType);
         experience = gson.fromJson(data.get("experience"), integerToIntegerMapType);
-    }
-
-    private int getExperienceRequired(int currentLevel, int baseExperienceRequirement, double experienceIncreaseFactor) {
-        return (int) (baseExperienceRequirement * Math.pow(experienceIncreaseFactor, currentLevel));
     }
 }
