@@ -2,7 +2,7 @@ package dansplugins.simpleskills.objects.skills.blockbreaking;
 
 import dansplugins.simpleskills.enums.SupportedSkill;
 import dansplugins.simpleskills.objects.abs.BlockBreakingSkill;
-import dansplugins.simpleskills.objects.benefits.DoubleDrop;
+import dansplugins.simpleskills.objects.benefits.ResourceExtraction;
 import org.bukkit.Material;
 
 import java.util.HashSet;
@@ -17,7 +17,7 @@ public class Foraging extends BlockBreakingSkill {
     }
 
     private void initialize() {
-        addBenefit(new DoubleDrop());
+        addBenefit(new ResourceExtraction());
 
         HashSet<Material> materials = new HashSet<>();
         materials.add(Material.SWEET_BERRIES);

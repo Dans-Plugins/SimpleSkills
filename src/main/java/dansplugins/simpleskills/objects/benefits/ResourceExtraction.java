@@ -9,9 +9,9 @@ import dansplugins.simpleskills.objects.abs.Skill;
 import java.util.Random;
 import java.util.UUID;
 
-public class DoubleDrop extends Benefit {
-    public DoubleDrop() {
-        super(SupportedBenefit.DOUBLE_DROP.ordinal(), "Double Drop");
+public class ResourceExtraction extends Benefit {
+    public ResourceExtraction() {
+        super(SupportedBenefit.RESOURCE_EXTRACTION.ordinal(), "Resource Extraction");
     }
 
     public static boolean roll(UUID playerUUID, int skillID) {

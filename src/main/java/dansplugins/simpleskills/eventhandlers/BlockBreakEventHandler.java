@@ -6,7 +6,7 @@ import dansplugins.simpleskills.eventhandlers.abs.SkillHandler;
 import dansplugins.simpleskills.objects.PlayerRecord;
 import dansplugins.simpleskills.objects.abs.BlockBreakingSkill;
 import dansplugins.simpleskills.objects.abs.Skill;
-import dansplugins.simpleskills.objects.benefits.DoubleDrop;
+import dansplugins.simpleskills.objects.benefits.ResourceExtraction;
 import dansplugins.simpleskills.utils.Logger;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -44,8 +44,8 @@ public class BlockBreakEventHandler extends SkillHandler {
                     playerRecord.incrementExperience(blockBreakingSkill.getID());
 
                     // handle double drop benefit
-                    if (blockBreakingSkill.hasBenefit(SupportedBenefit.DOUBLE_DROP.ordinal())) {
-                        if (DoubleDrop.roll(playerRecord, blockBreakingSkill)) {
+                    if (blockBreakingSkill.hasBenefit(SupportedBenefit.RESOURCE_EXTRACTION.ordinal())) {
+                        if (ResourceExtraction.roll(playerRecord, blockBreakingSkill)) {
                             player.getInventory().addItem(new ItemStack(material));
                             player.sendMessage(ChatColor.GREEN + "Due to your " + blockBreakingSkill.getName() + " skill, you manage to extract more resources than usual.");
                         }
