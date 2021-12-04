@@ -9,6 +9,7 @@ import dansplugins.simpleskills.objects.abs.Skill;
 import dansplugins.simpleskills.objects.benefits.ResourceExtraction;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -50,13 +51,23 @@ public class DamageHandler extends SkillHandler {
 
     @EventHandler()
     public void handle(EntityDamageByEntityEvent event) {
-        Entity damagedEntity = event.getEntity();
         Entity damagingEntity = event.getDamager();
-        if (damagingEntity instanceof Player && damagedEntity instanceof Player) {
+
+        if (!(damagingEntity instanceof Player)) {
+            return;
+        }
+
+        Player player = (Player) damagingEntity;
+        Entity damagedEntity = event.getEntity();
+
+        if (damagedEntity instanceof Player) {
+            incrementExperience(player, SupportedSkill.STRENGTH.ordinal());
             if (damagedEntity.isDead()) {
-                Player player = (Player) damagingEntity;
                 incrementExperience(player, SupportedSkill.DUELING.ordinal());
             }
+        }
+        else if (damagedEntity instanceof Monster) {
+            incrementExperience(player, SupportedSkill.STRENGTH.ordinal());
         }
     }
 

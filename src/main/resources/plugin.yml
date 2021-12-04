@@ -1,5 +1,5 @@
 name: SimpleSkills
-version: 0.11-alpha-1
+version: 0.11-alpha-2
 main: dansplugins.simpleskills.SimpleSkills
 api-version: 1.13
 author: Daniel Stephenson

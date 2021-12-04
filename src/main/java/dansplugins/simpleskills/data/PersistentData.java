@@ -119,5 +119,6 @@ public class PersistentData {
         addSkill(new Boating());
         addSkill(new HorsebackRiding());
         addSkill(new AnimalBreeding());
+        addSkill(new Strength());
     }
 }
