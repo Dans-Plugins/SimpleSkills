@@ -46,7 +46,7 @@ public class TopCommand extends AbstractCommand {
         }
         PlayerRecord topPlayerRecord = PersistentData.getInstance().getTopPlayerRecord(skill.getID());
         String playerName = SimpleSkills.getInstance().getToolbox().getUUIDChecker().findPlayerNameBasedOnUUID(topPlayerRecord.getPlayerUUID());
-        commandSender.sendMessage(ChatColor.AQUA + "Top Player in " + skill.getName() + "-> " + playerName + " - LVL: " + topPlayerRecord.getSkillLevel(skill.getID()));
+        commandSender.sendMessage(ChatColor.AQUA + "Top Player in " + skill.getName() + " -> " + playerName + " - LVL: " + topPlayerRecord.getSkillLevel(skill.getID()));
         return true;
     }
 }
