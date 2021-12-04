@@ -7,7 +7,7 @@ This open source Minecraft plugin is intended to systematically introduce skills
 The general design philosophy for this plugin is to create a systematic, easy to use, expandable and configurable system that server owners can utilize to add flavor to their servers. An external API is planned and will be able to be utilized for expansion and integration purposes. 
 
 ## Installation
-1) You can download the plugin from [this page](https://www.spigotmc.org/resources/simpleskills-early-access.98039/).
+1) You can download the plugin from [this page](https://www.spigotmc.org/resources/simpleskills.98039/).
 
 2) Once downloaded, place the jar in the plugins folder of your server files.
 
