@@ -24,6 +24,8 @@ public class Quarrying extends BlockBreakingSkill {
         materials.add(Material.ANDESITE);
         materials.add(Material.DIORITE);
         materials.add(Material.GRANITE);
+        materials.add(Material.SANDSTONE);
+        materials.add(Material.TERRACOTTA);
         super.initializeAssociatedMaterials(materials);
     }
 }
