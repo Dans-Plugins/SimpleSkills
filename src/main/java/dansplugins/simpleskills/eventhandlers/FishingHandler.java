@@ -13,6 +13,10 @@ public class FishingHandler extends SkillHandler {
 
     @EventHandler()
     public void handle(PlayerFishEvent event) {
+        if (event.isCancelled()) {
+            return;
+        }
+        
         Player player = event.getPlayer();
         if (event.getCaught() != null) {
             incrementExperience(player, SupportedSkill.FISHING.ordinal());

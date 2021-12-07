@@ -13,6 +13,10 @@ public class EnchantingHandler extends SkillHandler {
 
     @EventHandler()
     public void handle(EnchantItemEvent event) {
+        if (event.isCancelled()) {
+            return;
+        }
+
         Player player = event.getEnchanter();
         incrementExperience(player, SupportedSkill.ENCHANTING.ordinal());
     }

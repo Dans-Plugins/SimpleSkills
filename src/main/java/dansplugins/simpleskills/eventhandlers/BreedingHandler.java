@@ -10,6 +10,10 @@ public class BreedingHandler extends SkillHandler {
 
     @EventHandler()
     public void handle(EntityBreedEvent event) {
+        if (event.isCancelled()) {
+            return;
+        }
+
         if (!(event.getBreeder() instanceof Player)) {
             return;
         }

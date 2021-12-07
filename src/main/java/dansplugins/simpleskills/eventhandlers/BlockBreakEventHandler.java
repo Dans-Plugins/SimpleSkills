@@ -24,6 +24,10 @@ public class BlockBreakEventHandler extends SkillHandler {
 
     @EventHandler()
     public void handle(BlockBreakEvent event) {
+        if (event.isCancelled()) {
+            return;
+        }
+
         Player player = event.getPlayer();
         PlayerRecord playerRecord = PersistentData.getInstance().getPlayerRecord(player.getUniqueId());
 

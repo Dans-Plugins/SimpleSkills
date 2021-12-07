@@ -13,6 +13,10 @@ public class CraftingHandler extends SkillHandler {
 
     @EventHandler()
     public void handle(CraftItemEvent event) {
+        if (event.isCancelled()) {
+            return;
+        }
+        
         if (!(event.getWhoClicked() instanceof Player)) {
             return;
         }

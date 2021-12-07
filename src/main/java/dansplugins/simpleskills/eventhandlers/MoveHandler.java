@@ -15,6 +15,10 @@ public class MoveHandler extends SkillHandler {
 
     @EventHandler()
     public void handle(PlayerMoveEvent event) {
+        if (event.isCancelled()) {
+            return;
+        }
+
         if (event.getTo() == null) {
             return;
         }

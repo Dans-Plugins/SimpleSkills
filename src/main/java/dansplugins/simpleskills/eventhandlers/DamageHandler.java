@@ -23,6 +23,10 @@ public class DamageHandler extends SkillHandler {
 
     @EventHandler()
     public void handle(EntityDamageEvent event) {
+        if (event.isCancelled()) {
+            return;
+        }
+
         Entity entity = event.getEntity();
         if (!(entity instanceof Player)) {
             return;
@@ -46,7 +50,7 @@ public class DamageHandler extends SkillHandler {
             player.sendMessage(ChatColor.GREEN + "Due to your " + hardinessSkill.getName() + " skill, you manage to take reduced damage.");
             return;
         }
-        
+
         incrementExperience(player, SupportedSkill.HARDINESS.ordinal());
     }
 
