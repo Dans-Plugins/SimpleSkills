@@ -121,14 +121,26 @@ public abstract class Skill {
     }
 
     private static int getDefaultMaxLevel() {
-        return SimpleSkills.getInstance().getPonderAPI().getConfigService().getInt("defaultMaxLevel");
+        int toReturn = SimpleSkills.getInstance().getPonderAPI().getConfigService().getInt("defaultMaxLevel");
+        if (toReturn == 0) {
+            return 100;
+        }
+        return toReturn;
     }
 
     private static int getDefaultBaseExperienceRequirement() {
-        return SimpleSkills.getInstance().getPonderAPI().getConfigService().getInt("defaultBaseExperienceRequirement");
+        int toReturn = SimpleSkills.getInstance().getPonderAPI().getConfigService().getInt("defaultBaseExperienceRequirement");
+        if (toReturn == 0) {
+            return 10;
+        }
+        return toReturn;
     }
 
     private static double getDefaultExperienceIncreaseFactor() {
-        return SimpleSkills.getInstance().getPonderAPI().getConfigService().getInt("defaultDefaultExperienceIncreaseFactor");
+        double toReturn = SimpleSkills.getInstance().getPonderAPI().getConfigService().getDouble("defaultDefaultExperienceIncreaseFactor");
+        if (toReturn == 0) {
+            return 1.2;
+        }
+        return toReturn;
     }
 }
