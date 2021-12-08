@@ -1,6 +1,7 @@
 package dansplugins.simpleskills.objects.skills.blockbreaking;
 
 import dansplugins.simpleskills.enums.SupportedSkill;
+import dansplugins.simpleskills.objects.abs.BlockBreakingSkill;
 import dansplugins.simpleskills.objects.abs.BlockSkill;
 import dansplugins.simpleskills.objects.benefits.ResourceExtraction;
 import org.bukkit.Material;
@@ -10,7 +11,7 @@ import java.util.HashSet;
 /**
  * @author Daniel Stephenson
  */
-public class Harvesting extends BlockSkill {
+public class Harvesting extends BlockBreakingSkill {
     public Harvesting() {
         super(SupportedSkill.HARVESTING.ordinal(), "Harvesting");
         initialize();

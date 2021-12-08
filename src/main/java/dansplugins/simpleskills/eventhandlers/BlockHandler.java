@@ -4,6 +4,8 @@ import dansplugins.simpleskills.data.PersistentData;
 import dansplugins.simpleskills.enums.SupportedBenefit;
 import dansplugins.simpleskills.eventhandlers.abs.SkillHandler;
 import dansplugins.simpleskills.objects.PlayerRecord;
+import dansplugins.simpleskills.objects.abs.BlockBreakingSkill;
+import dansplugins.simpleskills.objects.abs.BlockPlacingSkill;
 import dansplugins.simpleskills.objects.abs.BlockSkill;
 import dansplugins.simpleskills.objects.abs.Skill;
 import dansplugins.simpleskills.utils.ChanceCalculator;
@@ -40,7 +42,7 @@ public class BlockHandler extends SkillHandler {
         Material material = block.getType();
 
         for (Skill skill : PersistentData.getInstance().getSkills()) {
-            if (skill instanceof BlockSkill) {
+            if (skill instanceof BlockBreakingSkill) {
                 BlockSkill blockSkill = (BlockSkill) skill;
 
                 // check if material is associated
@@ -78,7 +80,7 @@ public class BlockHandler extends SkillHandler {
         Material material = block.getType();
 
         for (Skill skill : PersistentData.getInstance().getSkills()) {
-            if (skill instanceof BlockSkill) {
+            if (skill instanceof BlockPlacingSkill) {
                 BlockSkill blockSkill = (BlockSkill) skill;
 
                 // check if material is associated
