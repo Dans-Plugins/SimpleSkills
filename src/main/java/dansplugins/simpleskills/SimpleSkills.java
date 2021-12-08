@@ -37,8 +37,6 @@ public class SimpleSkills extends AbstractPonderPlugin {
 
         ponderAPI_integrator = new PonderAPI_Integrator(this);
         toolbox = getPonderAPI().getToolbox();
-        initializeConfigService(); // this probably shouldn't be called all of the time
-        initializeConfigFile();
         registerEventHandlers();
         initializeCommandService();
         getPonderAPI().setDebug(false);
@@ -77,25 +75,8 @@ public class SimpleSkills extends AbstractPonderPlugin {
 
     private void initializeConfigService() {
         HashMap<String, Object> configOptions = new HashMap<>();
-        configOptions.put("version", getVersion());
-        configOptions.put("debugMode", false);
-        configOptions.put("defaultMaxLevel", 100);
-        configOptions.put("defaultBaseExperienceRequirement", 10);
-        configOptions.put("defaultExperienceIncreaseFactor", 1.2);
-        getPonderAPI().getConfigService().initialize(configOptions);
-    }
 
-    private void initializeConfigFile() {
-        if (!(new File("./plugins/SimpleSkills/config.yml").exists())) {
-            getPonderAPI().getConfigService().saveMissingConfigDefaultsIfNotPresent();
-        }
-        else {
-            // pre load compatibility checks
-            if (isVersionMismatched()) {
-                getPonderAPI().getConfigService().saveMissingConfigDefaultsIfNotPresent();
-            }
-            reloadConfig();
-        }
+        getPonderAPI().getConfigService().initialize(configOptions);
     }
 
     private void registerEventHandlers() {

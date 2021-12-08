@@ -1,0 +1,5 @@
+version: "v1.1-alpha-6"
+debugMode: false
+defaultMaxLevel: 100
+defaultBaseExperienceRequirement: 10
+defaultExperienceIncreaseFactor: 1.2
