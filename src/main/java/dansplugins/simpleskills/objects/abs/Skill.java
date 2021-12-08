@@ -1,8 +1,6 @@
 package dansplugins.simpleskills.objects.abs;
 
-import dansplugins.simpleskills.SimpleSkills;
 import dansplugins.simpleskills.config.PluginConfig;
-import dansplugins.simpleskills.utils.Logger;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 

@@ -2,17 +2,16 @@ package dansplugins.simpleskills;
 
 import dansplugins.simpleskills.bstats.Metrics;
 import dansplugins.simpleskills.commands.*;
-import dansplugins.simpleskills.config.PluginConfig;
 import dansplugins.simpleskills.eventhandlers.*;
 import dansplugins.simpleskills.managers.StorageManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.Listener;
 import preponderous.ponder.AbstractPonderPlugin;
+import preponderous.ponder.misc.ConfigurationFile;
 import preponderous.ponder.misc.PonderAPI_Integrator;
 import preponderous.ponder.misc.specification.ICommand;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -23,6 +22,7 @@ import java.util.HashMap;
 public class SimpleSkills extends AbstractPonderPlugin {
     private static SimpleSkills instance;
     private String version = "v1.1-alpha-6";
+    private ConfigurationFile config = new ConfigurationFile("config", true, this);
 
     public static SimpleSkills getInstance() {
         return instance;
@@ -38,8 +38,6 @@ public class SimpleSkills extends AbstractPonderPlugin {
 
         ponderAPI_integrator = new PonderAPI_Integrator(this);
         toolbox = getPonderAPI().getToolbox();
-
-        PluginConfig.getInstance().getConfig().initializePlugin(this);
 
         registerEventHandlers();
         initializeCommandService();
@@ -69,12 +67,16 @@ public class SimpleSkills extends AbstractPonderPlugin {
 
     @Override
     public boolean isVersionMismatched() {
-        String configVersion = this.getConfig().getString("version");
+        String configVersion = getConfigFile().getString("version");
         if (configVersion == null || this.getVersion() == null) {
             return false;
         } else {
             return !configVersion.equalsIgnoreCase(this.getVersion());
         }
+    }
+
+    public ConfigurationFile getConfigFile() {
+        return config;
     }
 
     private void initializeConfigService() {
