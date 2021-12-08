@@ -1,6 +1,7 @@
 package dansplugins.simpleskills.objects.abs;
 
 import dansplugins.simpleskills.SimpleSkills;
+import dansplugins.simpleskills.utils.Logger;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
@@ -123,7 +124,8 @@ public abstract class Skill {
     private static int getDefaultMaxLevel() {
         int toReturn = SimpleSkills.getInstance().getPonderAPI().getConfigService().getInt("defaultMaxLevel");
         if (toReturn == 0) {
-            return 100;
+            toReturn = 100;
+            Logger.getInstance().log("DefaultMaxLevel was not found. Using the value: " + toReturn);
         }
         return toReturn;
     }
@@ -131,7 +133,8 @@ public abstract class Skill {
     private static int getDefaultBaseExperienceRequirement() {
         int toReturn = SimpleSkills.getInstance().getPonderAPI().getConfigService().getInt("defaultBaseExperienceRequirement");
         if (toReturn == 0) {
-            return 10;
+            toReturn = 10;
+            Logger.getInstance().log("DefaultBaseExperienceRequirement was not found. Using the value: " + toReturn);
         }
         return toReturn;
     }
@@ -139,7 +142,8 @@ public abstract class Skill {
     private static double getDefaultExperienceIncreaseFactor() {
         double toReturn = SimpleSkills.getInstance().getPonderAPI().getConfigService().getDouble("defaultDefaultExperienceIncreaseFactor");
         if (toReturn == 0) {
-            return 1.2;
+            toReturn = 1.2;
+            Logger.getInstance().log("DefaultExperienceIncreaseFactor was not found. Using the value: " + toReturn);
         }
         return toReturn;
     }
