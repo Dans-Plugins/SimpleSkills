@@ -129,6 +129,9 @@ public class PlayerRecord implements Savable, Cacheable {
             int currentLevel = getSkillLevel(skillID);
             int currentExperience = getExperience(skillID);
             Skill skill = PersistentData.getInstance().getSkill(skillID);
+            if (skill == null) {
+                continue;
+            }
             int experienceRequired = ExperienceCalculator.getInstance().getExperienceRequiredForLevelUp(getSkillLevel(skillID), skill.getBaseExperienceRequirement(), skill.getExperienceIncreaseFactor());
             commandSender.sendMessage(ChatColor.AQUA + skill.getName() + " - LVL: " + currentLevel + " - EXP: " + currentExperience + "/" + experienceRequired);
         }
