@@ -1,5 +1,6 @@
 package dansplugins.simpleskills.objects.abs;
 
+import dansplugins.simpleskills.SimpleSkills;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
@@ -18,11 +19,6 @@ public abstract class Skill {
 
     private HashSet<Benefit> benefits = new HashSet<>();
 
-    public static final int defaultMaxLevel = 100;
-    public static final int defaultBaseExperienceRequirement = 10;
-    public static final double defaultExperienceIncreaseFactor = 1.2;
-
-
     public Skill(int ID, String name, int maxLevel, int baseExperienceRequirement, double experienceIncreaseFactor) {
         this.ID = ID;
         this.name = name;
@@ -33,7 +29,7 @@ public abstract class Skill {
     }
 
     public Skill(int ID, String name) {
-        this(ID, name, Skill.defaultMaxLevel, Skill.defaultBaseExperienceRequirement, Skill.defaultExperienceIncreaseFactor);
+        this(ID, name, getDefaultMaxLevel(), getDefaultBaseExperienceRequirement(), getDefaultExperienceIncreaseFactor());
     }
 
     public int getID() {
@@ -117,10 +113,22 @@ public abstract class Skill {
 
     public void sendInfo(CommandSender commandSender) {
         commandSender.sendMessage(ChatColor.AQUA + "=== " + getName() + " ===");
-        commandSender.sendMessage(ChatColor.AQUA + "Max Level: " + getMaxLevel());
         commandSender.sendMessage(ChatColor.AQUA + "Active: " + isActive());
+        commandSender.sendMessage(ChatColor.AQUA + "Number of benefits: " + getBenefits().size());
+        commandSender.sendMessage(ChatColor.AQUA + "Max Level: " + getMaxLevel());
         commandSender.sendMessage(ChatColor.AQUA + "Base Experience Requirement: " + getBaseExperienceRequirement());
         commandSender.sendMessage(ChatColor.AQUA + "Experience Increase Factor: " + getExperienceIncreaseFactor());
-        commandSender.sendMessage(ChatColor.AQUA + "Number of benefits: " + getBenefits().size());
+    }
+
+    private static int getDefaultMaxLevel() {
+        return SimpleSkills.getInstance().getPonderAPI().getConfigService().getInt("defaultMaxLevel");
+    }
+
+    private static int getDefaultBaseExperienceRequirement() {
+        return SimpleSkills.getInstance().getPonderAPI().getConfigService().getInt("defaultBaseExperienceRequirement");
+    }
+
+    private static double getDefaultExperienceIncreaseFactor() {
+        return SimpleSkills.getInstance().getPonderAPI().getConfigService().getInt("defaultDefaultExperienceIncreaseFactor");
     }
 }
