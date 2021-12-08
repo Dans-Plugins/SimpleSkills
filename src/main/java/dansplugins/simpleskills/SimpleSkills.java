@@ -97,7 +97,7 @@ public class SimpleSkills extends AbstractPonderPlugin {
     private void registerEventHandlers() {
         ArrayList<Listener> listeners = new ArrayList<>(Arrays.asList(
                 new JoinHandler(),
-                new BlockHandler(),
+                new InteractionHandler(),
                 new CraftingHandler(),
                 new DamageHandler(),
                 new FishingHandler(),

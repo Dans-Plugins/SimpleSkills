@@ -5,7 +5,7 @@ import dansplugins.simpleskills.objects.PlayerRecord;
 import dansplugins.simpleskills.objects.abs.Skill;
 import dansplugins.simpleskills.objects.skills.*;
 import dansplugins.simpleskills.objects.skills.blockbreaking.*;
-import dansplugins.simpleskills.objects.skills.blockplacing.Planting;
+import dansplugins.simpleskills.objects.skills.blockinteracting.Planting;
 import dansplugins.simpleskills.objects.skills.blockplacing.Pyromania;
 import dansplugins.simpleskills.objects.skills.movement.Boating;
 import dansplugins.simpleskills.objects.skills.movement.Cardio;

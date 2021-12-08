@@ -2,7 +2,6 @@ package dansplugins.simpleskills.objects.skills.blockplacing;
 
 import dansplugins.simpleskills.enums.SupportedSkill;
 import dansplugins.simpleskills.objects.abs.BlockPlacingSkill;
-import dansplugins.simpleskills.objects.abs.BlockSkill;
 import org.bukkit.Material;
 
 import java.util.HashSet;

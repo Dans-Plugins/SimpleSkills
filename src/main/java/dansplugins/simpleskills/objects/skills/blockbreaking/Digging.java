@@ -2,7 +2,6 @@ package dansplugins.simpleskills.objects.skills.blockbreaking;
 
 import dansplugins.simpleskills.enums.SupportedSkill;
 import dansplugins.simpleskills.objects.abs.BlockBreakingSkill;
-import dansplugins.simpleskills.objects.abs.BlockSkill;
 import dansplugins.simpleskills.objects.benefits.ResourceExtraction;
 import org.bukkit.Material;
 

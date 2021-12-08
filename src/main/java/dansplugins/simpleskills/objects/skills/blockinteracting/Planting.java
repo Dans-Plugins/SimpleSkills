@@ -1,8 +1,7 @@
-package dansplugins.simpleskills.objects.skills.blockplacing;
+package dansplugins.simpleskills.objects.skills.blockinteracting;
 
 import dansplugins.simpleskills.enums.SupportedSkill;
-import dansplugins.simpleskills.objects.abs.BlockPlacingSkill;
-import dansplugins.simpleskills.objects.abs.BlockSkill;
+import dansplugins.simpleskills.objects.abs.BlockInteractingSkill;
 import org.bukkit.Material;
 
 import java.util.HashSet;
@@ -10,7 +9,7 @@ import java.util.HashSet;
 /**
  * @author Daniel Stephenson
  */
-public class Planting extends BlockPlacingSkill {
+public class Planting extends BlockInteractingSkill {
     public Planting() {
         super(SupportedSkill.PLANTING.ordinal(), "Planting");
         initialize();
