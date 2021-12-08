@@ -22,5 +22,6 @@ public enum SupportedSkill {
     ANIMAL_BREEDING,
     STRENGTH,
     MONSTER_HUNTING,
-    PLANTING
+    PLANTING,
+    PYROMANIA
 }

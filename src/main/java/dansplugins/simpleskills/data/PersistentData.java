@@ -6,6 +6,7 @@ import dansplugins.simpleskills.objects.abs.Skill;
 import dansplugins.simpleskills.objects.skills.*;
 import dansplugins.simpleskills.objects.skills.blockbreaking.*;
 import dansplugins.simpleskills.objects.skills.blockplacing.Planting;
+import dansplugins.simpleskills.objects.skills.blockplacing.Pyromania;
 import dansplugins.simpleskills.objects.skills.movement.Boating;
 import dansplugins.simpleskills.objects.skills.movement.Cardio;
 import dansplugins.simpleskills.objects.skills.movement.HorsebackRiding;
@@ -150,5 +151,6 @@ public class PersistentData {
         addSkill(new Strength());
         addSkill(new MonsterHunting());
         addSkill(new Planting());
+        addSkill(new Pyromania());
     }
 }
