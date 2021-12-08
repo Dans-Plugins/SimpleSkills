@@ -21,5 +21,6 @@ public enum SupportedSkill {
     HORSEBACK_RIDING,
     ANIMAL_BREEDING,
     STRENGTH,
-    MONSTER_HUNTING
+    MONSTER_HUNTING,
+    PLANTING
 }

@@ -6,7 +6,6 @@ import dansplugins.simpleskills.enums.SupportedSkill;
 import dansplugins.simpleskills.eventhandlers.abs.SkillHandler;
 import dansplugins.simpleskills.objects.PlayerRecord;
 import dansplugins.simpleskills.objects.abs.Skill;
-import dansplugins.simpleskills.objects.benefits.ResourceExtraction;
 import dansplugins.simpleskills.utils.ChanceCalculator;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;

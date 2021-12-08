@@ -1,11 +1,5 @@
 package dansplugins.simpleskills.objects.abs;
 
-import dansplugins.simpleskills.data.PersistentData;
-import dansplugins.simpleskills.objects.PlayerRecord;
-
-import java.util.Random;
-import java.util.UUID;
-
 /**
  * @author Daniel Stephenson
  */
