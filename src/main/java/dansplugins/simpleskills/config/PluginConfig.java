@@ -1,6 +1,5 @@
 package dansplugins.simpleskills.config;
 
-import dansplugins.simpleskills.SimpleSkills;
 import preponderous.ponder.misc.ConfigurationFile;
 
 public class PluginConfig {
@@ -9,7 +8,7 @@ public class PluginConfig {
     ConfigurationFile configFile;
 
     private PluginConfig() {
-        configFile = new ConfigurationFile("config", true, SimpleSkills.getInstance());
+        configFile = new ConfigurationFile("config", true);
     }
 
     public static PluginConfig getInstance() {

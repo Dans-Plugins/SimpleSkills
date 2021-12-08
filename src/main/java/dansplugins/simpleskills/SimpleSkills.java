@@ -2,6 +2,7 @@ package dansplugins.simpleskills;
 
 import dansplugins.simpleskills.bstats.Metrics;
 import dansplugins.simpleskills.commands.*;
+import dansplugins.simpleskills.config.PluginConfig;
 import dansplugins.simpleskills.eventhandlers.*;
 import dansplugins.simpleskills.managers.StorageManager;
 import org.bukkit.command.Command;
@@ -37,6 +38,9 @@ public class SimpleSkills extends AbstractPonderPlugin {
 
         ponderAPI_integrator = new PonderAPI_Integrator(this);
         toolbox = getPonderAPI().getToolbox();
+
+        PluginConfig.getInstance().getConfig().initializePlugin(this);
+
         registerEventHandlers();
         initializeCommandService();
         getPonderAPI().setDebug(false);
