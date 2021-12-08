@@ -37,7 +37,7 @@ public class SimpleSkills extends AbstractPonderPlugin {
 
         ponderAPI_integrator = new PonderAPI_Integrator(this);
         toolbox = getPonderAPI().getToolbox();
-        initializeConfigService();
+        initializeConfigService(); // this probably shouldn't be called all of the time
         initializeConfigFile();
         registerEventHandlers();
         initializeCommandService();
