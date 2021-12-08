@@ -77,6 +77,7 @@ public class SimpleSkills extends AbstractPonderPlugin {
 
     private void initializeConfigService() {
         HashMap<String, Object> configOptions = new HashMap<>();
+        configOptions.put("version", getVersion());
         configOptions.put("debugMode", false);
         configOptions.put("defaultMaxLevel", 100);
         configOptions.put("defaultBaseExperienceRequirement", 10);
