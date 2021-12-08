@@ -11,6 +11,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
@@ -24,7 +25,7 @@ public class InteractionHandler extends SkillHandler {
 
     @EventHandler()
     public void handle(PlayerInteractEvent event) {
-        if (event.isCancelled()) {
+        if (event.useInteractedBlock() == Event.Result.DENY) {
             return;
         }
 
