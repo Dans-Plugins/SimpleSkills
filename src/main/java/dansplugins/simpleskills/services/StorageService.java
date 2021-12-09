@@ -1,4 +1,4 @@
-package dansplugins.simpleskills.managers;
+package dansplugins.simpleskills.services;
 
 import dansplugins.simpleskills.data.PersistentData;
 import dansplugins.simpleskills.objects.PlayerRecord;
@@ -9,19 +9,19 @@ import java.util.*;
 /**
  * @author Daniel Stephenson
  */
-public class StorageManager {
-    private static StorageManager instance;
+public class StorageService {
+    private static StorageService instance;
     private final static String FILE_PATH = "./plugins/SimpleSkills/";
     private final static String PLAYER_RECORDS_FILE_NAME = "playerRecords.json";
     private final JsonWriterReader jsonWriterReader = new JsonWriterReader();
 
-    private StorageManager() {
+    private StorageService() {
         jsonWriterReader.initialize(FILE_PATH);
     }
 
-    public static StorageManager getInstance() {
+    public static StorageService getInstance() {
         if (instance == null) {
-            instance = new StorageManager();
+            instance = new StorageService();
         }
         return instance;
     }

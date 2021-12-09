@@ -3,12 +3,11 @@ package dansplugins.simpleskills;
 import dansplugins.simpleskills.bstats.Metrics;
 import dansplugins.simpleskills.commands.*;
 import dansplugins.simpleskills.eventhandlers.*;
-import dansplugins.simpleskills.managers.StorageManager;
+import dansplugins.simpleskills.services.StorageService;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.Listener;
 import preponderous.ponder.AbstractPonderPlugin;
-import preponderous.ponder.misc.ConfigurationFile;
 import preponderous.ponder.misc.PonderAPI_Integrator;
 import preponderous.ponder.misc.specification.ICommand;
 
@@ -21,8 +20,7 @@ import java.util.HashMap;
  */
 public class SimpleSkills extends AbstractPonderPlugin {
     private static SimpleSkills instance;
-    private String version = "v1.1-alpha-6";
-    private ConfigurationFile config = new ConfigurationFile("config", true, this);
+    private final String version = "v1.1-alpha-6";
 
     public static SimpleSkills getInstance() {
         return instance;
@@ -43,12 +41,12 @@ public class SimpleSkills extends AbstractPonderPlugin {
         initializeCommandService();
         getPonderAPI().setDebug(false);
 
-        StorageManager.getInstance().load();
+        StorageService.getInstance().load();
     }
 
     @Override
     public void onDisable() {
-        StorageManager.getInstance().save();
+        StorageService.getInstance().save();
     }
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
@@ -67,16 +65,12 @@ public class SimpleSkills extends AbstractPonderPlugin {
 
     @Override
     public boolean isVersionMismatched() {
-        String configVersion = getConfigFile().getString("version");
+        String configVersion = getConfig().getString("version");
         if (configVersion == null || this.getVersion() == null) {
             return false;
         } else {
             return !configVersion.equalsIgnoreCase(this.getVersion());
         }
-    }
-
-    public ConfigurationFile getConfigFile() {
-        return config;
     }
 
     private void initializeConfigService() {
