@@ -1,6 +1,6 @@
 package dansplugins.simpleskills.objects.abs;
 
-import dansplugins.simpleskills.services.ConfigService;
+import dansplugins.simpleskills.services.LocalConfigService;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
@@ -121,14 +121,14 @@ public abstract class Skill {
     }
 
     private static int getDefaultMaxLevel() {
-        return ConfigService.getInstance().getIntOrDefault("defaultMaxLevel", 100);
+        return LocalConfigService.getInstance().getIntOrDefault("defaultMaxLevel", 100);
     }
 
     private static int getDefaultBaseExperienceRequirement() {
-        return ConfigService.getInstance().getIntOrDefault("defaultBaseExperienceRequirement", 10);
+        return LocalConfigService.getInstance().getIntOrDefault("defaultBaseExperienceRequirement", 10);
     }
 
     private static double getDefaultExperienceIncreaseFactor() {
-        return ConfigService.getInstance().getDoubleOrDefault("defaultDefaultExperienceIncreaseFactor", 1.2);
+        return LocalConfigService.getInstance().getDoubleOrDefault("defaultDefaultExperienceIncreaseFactor", 1.2);
     }
 }

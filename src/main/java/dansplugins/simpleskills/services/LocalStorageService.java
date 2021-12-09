@@ -9,19 +9,19 @@ import java.util.*;
 /**
  * @author Daniel Stephenson
  */
-public class StorageService {
-    private static StorageService instance;
+public class LocalStorageService {
+    private static LocalStorageService instance;
     private final static String FILE_PATH = "./plugins/SimpleSkills/";
     private final static String PLAYER_RECORDS_FILE_NAME = "playerRecords.json";
     private final JsonWriterReader jsonWriterReader = new JsonWriterReader();
 
-    private StorageService() {
+    private LocalStorageService() {
         jsonWriterReader.initialize(FILE_PATH);
     }
 
-    public static StorageService getInstance() {
+    public static LocalStorageService getInstance() {
         if (instance == null) {
-            instance = new StorageService();
+            instance = new LocalStorageService();
         }
         return instance;
     }

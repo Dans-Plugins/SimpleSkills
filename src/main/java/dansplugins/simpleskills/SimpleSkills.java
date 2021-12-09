@@ -3,8 +3,8 @@ package dansplugins.simpleskills;
 import dansplugins.simpleskills.bstats.Metrics;
 import dansplugins.simpleskills.commands.*;
 import dansplugins.simpleskills.eventhandlers.*;
-import dansplugins.simpleskills.services.ConfigService;
-import dansplugins.simpleskills.services.StorageService;
+import dansplugins.simpleskills.services.LocalConfigService;
+import dansplugins.simpleskills.services.LocalStorageService;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.Listener;
@@ -44,22 +44,22 @@ public class SimpleSkills extends AbstractPonderPlugin {
 
         // create/load config
         if (!(new File("./plugins/SimpleSkills/config.yml").exists())) {
-            ConfigService.getInstance().saveMissingConfigDefaultsIfNotPresent();
+            LocalConfigService.getInstance().saveMissingConfigDefaultsIfNotPresent();
         }
         else {
             // pre load compatibility checks
             if (isVersionMismatched()) {
-                ConfigService.getInstance().saveMissingConfigDefaultsIfNotPresent();
+                LocalConfigService.getInstance().saveMissingConfigDefaultsIfNotPresent();
             }
             reloadConfig();
         }
 
-        StorageService.getInstance().load();
+        LocalStorageService.getInstance().load();
     }
 
     @Override
     public void onDisable() {
-        StorageService.getInstance().save();
+        LocalStorageService.getInstance().save();
     }
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
@@ -85,7 +85,7 @@ public class SimpleSkills extends AbstractPonderPlugin {
     }
 
     public boolean isDebugEnabled() {
-        return ConfigService.getInstance().getBoolean("debugMode");
+        return LocalConfigService.getInstance().getBoolean("debugMode");
     }
 
     private void registerEventHandlers() {

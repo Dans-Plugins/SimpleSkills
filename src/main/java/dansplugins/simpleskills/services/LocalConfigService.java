@@ -15,18 +15,18 @@ import org.bukkit.configuration.file.FileConfiguration;
 /**
  * @author Daniel Stephenson
  */
-public class ConfigService {
+public class LocalConfigService {
 
-    private static ConfigService instance;
+    private static LocalConfigService instance;
     private boolean altered = false;
 
-    private ConfigService() {
+    private LocalConfigService() {
 
     }
 
-    public static ConfigService getInstance() {
+    public static LocalConfigService getInstance() {
         if (instance == null) {
-            instance = new ConfigService();
+            instance = new LocalConfigService();
         }
         return instance;
     }
