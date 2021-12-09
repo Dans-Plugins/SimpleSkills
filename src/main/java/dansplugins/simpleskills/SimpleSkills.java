@@ -3,6 +3,7 @@ package dansplugins.simpleskills;
 import dansplugins.simpleskills.bstats.Metrics;
 import dansplugins.simpleskills.commands.*;
 import dansplugins.simpleskills.eventhandlers.*;
+import dansplugins.simpleskills.services.ConfigService;
 import dansplugins.simpleskills.services.StorageService;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -11,6 +12,7 @@ import preponderous.ponder.AbstractPonderPlugin;
 import preponderous.ponder.misc.PonderAPI_Integrator;
 import preponderous.ponder.misc.specification.ICommand;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -40,6 +42,18 @@ public class SimpleSkills extends AbstractPonderPlugin {
         registerEventHandlers();
         initializeCommandService();
         getPonderAPI().setDebug(false);
+
+        // create/load config
+        if (!(new File("./plugins/SimpleSkills/config.yml").exists())) {
+            ConfigService.getInstance().saveMissingConfigDefaultsIfNotPresent();
+        }
+        else {
+            // pre load compatibility checks
+            if (isVersionMismatched()) {
+                ConfigService.getInstance().saveMissingConfigDefaultsIfNotPresent();
+            }
+            reloadConfig();
+        }
 
         StorageService.getInstance().load();
     }
@@ -71,12 +85,6 @@ public class SimpleSkills extends AbstractPonderPlugin {
         } else {
             return !configVersion.equalsIgnoreCase(this.getVersion());
         }
-    }
-
-    private void initializeConfigService() {
-        HashMap<String, Object> configOptions = new HashMap<>();
-
-        getPonderAPI().getConfigService().initialize(configOptions);
     }
 
     private void registerEventHandlers() {
