@@ -21,7 +21,7 @@ import java.util.Arrays;
  */
 public class SimpleSkills extends AbstractPonderPlugin {
     private static SimpleSkills instance;
-    private final String version = "v1.1-alpha-7";
+    private final String version = "v1.1-alpha-8";
 
     public static SimpleSkills getInstance() {
         return instance;
@@ -78,7 +78,7 @@ public class SimpleSkills extends AbstractPonderPlugin {
     public boolean isVersionMismatched() {
         String configVersion = getConfig().getString("version");
         if (configVersion == null || this.getVersion() == null) {
-            return false;
+            return true;
         } else {
             return !configVersion.equalsIgnoreCase(this.getVersion());
         }
