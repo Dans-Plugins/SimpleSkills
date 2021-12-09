@@ -21,7 +21,7 @@ import java.util.Arrays;
  */
 public class SimpleSkills extends AbstractPonderPlugin {
     private static SimpleSkills instance;
-    private final String version = "v1.1";
+    private final String version = instance.getDescription().getVersion().toString();
 
     public static SimpleSkills getInstance() {
         return instance;

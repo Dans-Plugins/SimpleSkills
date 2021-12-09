@@ -6,7 +6,7 @@
 
     <groupId>dansplugins</groupId>
     <artifactId>SimpleSkills</artifactId>
-    <version>v1.1</version>
+    <version>1.1</version>
     <packaging>jar</packaging>
 
     <name>SimpleSkills</name>
@@ -74,7 +74,8 @@
             <groupId>preponderous</groupId>
             <artifactId>ponder</artifactId>
             <version>v0.8</version>
-            <scope>compile</scope>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/dependencies/Ponder-v0.8.jar</systemPath>
         </dependency>
     </dependencies>
 </project>
