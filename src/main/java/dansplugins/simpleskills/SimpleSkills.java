@@ -71,12 +71,10 @@ public class SimpleSkills extends AbstractPonderPlugin {
         return getPonderAPI().getCommandService().interpretCommand(sender, label, args);
     }
 
-    @Override
     public String getVersion() {
         return version;
     }
 
-    @Override
     public boolean isVersionMismatched() {
         String configVersion = getConfig().getString("version");
         if (configVersion == null || this.getVersion() == null) {
@@ -84,6 +82,10 @@ public class SimpleSkills extends AbstractPonderPlugin {
         } else {
             return !configVersion.equalsIgnoreCase(this.getVersion());
         }
+    }
+
+    public boolean isDebugEnabled() {
+        return ConfigService.getInstance().getBoolean("debugMode");
     }
 
     private void registerEventHandlers() {
