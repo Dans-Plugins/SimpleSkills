@@ -102,6 +102,14 @@ public class ConfigService {
         return getConfig().getInt(option);
     }
 
+    public int getIntOrDefault(String option, int defaultValue) {
+        int toReturn = getInt(option);
+        if (toReturn == 0) {
+            return defaultValue;
+        }
+        return toReturn;
+    }
+
     public boolean getBoolean(String option) {
         return getConfig().getBoolean(option);
     }
@@ -110,7 +118,23 @@ public class ConfigService {
         return getConfig().getDouble(option);
     }
 
+    public double getDoubleOrDefault(String option, double defaultValue) {
+        double toReturn = getDouble(option);
+        if (toReturn == 0) {
+            return defaultValue;
+        }
+        return toReturn;
+    }
+
     public String getString(String option) {
         return getConfig().getString(option);
+    }
+
+    public String getStringOrDefault(String option, String defaultValue) {
+        String toReturn = getString(option);
+        if (toReturn == null) {
+            return defaultValue;
+        }
+        return toReturn;
     }
 }

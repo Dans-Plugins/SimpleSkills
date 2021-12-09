@@ -121,14 +121,14 @@ public abstract class Skill {
     }
 
     private static int getDefaultMaxLevel() {
-        return ConfigService.getInstance().getInt("defaultMaxLevel");
+        return ConfigService.getInstance().getIntOrDefault("defaultMaxLevel", 100);
     }
 
     private static int getDefaultBaseExperienceRequirement() {
-        return ConfigService.getInstance().getInt("defaultBaseExperienceRequirement");
+        return ConfigService.getInstance().getIntOrDefault("defaultBaseExperienceRequirement", 10);
     }
 
     private static double getDefaultExperienceIncreaseFactor() {
-        return ConfigService.getInstance().getDouble("defaultDefaultExperienceIncreaseFactor");
+        return ConfigService.getInstance().getDoubleOrDefault("defaultDefaultExperienceIncreaseFactor", 1.2);
     }
 }
