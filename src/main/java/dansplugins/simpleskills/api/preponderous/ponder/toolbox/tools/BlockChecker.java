@@ -28,8 +28,8 @@ public class BlockChecker {
         return block.getType() == Material.IRON_TRAPDOOR || block.getType() == Material.OAK_TRAPDOOR || block.getType() == Material.SPRUCE_TRAPDOOR || block.getType() == Material.BIRCH_TRAPDOOR || block.getType() == Material.JUNGLE_TRAPDOOR || block.getType() == Material.ACACIA_TRAPDOOR || block.getType() == Material.DARK_OAK_TRAPDOOR || block.getType() == this.compatMaterial("CRIMSON_TRAPDOOR") || block.getType() == this.compatMaterial("WARPED_TRAPDOOR");
     }
 
-    public boolean islegacyFurnace(Block block) {
-        return block.getType() == Material.FURNACE;
+    public boolean isFurnace(Block block) {
+        return block.getType() == Material.FURNACE || block.getType() == Material.BLAST_FURNACE;
     }
     public boolean isAnvil(Block block) {
         return block.getType() == Material.ANVIL || block.getType() == Material.CHIPPED_ANVIL || block.getType() == Material.DAMAGED_ANVIL;
@@ -41,11 +41,6 @@ public class BlockChecker {
     public boolean isBarrel(Block block) {
         return block.getType() == Material.BARREL; //TODO 1.14
     }
-
-    public boolean isFurnace(Block block) {
-        return block.getType() == Material.BLAST_FURNACE; //TODO 1.14
-    }
-
 
     public Material compatMaterial(String materialName) {
         Material mat = Material.getMaterial((String)materialName);
