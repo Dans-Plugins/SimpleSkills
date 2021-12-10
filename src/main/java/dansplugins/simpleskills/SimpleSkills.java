@@ -32,6 +32,13 @@ public class SimpleSkills extends AbstractPonderPlugin {
     String mcver = NMSVersion.formatNMSVersion(nms);
     @Override
     public void onEnable() {
+        if (nms.contains("v1_13_R1") || nms.contains("v1_13_R2") || nms.contains("v1_14_R1") || nms.contains("v1_15_R1") || nms.contains("v1_16_R1") || nms.contains("v1_16_R2") || nms.contains("v1_16_R3") || nms.contains("v1_17_R1") || nms.contains("v1_18_R1")) {
+            getLogger().log(Level.INFO, "Loading Data For " + mcver);
+        }else{
+            getLogger().warning("The server version is not suitable to load the plugin");
+            getLogger().warning("Support version 1.13.x - 1.18.x");
+            Bukkit.getServer().getPluginManager().disablePlugin(this);
+        }
         instance = this;
 
         // bStats
@@ -58,23 +65,8 @@ public class SimpleSkills extends AbstractPonderPlugin {
         }
 
         LocalStorageService.getInstance().load();
-        getLogger().log(Level.INFO, "Loading Block/Items For " + mcver);
 
-        if (LocalConfigService.getInstance().getBoolean("MCVersion.1_14")) {
-            getLogger().log(Level.INFO, "Enable 1.14+ Block/Items");
-        }else{
-            getLogger().log(Level.INFO, "Disable 1.14+ Block/Items");
-        }
-        if (LocalConfigService.getInstance().getBoolean("MCVersion.1_16")) {
-            getLogger().log(Level.INFO, "Enable 1.16+ Block/Items");
-        }else{
-            getLogger().log(Level.INFO, "Disable 1.16+ Block/Items");
-        }
-        if (LocalConfigService.getInstance().getBoolean("MCVersion.1_17")) {
-            getLogger().log(Level.INFO, "Enable 1.17+ Block/Items");
-        }else{
-            getLogger().log(Level.INFO, "Disable 1.17+ Block/Items");
-        }
+
     }
 
     @Override

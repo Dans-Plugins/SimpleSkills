@@ -1,5 +1,6 @@
 package dansplugins.simpleskills.objects.skills.blockbreaking;
 
+import dansplugins.simpleskills.NMSVersion;
 import dansplugins.simpleskills.enums.SupportedSkill;
 import dansplugins.simpleskills.objects.abs.BlockBreakingSkill;
 import dansplugins.simpleskills.objects.benefits.ResourceExtraction;
@@ -12,6 +13,8 @@ import java.util.HashSet;
  * @author Daniel Stephenson
  */
 public class Mining extends BlockBreakingSkill {
+
+    String nms = NMSVersion.getNMSVersion();
     public Mining() {
         super(SupportedSkill.MINING.ordinal(), "Mining");
         initialize();
@@ -29,11 +32,11 @@ public class Mining extends BlockBreakingSkill {
         materials.add(Material.LAPIS_ORE);
         materials.add(Material.REDSTONE_ORE);
         materials.add(Material.NETHER_QUARTZ_ORE);
-        if (LocalConfigService.getInstance().getBoolean("MCVersion.1_16")) {
+        if (!(nms.contains("v1_13_R1") || nms.contains("v1_13_R2") || nms.contains("v1_14_R1") || nms.contains("v1_15_R1"))) {
             materials.add(Material.NETHER_GOLD_ORE); //TODO 1.16
         }
 
-        if (LocalConfigService.getInstance().getBoolean("MCVersion.1_17")) {
+        if (!(nms.contains("v1_13_R1") || nms.contains("v1_13_R2") || nms.contains("v1_14_R1") || nms.contains("v1_15_R1") || nms.contains("v1_16_R1") || nms.contains("v1_16_R2") || nms.contains("v1_16_R3"))) {
             materials.add(Material.COPPER_ORE); //TODO 1.17
             materials.add(Material.DEEPSLATE_COAL_ORE); //TODO 1.17
             materials.add(Material.DEEPSLATE_COPPER_ORE); //TODO 1.17

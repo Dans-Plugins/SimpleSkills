@@ -1,5 +1,6 @@
 package dansplugins.simpleskills.objects.skills.blockbreaking;
 
+import dansplugins.simpleskills.NMSVersion;
 import dansplugins.simpleskills.enums.SupportedSkill;
 import dansplugins.simpleskills.objects.abs.BlockBreakingSkill;
 import dansplugins.simpleskills.objects.benefits.ResourceExtraction;
@@ -11,7 +12,10 @@ import java.util.HashSet;
 /**
  * @author Daniel Stephenson
  */
+
 public class Floriculture extends BlockBreakingSkill {
+
+    String nms = NMSVersion.getNMSVersion();
     public Floriculture() {
         super(SupportedSkill.FLORICULTURE.ordinal(), "Floriculture");
         initialize();
@@ -35,7 +39,7 @@ public class Floriculture extends BlockBreakingSkill {
         materials.add(Material.LILAC);
         materials.add(Material.ROSE_BUSH);
         materials.add(Material.PEONY);
-        if (LocalConfigService.getInstance().getBoolean("MCVersion.1_14")) {
+        if (!(nms.contains("v1_13_R1") || nms.contains("v1_13_R2"))) {
             materials.add(Material.CORNFLOWER); //TODO 1.14
             materials.add(Material.LILY_OF_THE_VALLEY); //TODO 1.14
             materials.add(Material.WITHER_ROSE); //TODO 1.14

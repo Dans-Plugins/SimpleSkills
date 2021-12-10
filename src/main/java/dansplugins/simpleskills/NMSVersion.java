@@ -17,9 +17,9 @@ public class NMSVersion extends JavaPlugin implements Listener {
             case "v1_13_R2":
                 return "1.13.2";
             case "v1_14_R1":
-                return "1.14/1.14.1/1.14.2/1.14.3/1.14.4";
+                return "1.14.x";
             case "v1_15_R1":
-                return "1.15/1.15.1/1.15.2";
+                return "1.15.x";
             case "v1_16_R1":
                 return "1.16.1";
             case "v1_16_R2":
