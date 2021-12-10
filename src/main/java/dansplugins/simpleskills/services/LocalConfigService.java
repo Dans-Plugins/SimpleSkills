@@ -44,6 +44,9 @@ public class LocalConfigService {
         if (!isSet("defaultMaxLevel")) { getConfig().set("defaultMaxLevel", 100); }
         if (!isSet("defaultBaseExperienceRequirement")) { getConfig().set("defaultBaseExperienceRequirement", 10); }
         if (!isSet("defaultExperienceIncreaseFactor")) { getConfig().set("defaultExperienceIncreaseFactor", 1.2); }
+        if (!isSet("MCVersion.1_14")) { getConfig().set("MCVersion.1_14", false); }
+        if (!isSet("MCVersion.1_16")) { getConfig().set("MCVersion.1_16", false); }
+        if (!isSet("MCVersion.1_17")) { getConfig().set("MCVersion.1_17", false); }
 
         getConfig().options().copyDefaults(true);
         SimpleSkills.getInstance().saveConfig();

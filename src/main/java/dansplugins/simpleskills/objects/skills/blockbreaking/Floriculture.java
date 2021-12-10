@@ -3,6 +3,7 @@ package dansplugins.simpleskills.objects.skills.blockbreaking;
 import dansplugins.simpleskills.enums.SupportedSkill;
 import dansplugins.simpleskills.objects.abs.BlockBreakingSkill;
 import dansplugins.simpleskills.objects.benefits.ResourceExtraction;
+import dansplugins.simpleskills.services.LocalConfigService;
 import org.bukkit.Material;
 
 import java.util.HashSet;
@@ -30,13 +31,15 @@ public class Floriculture extends BlockBreakingSkill {
         materials.add(Material.RED_TULIP);
         materials.add(Material.WHITE_TULIP);
         materials.add(Material.OXEYE_DAISY);
-        materials.add(Material.CORNFLOWER);
-        materials.add(Material.LILY_OF_THE_VALLEY);
-        materials.add(Material.WITHER_ROSE);
         materials.add(Material.SUNFLOWER);
         materials.add(Material.LILAC);
         materials.add(Material.ROSE_BUSH);
         materials.add(Material.PEONY);
+        if (LocalConfigService.getInstance().getBoolean("MCVersion.1_14")) {
+            materials.add(Material.CORNFLOWER); //TODO 1.14
+            materials.add(Material.LILY_OF_THE_VALLEY); //TODO 1.14
+            materials.add(Material.WITHER_ROSE); //TODO 1.14
+        }
         super.initializeAssociatedMaterials(materials);
     }
 }

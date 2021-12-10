@@ -15,6 +15,7 @@ import preponderous.ponder.misc.specification.ICommand;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.logging.Level;
 
 /**
  * @author Daniel Stephenson
@@ -55,6 +56,22 @@ public class SimpleSkills extends AbstractPonderPlugin {
         }
 
         LocalStorageService.getInstance().load();
+
+        if (LocalConfigService.getInstance().getBoolean("MCVersion.1_14")) {
+            getLogger().log(Level.INFO, "Enable 1.14+ Block/Items");
+        }else{
+            getLogger().log(Level.INFO, "Disable 1.14+ Block/Items");
+        }
+        if (LocalConfigService.getInstance().getBoolean("MCVersion.1_16")) {
+            getLogger().log(Level.INFO, "Enable 1.16+ Block/Items");
+        }else{
+            getLogger().log(Level.INFO, "Disable 1.16+ Block/Items");
+        }
+        if (LocalConfigService.getInstance().getBoolean("MCVersion.1_17")) {
+            getLogger().log(Level.INFO, "Enable 1.17+ Block/Items");
+        }else{
+            getLogger().log(Level.INFO, "Disable 1.17+ Block/Items");
+        }
     }
 
     @Override
