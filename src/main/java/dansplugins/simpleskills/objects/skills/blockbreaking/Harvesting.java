@@ -34,8 +34,8 @@ public class Harvesting extends BlockBreakingSkill {
         materials.add(Material.SUGAR_CANE);
         materials.add(Material.CHORUS_FRUIT);
         if (!(nms.contains("v1_13_R1") || nms.contains("v1_13_R2"))) {
-            materials.add(Material.BAMBOO); //TODO 1.14
-            materials.add(Material.SWEET_BERRIES); //TODO 1.14
+            materials.add(Material.BAMBOO); 
+            materials.add(Material.SWEET_BERRIES); 
         }
         super.initializeAssociatedMaterials(materials);
     }

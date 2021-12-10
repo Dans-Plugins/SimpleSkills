@@ -23,7 +23,7 @@ public class Pyromania extends BlockPlacingSkill {
         HashSet<Material> materials = new HashSet<>();
         materials.add(Material.FIRE);
         if (!(nms.contains("v1_13_R1") || nms.contains("v1_13_R2") || nms.contains("v1_14_R1") || nms.contains("v1_15_R1"))) {
-            materials.add(Material.SOUL_FIRE); //TODO 1.16
+            materials.add(Material.SOUL_FIRE); 
         }
         super.initializeAssociatedMaterials(materials);
     }

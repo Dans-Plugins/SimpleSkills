@@ -33,19 +33,19 @@ public class Mining extends BlockBreakingSkill {
         materials.add(Material.REDSTONE_ORE);
         materials.add(Material.NETHER_QUARTZ_ORE);
         if (!(nms.contains("v1_13_R1") || nms.contains("v1_13_R2") || nms.contains("v1_14_R1") || nms.contains("v1_15_R1"))) {
-            materials.add(Material.NETHER_GOLD_ORE); //TODO 1.16
+            materials.add(Material.NETHER_GOLD_ORE); 
         }
 
         if (!(nms.contains("v1_13_R1") || nms.contains("v1_13_R2") || nms.contains("v1_14_R1") || nms.contains("v1_15_R1") || nms.contains("v1_16_R1") || nms.contains("v1_16_R2") || nms.contains("v1_16_R3"))) {
-            materials.add(Material.COPPER_ORE); //TODO 1.17
-            materials.add(Material.DEEPSLATE_COAL_ORE); //TODO 1.17
-            materials.add(Material.DEEPSLATE_COPPER_ORE); //TODO 1.17
-            materials.add(Material.DEEPSLATE_DIAMOND_ORE); //TODO 1.17
-            materials.add(Material.DEEPSLATE_EMERALD_ORE); //TODO 1.17
-            materials.add(Material.DEEPSLATE_GOLD_ORE); //TODO 1.17
-            materials.add(Material.DEEPSLATE_IRON_ORE); //TODO 1.17
-            materials.add(Material.DEEPSLATE_LAPIS_ORE); //TODO 1.17
-            materials.add(Material.DEEPSLATE_REDSTONE_ORE); //TODO 1.17
+            materials.add(Material.COPPER_ORE); 
+            materials.add(Material.DEEPSLATE_COAL_ORE); 
+            materials.add(Material.DEEPSLATE_COPPER_ORE); 
+            materials.add(Material.DEEPSLATE_DIAMOND_ORE); 
+            materials.add(Material.DEEPSLATE_EMERALD_ORE); 
+            materials.add(Material.DEEPSLATE_GOLD_ORE); 
+            materials.add(Material.DEEPSLATE_IRON_ORE); 
+            materials.add(Material.DEEPSLATE_LAPIS_ORE); 
+            materials.add(Material.DEEPSLATE_REDSTONE_ORE); 
         }
         super.initializeAssociatedMaterials(materials);
     }

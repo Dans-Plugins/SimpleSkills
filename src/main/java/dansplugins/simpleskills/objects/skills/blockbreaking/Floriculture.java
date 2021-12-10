@@ -40,9 +40,9 @@ public class Floriculture extends BlockBreakingSkill {
         materials.add(Material.ROSE_BUSH);
         materials.add(Material.PEONY);
         if (!(nms.contains("v1_13_R1") || nms.contains("v1_13_R2"))) {
-            materials.add(Material.CORNFLOWER); //TODO 1.14
-            materials.add(Material.LILY_OF_THE_VALLEY); //TODO 1.14
-            materials.add(Material.WITHER_ROSE); //TODO 1.14
+            materials.add(Material.CORNFLOWER);
+            materials.add(Material.LILY_OF_THE_VALLEY);
+            materials.add(Material.WITHER_ROSE);
         }
         super.initializeAssociatedMaterials(materials);
     }
