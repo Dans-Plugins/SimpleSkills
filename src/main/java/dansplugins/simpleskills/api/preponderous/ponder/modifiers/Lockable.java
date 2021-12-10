@@ -1,22 +1,16 @@
-/*
- * Decompiled with CFR 0.150.
- */
-package preponderous.ponder.modifiers;
+package dansplugins.simpleskills.api.preponderous.ponder.modifiers;
 
 import java.util.ArrayList;
 import java.util.UUID;
 
+/**
+ * @author Daniel Stephenson
+ */
 public interface Lockable {
-    public void setOwner(UUID var1);
-
-    public UUID getOwner();
-
-    public void addToAccessList(UUID var1);
-
-    public void removeFromAccessList(UUID var1);
-
-    public boolean hasAccess(UUID var1);
-
-    public ArrayList<UUID> getAccessList();
+    void setOwner(UUID s);
+    UUID getOwner();
+    void addToAccessList(UUID playerName);
+    void removeFromAccessList(UUID playerName);
+    boolean hasAccess(UUID playerName);
+    ArrayList<UUID> getAccessList();
 }
-

@@ -1,115 +1,129 @@
-/*
- * Decompiled with CFR 0.150.
- * 
- * Could not load the following classes:
- *  org.bukkit.Bukkit
- *  org.bukkit.entity.Player
- */
-package preponderous.ponder.misc;
+package dansplugins.simpleskills.api.preponderous.ponder.misc;
+
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.UUID;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 
+import static org.bukkit.Bukkit.getServer;
+
+/**
+ * @author Daniel Stephenson
+ */
 public class Group {
+
     protected String name = "defaultName";
     protected String description = "defaultDescription";
     protected UUID owner = UUID.randomUUID();
-    protected ArrayList<UUID> members = new ArrayList();
-    protected ArrayList<UUID> officers = new ArrayList();
-    private ArrayList<UUID> invited = new ArrayList();
+
+    protected ArrayList<UUID> members = new ArrayList<>();
+    protected ArrayList<UUID> officers = new ArrayList<>();
+
+    private ArrayList<UUID> invited = new ArrayList<>();
 
     public void setName(String newName) {
-        this.name = newName;
+        name = newName;
     }
 
     public String getName() {
-        return this.name;
+        return name;
     }
 
     public void setDescription(String newDesc) {
-        this.description = newDesc;
+        description = newDesc;
     }
 
     public String getDescription() {
-        return this.description;
+        return description;
     }
 
-    public void setOwner(UUID UUID2) {
-        this.owner = UUID2;
+    public void setOwner(UUID UUID) {
+        owner = UUID;
     }
 
-    public boolean isOwner(UUID UUID2) {
-        return this.owner.equals(UUID2);
+    public boolean isOwner(UUID UUID) {
+        return owner.equals(UUID);
     }
 
     public UUID getOwner() {
-        return this.owner;
+        return owner;
     }
 
-    public void addMember(UUID UUID2) {
-        this.members.add(UUID2);
+    public void addMember(UUID UUID) {
+        members.add(UUID);
     }
 
-    public void removeMember(UUID UUID2) {
-        this.members.remove(UUID2);
+    public void removeMember(UUID UUID) {
+        members.remove(UUID);
     }
 
     public boolean isMember(UUID uuid) {
-        return this.members.contains(uuid);
+        return members.contains(uuid);
     }
 
     public ArrayList<UUID> getMemberList() {
-        return this.members;
+        return members;
     }
 
     public ArrayList<UUID> getMemberArrayList() {
-        return this.members;
+        return members;
     }
-
+/*
+    public String getMemberListSeparatedByCommas() {
+        ArrayList<UUID> uuids = getMemberList();
+        String players = "";
+        for(UUID uuid : uuids) {
+            String playerName = UUIDChecker.getInstance().findPlayerNameBasedOnUUID(uuid);
+            players += playerName + ", ";
+        }
+        if (players.length() > 0) {
+            return players.substring(0, players.length() - 2);
+        }
+        return "";
+    }
+*/
     public boolean addOfficer(UUID newOfficer) {
-        if (!this.officers.contains(newOfficer)) {
-            this.officers.add(newOfficer);
+        if (!officers.contains(newOfficer)) {
+            officers.add(newOfficer);
             return true;
         }
         return false;
     }
 
     public boolean removeOfficer(UUID officerToRemove) {
-        return this.officers.remove(officerToRemove);
+        return officers.remove(officerToRemove);
     }
 
     public boolean isOfficer(UUID uuid) {
-        return this.officers.contains(uuid);
+        return officers.contains(uuid);
     }
 
     public int getNumOfficers() {
-        return this.officers.size();
+        return officers.size();
     }
 
     public ArrayList<UUID> getOfficerList() {
-        return this.officers;
+        return officers;
     }
 
     public int getPopulation() {
-        return this.members.size();
+        return members.size();
     }
 
     public void invite(UUID playerName) {
-        Player player = Bukkit.getServer().getPlayer(playerName);
+        Player player = getServer().getPlayer(playerName);
         if (player != null) {
-            UUID playerUUID = Bukkit.getServer().getPlayer(playerName).getUniqueId();
-            this.invited.add(playerUUID);
+            UUID playerUUID = getServer().getPlayer(playerName).getUniqueId();
+            invited.add(playerUUID);
         }
     }
 
     public void uninvite(UUID player) {
-        this.invited.remove(player);
+        invited.remove(player);
     }
 
     public boolean isInvited(UUID uuid) {
-        return this.invited.contains(uuid);
+        return invited.contains(uuid);
     }
-}
 
+}

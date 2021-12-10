@@ -1,39 +1,31 @@
-/*
- * Decompiled with CFR 0.150.
- */
-package preponderous.ponder.modifiers;
+package dansplugins.simpleskills.api.preponderous.ponder.modifiers;
 
 import java.util.ArrayList;
 
+/**
+ * @author Daniel Stephenson
+ */
 public interface Feudal {
-    public boolean isVassal(String var1);
 
-    public boolean isLiege();
+    // type
+    boolean isVassal(String name);
+    boolean isLiege();
 
-    public void setLiege(String var1);
+    // liege
+    void setLiege(String newLiege);
+    String getLiege();
+    boolean hasLiege();
+    boolean isLiege(String name);
 
-    public String getLiege();
+    // vassalage
+    void addVassal(String name);
+    void removeVassal(String name);
+    void clearVassals();
+    int getNumVassals();
+    ArrayList<String> getVassals();
+    String getVassalsSeparatedByCommas();
+    void addAttemptedVassalization(String name);
+    boolean hasBeenOfferedVassalization(String name);
+    void removeAttemptedVassalization(String name);
 
-    public boolean hasLiege();
-
-    public boolean isLiege(String var1);
-
-    public void addVassal(String var1);
-
-    public void removeVassal(String var1);
-
-    public void clearVassals();
-
-    public int getNumVassals();
-
-    public ArrayList<String> getVassals();
-
-    public String getVassalsSeparatedByCommas();
-
-    public void addAttemptedVassalization(String var1);
-
-    public boolean hasBeenOfferedVassalization(String var1);
-
-    public void removeAttemptedVassalization(String var1);
 }
-

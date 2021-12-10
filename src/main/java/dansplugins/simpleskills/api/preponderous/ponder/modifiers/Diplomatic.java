@@ -1,41 +1,34 @@
-/*
- * Decompiled with CFR 0.150.
- */
-package preponderous.ponder.modifiers;
+package dansplugins.simpleskills.api.preponderous.ponder.modifiers;
 
 import java.util.ArrayList;
 
+/**
+ * @author Daniel Stephenson
+ */
 public interface Diplomatic {
-    public void addAlly(String var1);
 
-    public void removeAlly(String var1);
+    // allies
+    void addAlly(String name);
+    void removeAlly(String name);
+    boolean isAlly(String name);
+    ArrayList<String> getAllies();
+    String getAlliesSeparatedByCommas();
 
-    public boolean isAlly(String var1);
+    // requests
+    void requestAlly(String name);
+    boolean isRequestedAlly(String name);
+    void removeAllianceRequest(String name);
 
-    public ArrayList<String> getAllies();
+    // enemies
+    void addEnemy(String name);
+    void removeEnemy(String name);
+    boolean isEnemy(String name);
+    ArrayList<String> getEnemyFactions();
+    String getEnemiesSeparatedByCommas();
 
-    public String getAlliesSeparatedByCommas();
+    // truces
+    void requestTruce(String name);
+    boolean isTruceRequested(String name);
+    void removeRequestedTruce(String name);
 
-    public void requestAlly(String var1);
-
-    public boolean isRequestedAlly(String var1);
-
-    public void removeAllianceRequest(String var1);
-
-    public void addEnemy(String var1);
-
-    public void removeEnemy(String var1);
-
-    public boolean isEnemy(String var1);
-
-    public ArrayList<String> getEnemyFactions();
-
-    public String getEnemiesSeparatedByCommas();
-
-    public void requestTruce(String var1);
-
-    public boolean isTruceRequested(String var1);
-
-    public void removeRequestedTruce(String var1);
 }
-

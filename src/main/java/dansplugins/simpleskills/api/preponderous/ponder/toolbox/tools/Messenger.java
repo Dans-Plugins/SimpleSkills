@@ -1,38 +1,52 @@
-/*
- * Decompiled with CFR 0.150.
- * 
- * Could not load the following classes:
- *  org.bukkit.Bukkit
- *  org.bukkit.Location
- *  org.bukkit.entity.Player
- */
-package preponderous.ponder.toolbox.tools;
+package dansplugins.simpleskills.api.preponderous.ponder.toolbox.tools;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
+import static org.bukkit.Bukkit.getServer;
+
+/**
+ * @author Daniel Stephenson
+ */
 public class Messenger {
+
+    /**
+     * Method to message every online player.
+     *
+     */
     public void sendAllPlayersOnServerMessage(String message) {
         for (Player player : Bukkit.getOnlinePlayers()) {
             player.sendMessage(message);
         }
     }
 
+    /**
+     * Method to send a message to players within a certain number of blocks from a player.
+     *
+     */
     public int sendMessageToPlayersWithinDistance(Player player, String message, int distance) {
         Location playerLocation = player.getLocation();
+
         int numPlayersWhoHeard = 0;
-        for (Player potentialPlayer : Bukkit.getServer().getOnlinePlayers()) {
+
+        // for every online player
+        for (Player potentialPlayer : getServer().getOnlinePlayers()) {
+
+            // if not in world
             if (potentialPlayer.getLocation().getWorld().getName() != playerLocation.getWorld().getName()) {
                 return -1;
             }
-            if (!(potentialPlayer.getLocation().distance(playerLocation) < (double)distance)) {
+
+            // if not within the specified distance
+            if (!(potentialPlayer.getLocation().distance(playerLocation) < distance)) {
                 return -1;
             }
-            ++numPlayersWhoHeard;
+
+            numPlayersWhoHeard++;
             potentialPlayer.sendMessage(message);
         }
         return numPlayersWhoHeard;
     }
-}
 
+}

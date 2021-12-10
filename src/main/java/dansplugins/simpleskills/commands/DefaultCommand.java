@@ -1,6 +1,7 @@
 package dansplugins.simpleskills.commands;
 
 import dansplugins.simpleskills.SimpleSkills;
+import dansplugins.simpleskills.api.preponderous.ponder.misc.AbstractCommand;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
@@ -10,7 +11,7 @@ import java.util.Collections;
 /**
  * @author Daniel Stephenson
  */
-public class DefaultCommand extends preponderous.ponder.misc.AbstractCommand {
+public class DefaultCommand extends AbstractCommand {
     private final ArrayList<String> names = new ArrayList<>(Collections.singletonList("default"));
     private final ArrayList<String> permissions = new ArrayList<>(Collections.singletonList("ss.default"));
 

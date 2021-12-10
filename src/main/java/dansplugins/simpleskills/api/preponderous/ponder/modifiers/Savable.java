@@ -1,13 +1,11 @@
-/*
- * Decompiled with CFR 0.150.
- */
-package preponderous.ponder.modifiers;
+package dansplugins.simpleskills.api.preponderous.ponder.modifiers;
 
 import java.util.Map;
 
+/**
+ * @author Daniel Stephenson
+ */
 public interface Savable {
-    public Map<String, String> save();
-
-    public void load(Map<String, String> var1);
+    Map<String, String> save();
+    void load(Map<String, String> data);
 }
-

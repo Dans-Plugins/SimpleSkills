@@ -2,7 +2,7 @@ package dansplugins.simpleskills.services;
 
 import dansplugins.simpleskills.data.PersistentData;
 import dansplugins.simpleskills.objects.PlayerRecord;
-import preponderous.ponder.misc.JsonWriterReader;
+import dansplugins.simpleskills.api.preponderous.ponder.misc.JsonWriterReader;
 
 import java.util.*;
 

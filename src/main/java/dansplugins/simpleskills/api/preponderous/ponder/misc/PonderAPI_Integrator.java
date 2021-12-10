@@ -1,23 +1,29 @@
-/*
- * Decompiled with CFR 0.150.
- * 
- * Could not load the following classes:
- *  org.bukkit.plugin.java.JavaPlugin
- */
-package preponderous.ponder.misc;
+package dansplugins.simpleskills.api.preponderous.ponder.misc;
 
+import dansplugins.simpleskills.api.preponderous.ponder.Ponder;
 import org.bukkit.plugin.java.JavaPlugin;
-import preponderous.ponder.Ponder;
-
+/**
+ * @author Daniel Stephenson
+ */
 public class PonderAPI_Integrator {
+
     private Ponder ponder = null;
 
+    /**
+     * Constructor to initialize the API.
+     *
+     */
     public PonderAPI_Integrator(JavaPlugin plugin) {
-        this.ponder = new Ponder(plugin);
+        ponder = new Ponder(plugin);
     }
 
+    /**
+     * Method to get the instance of the Ponder API that is managed by this class.
+     *
+     * @return The instance of the Ponder API that is managed by this class.
+     */
     public Ponder getAPI() {
-        return this.ponder;
+        return ponder;
     }
-}
 
+}

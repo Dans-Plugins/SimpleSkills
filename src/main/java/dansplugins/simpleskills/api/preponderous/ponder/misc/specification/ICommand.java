@@ -1,36 +1,27 @@
-/*
- * Decompiled with CFR 0.150.
- * 
- * Could not load the following classes:
- *  org.bukkit.ChatColor
- *  org.bukkit.command.CommandSender
- */
-package preponderous.ponder.misc.specification;
+package dansplugins.simpleskills.api.preponderous.ponder.misc.specification;
 
-import java.util.ArrayList;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
-public interface ICommand {
-    public static final ArrayList<String> names = null;
-    public static final ArrayList<String> permissions = null;
+import java.util.ArrayList;
 
-    default public ArrayList<String> getNames() {
+public interface ICommand {
+
+    ArrayList<String> names = null;
+    ArrayList<String> permissions = null;
+
+    default ArrayList<String> getNames() {
         return names;
     }
 
-    default public ArrayList<String> getPermissions() {
+    default ArrayList<String> getPermissions() {
         return permissions;
     }
 
-    public boolean execute(CommandSender var1);
+    boolean execute(CommandSender sender);
+    boolean execute(CommandSender sender, String[] args);
+    boolean sendMessageIfNoArguments(String message, String[] args, CommandSender sender, ChatColor color);
+    int getIntSafe(String line, int orElse);
+    boolean safeEquals(boolean matchCase, String what, String... goals);
 
-    public boolean execute(CommandSender var1, String[] var2);
-
-    public boolean sendMessageIfNoArguments(String var1, String[] var2, CommandSender var3, ChatColor var4);
-
-    public int getIntSafe(String var1, int var2);
-
-    public boolean safeEquals(boolean var1, String var2, String ... var3);
 }
-

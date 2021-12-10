@@ -1,9 +1,8 @@
-/*
- * Decompiled with CFR 0.150.
+package dansplugins.simpleskills.api.preponderous.ponder.modifiers;
+
+/**
+ * @author Daniel Stephenson
  */
-package preponderous.ponder.modifiers;
-
 public interface Cacheable {
-    public Object getKey();
+    Object getKey();
 }
-

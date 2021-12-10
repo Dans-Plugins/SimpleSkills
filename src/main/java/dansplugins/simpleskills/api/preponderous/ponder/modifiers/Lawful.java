@@ -1,21 +1,18 @@
-/*
- * Decompiled with CFR 0.150.
- */
-package preponderous.ponder.modifiers;
+package dansplugins.simpleskills.api.preponderous.ponder.modifiers;
 
 import java.util.ArrayList;
 
+/**
+ * @author Daniel Stephenson
+ */
 public interface Lawful {
-    public void addLaw(String var1);
 
-    public boolean removeLaw(String var1);
+    // laws
+    void addLaw(String newLaw);
+    boolean removeLaw(String lawToRemove);
+    boolean removeLaw(int i);
+    boolean editLaw(int i, String newString);
+    int getNumLaws();
+    ArrayList<String> getLaws();
 
-    public boolean removeLaw(int var1);
-
-    public boolean editLaw(int var1, String var2);
-
-    public int getNumLaws();
-
-    public ArrayList<String> getLaws();
 }
-
