@@ -5,6 +5,7 @@ import dansplugins.simpleskills.commands.*;
 import dansplugins.simpleskills.eventhandlers.*;
 import dansplugins.simpleskills.services.LocalConfigService;
 import dansplugins.simpleskills.services.LocalStorageService;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.Listener;
@@ -27,7 +28,8 @@ public class SimpleSkills extends AbstractPonderPlugin {
     public static SimpleSkills getInstance() {
         return instance;
     }
-
+    String nms = NMSVersion.getNMSVersion();
+    String mcver = NMSVersion.formatNMSVersion(nms);
     @Override
     public void onEnable() {
         instance = this;
@@ -56,6 +58,7 @@ public class SimpleSkills extends AbstractPonderPlugin {
         }
 
         LocalStorageService.getInstance().load();
+        getLogger().log(Level.INFO, "Loading Block/Items For " + mcver);
 
         if (LocalConfigService.getInstance().getBoolean("MCVersion.1_14")) {
             getLogger().log(Level.INFO, "Enable 1.14+ Block/Items");
