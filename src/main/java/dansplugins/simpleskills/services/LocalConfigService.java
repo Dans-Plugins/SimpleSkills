@@ -49,6 +49,8 @@ public class LocalConfigService {
         if (!isSet("defaultMaxLevel")) { getConfig().set("defaultMaxLevel", 100); }
         if (!isSet("defaultBaseExperienceRequirement")) { getConfig().set("defaultBaseExperienceRequirement", 10); }
         if (!isSet("defaultExperienceIncreaseFactor")) { getConfig().set("defaultExperienceIncreaseFactor", 1.2); }
+        if (!isSet("levelUpAlert")) { getConfig().set("levelUpAlert", true); }
+        if (!isSet("benefitAlert")) { getConfig().set("benefitAlert", true); }
         getConfig().options().copyDefaults(true);
         SimpleSkills.getInstance().saveConfig();
     }
@@ -62,7 +64,9 @@ public class LocalConfigService {
                        option.equalsIgnoreCase("defaultBaseExperienceRequirement")) {
                 getConfig().set(option, Integer.parseInt(value));
                 sender.sendMessage(ChatColor.GREEN + "Integer set.");
-            } else if (option.equalsIgnoreCase("debugMode")) {
+            } else if (option.equalsIgnoreCase("debugMode")
+                    || option.equalsIgnoreCase("levelUpAlert")
+                    || option.equalsIgnoreCase("benefitAlert")) {
                 getConfig().set(option, Boolean.parseBoolean(value));
                 sender.sendMessage(ChatColor.GREEN + "Boolean set.");
             } else if (option.equalsIgnoreCase("defaultExperienceIncreaseFactor")) {
@@ -87,7 +91,9 @@ public class LocalConfigService {
                 + ", debugMode: " + getString("debugMode")
                 + ", defaultMaxLevel: " + getInt("defaultMaxLeveL")
                 + ", defaultBaseExperienceRequirement: " + getInt("defaultBaseExperienceRequirement")
-                + ", defaultExperienceIncreaseFactor: " + getDouble("defaultExperienceIncreaseFactor"));
+                + ", defaultExperienceIncreaseFactor: " + getDouble("defaultExperienceIncreaseFactor")
+                + ", levelUpAlert: " + getBoolean("levelUpAlert")
+                + ", benefitAlert: " + getBoolean("benefitAlert"));
     }
 
     public boolean hasBeenAltered() {

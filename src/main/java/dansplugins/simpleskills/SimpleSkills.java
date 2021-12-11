@@ -24,9 +24,9 @@ import java.util.logging.Level;
  */
 public class SimpleSkills extends AbstractPonderPlugin {
     private static SimpleSkills instance;
-    private final String version = "v" + getDescription().getVersion();
-    private final String nms = NMSVersion.getNMSVersion();
-    private final String mcver = NMSVersion.formatNMSVersion(nms);
+    private final String pluginVersion = "v" + getDescription().getVersion();
+    private final String nmsVersion = NMSVersion.getNMSVersion();
+    private final String minecraftVersion = NMSVersion.formatNMSVersion(nmsVersion);
 
     public static SimpleSkills getInstance() {
         return instance;
@@ -36,8 +36,16 @@ public class SimpleSkills extends AbstractPonderPlugin {
     public void onEnable() {
         instance = this;
 
-        if (nms.contains("v1_13_R1") || nms.contains("v1_13_R2") || nms.contains("v1_14_R1") || nms.contains("v1_15_R1") || nms.contains("v1_16_R1") || nms.contains("v1_16_R2") || nms.contains("v1_16_R3") || nms.contains("v1_17_R1") || nms.contains("v1_18_R1")) {
-            getLogger().log(Level.INFO, "Loading Data For " + mcver);
+        if (nmsVersion.contains("v1_13_R1")
+                || nmsVersion.contains("v1_13_R2")
+                || nmsVersion.contains("v1_14_R1")
+                || nmsVersion.contains("v1_15_R1")
+                || nmsVersion.contains("v1_16_R1")
+                || nmsVersion.contains("v1_16_R2")
+                || nmsVersion.contains("v1_16_R3")
+                || nmsVersion.contains("v1_17_R1")
+                || nmsVersion.contains("v1_18_R1")) {
+            getLogger().log(Level.INFO, "Loading Data For " + minecraftVersion);
         }
         else {
             getLogger().warning("The server version is not suitable to load the plugin");
@@ -90,7 +98,7 @@ public class SimpleSkills extends AbstractPonderPlugin {
     }
 
     public String getVersion() {
-        return version;
+        return pluginVersion;
     }
 
     public boolean isVersionMismatched() {

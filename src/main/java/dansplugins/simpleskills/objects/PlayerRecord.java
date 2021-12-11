@@ -6,6 +6,7 @@ import com.google.gson.reflect.TypeToken;
 import dansplugins.simpleskills.SimpleSkills;
 import dansplugins.simpleskills.data.PersistentData;
 import dansplugins.simpleskills.objects.abs.Skill;
+import dansplugins.simpleskills.services.LocalConfigService;
 import dansplugins.simpleskills.utils.ExperienceCalculator;
 import dansplugins.simpleskills.utils.Logger;
 import org.bukkit.Bukkit;
@@ -177,7 +178,10 @@ public class PlayerRecord implements Savable, Cacheable {
         Player player = Bukkit.getPlayer(playerUUID);
         if (player != null) {
             Skill skill = PersistentData.getInstance().getSkill(ID);
-            player.sendMessage(ChatColor.GREEN + "You've leveled up your " + skill.getName() + " skill to " + getSkillLevel(ID));
+            if (LocalConfigService.getInstance().getBoolean("levelUpAlert")) {
+                player.sendMessage(ChatColor.GREEN + "You've leveled up your " + skill.getName() + " skill to " + getSkillLevel(ID));
+            }
+
         }
     }
 
