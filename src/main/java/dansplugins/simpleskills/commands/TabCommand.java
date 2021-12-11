@@ -2,6 +2,7 @@ package dansplugins.simpleskills.commands;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.command.TabCompleter;
 
 import java.util.ArrayList;
@@ -19,6 +20,9 @@ public class TabCommand implements TabCompleter {
             arg.add("skill");
             arg.add("top");
             arg.add("stats");
+            if (sender instanceof ConsoleCommandSender){
+                arg.add("wipe");
+            }
         }
         List<String> result = new ArrayList<String>();
         if (args.length == 1){
