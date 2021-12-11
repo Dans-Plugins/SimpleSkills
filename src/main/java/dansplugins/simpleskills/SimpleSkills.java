@@ -36,6 +36,9 @@ public class SimpleSkills extends AbstractPonderPlugin {
     public void onEnable() {
         instance = this;
 
+        ponderAPI_integrator = new PonderAPI_Integrator(this);
+        toolbox = getPonderAPI().getToolbox();
+
         if (nmsVersion.contains("v1_13_R1")
                 || nmsVersion.contains("v1_13_R2")
                 || nmsVersion.contains("v1_14_R1")
@@ -59,9 +62,6 @@ public class SimpleSkills extends AbstractPonderPlugin {
 
         getCommand("ss").setTabCompleter(new TabCommand());
         getCommand("simpleskills").setTabCompleter(new TabCommand());
-
-        ponderAPI_integrator = new PonderAPI_Integrator(this);
-        toolbox = getPonderAPI().getToolbox();
 
         registerEventHandlers();
         initializeCommandService();
