@@ -39,9 +39,9 @@ public class LocalConfigService {
     public void saveMissingConfigDefaultsIfNotPresent() {
         // set version
         if (!getConfig().isString("version")) {
-            getConfig().addDefault("version", "v" + SimpleSkills.getInstance().getVersion());
+            getConfig().addDefault("version", SimpleSkills.getInstance().getVersion());
         } else {
-            getConfig().set("version", "v" + SimpleSkills.getInstance().getVersion());
+            getConfig().set("version",  SimpleSkills.getInstance().getVersion());
         }
 
         // save config options
