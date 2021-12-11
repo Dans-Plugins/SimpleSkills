@@ -1,9 +1,8 @@
 package dansplugins.simpleskills.objects.skills.blockplacing;
 
-import dansplugins.simpleskills.NMSVersion;
+import dansplugins.simpleskills.nms.NMSVersion;
 import dansplugins.simpleskills.enums.SupportedSkill;
 import dansplugins.simpleskills.objects.abs.BlockPlacingSkill;
-import dansplugins.simpleskills.services.LocalConfigService;
 import org.bukkit.Material;
 
 import java.util.HashSet;

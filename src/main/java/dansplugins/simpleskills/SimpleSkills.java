@@ -3,6 +3,7 @@ package dansplugins.simpleskills;
 import dansplugins.simpleskills.bstats.Metrics;
 import dansplugins.simpleskills.commands.*;
 import dansplugins.simpleskills.eventhandlers.*;
+import dansplugins.simpleskills.nms.NMSVersion;
 import dansplugins.simpleskills.services.LocalConfigService;
 import dansplugins.simpleskills.services.LocalStorageService;
 import org.bukkit.Bukkit;

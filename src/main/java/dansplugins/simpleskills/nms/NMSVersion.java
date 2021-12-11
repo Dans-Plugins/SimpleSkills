@@ -1,4 +1,4 @@
-package dansplugins.simpleskills;
+package dansplugins.simpleskills.nms;
 
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;

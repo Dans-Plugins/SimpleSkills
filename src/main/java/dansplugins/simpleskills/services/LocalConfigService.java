@@ -7,9 +7,8 @@ package dansplugins.simpleskills.services;
     - sendConfigList()
  */
 
-import dansplugins.simpleskills.NMSVersion;
+import dansplugins.simpleskills.nms.NMSVersion;
 import dansplugins.simpleskills.SimpleSkills;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;

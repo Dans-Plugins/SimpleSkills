@@ -1,10 +1,9 @@
 package dansplugins.simpleskills.objects.skills.blockbreaking;
 
-import dansplugins.simpleskills.NMSVersion;
+import dansplugins.simpleskills.nms.NMSVersion;
 import dansplugins.simpleskills.enums.SupportedSkill;
 import dansplugins.simpleskills.objects.abs.BlockBreakingSkill;
 import dansplugins.simpleskills.objects.benefits.ResourceExtraction;
-import dansplugins.simpleskills.services.LocalConfigService;
 import org.bukkit.Material;
 
 import java.util.HashSet;
