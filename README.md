@@ -36,6 +36,7 @@ Please fill out a bug report [here](https://github.com/dmccoystephenson/SimpleSk
 Name | Main Contributions
 ------------ | -------------
 Daniel Stephenson | Creator
+VoChiDanh | NMS utilization & other improvements
 
 ## License
 GPL3
