@@ -1,7 +1,7 @@
 package dansplugins.simpleskills.commands;
 
 import dansplugins.simpleskills.SimpleSkills;
-import dansplugins.simpleskills.api.preponderous.ponder.misc.AbstractCommand;
+import preponderous.ponder.misc.AbstractCommand;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 

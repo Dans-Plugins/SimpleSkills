@@ -57,6 +57,10 @@
             <id>spigotmc-repo</id>
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
         </repository>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -67,10 +71,9 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>org.jetbrains</groupId>
-            <artifactId>annotations</artifactId>
-            <version>22.0.0</version>
-            <scope>compile</scope>
+            <groupId>com.github.Preponderous-Software</groupId>
+            <artifactId>Ponder</artifactId>
+            <version>v0.8</version>
         </dependency>
     </dependencies>
 </project>

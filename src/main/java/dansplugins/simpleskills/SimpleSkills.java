@@ -9,9 +9,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.Listener;
-import dansplugins.simpleskills.api.preponderous.ponder.AbstractPonderPlugin;
-import dansplugins.simpleskills.api.preponderous.ponder.misc.PonderAPI_Integrator;
-import dansplugins.simpleskills.api.preponderous.ponder.misc.specification.ICommand;
+import preponderous.ponder.AbstractPonderPlugin;
+import preponderous.ponder.misc.PonderAPI_Integrator;
+import preponderous.ponder.misc.specification.ICommand;
 
 import java.io.File;
 import java.util.ArrayList;

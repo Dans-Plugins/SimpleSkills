@@ -2,7 +2,7 @@ package dansplugins.simpleskills.commands;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
-import dansplugins.simpleskills.api.preponderous.ponder.misc.AbstractCommand;
+import preponderous.ponder.misc.AbstractCommand;
 
 import java.util.ArrayList;
 import java.util.Collections;
