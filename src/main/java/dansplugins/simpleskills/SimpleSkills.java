@@ -59,6 +59,7 @@ public class SimpleSkills extends AbstractPonderPlugin {
 
         getCommand("ss").setTabCompleter(new TabCommand());
         getCommand("simpleskills").setTabCompleter(new TabCommand());
+
         ponderAPI_integrator = new PonderAPI_Integrator(this);
         toolbox = getPonderAPI().getToolbox();
 
@@ -79,8 +80,6 @@ public class SimpleSkills extends AbstractPonderPlugin {
         }
 
         LocalStorageService.getInstance().load();
-
-
     }
 
     @Override
@@ -136,7 +135,8 @@ public class SimpleSkills extends AbstractPonderPlugin {
                 new StatsCommand(),
                 new WipeCommand(),
                 new SkillCommand(),
-                new TopCommand()
+                new TopCommand(),
+                new ConfigCommand()
         ));
         getPonderAPI().getCommandService().initialize(commands, "That command wasn't found.");
     }
