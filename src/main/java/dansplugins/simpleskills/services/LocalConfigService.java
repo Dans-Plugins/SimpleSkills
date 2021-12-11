@@ -41,7 +41,7 @@ public class LocalConfigService {
         if (!getConfig().isString("version")) {
             getConfig().addDefault("version", SimpleSkills.getInstance().getVersion());
         } else {
-            getConfig().set("version", SimpleSkills.getInstance().getVersion());
+            getConfig().set("version",  SimpleSkills.getInstance().getVersion());
         }
 
         // save config options

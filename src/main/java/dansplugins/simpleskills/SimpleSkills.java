@@ -24,7 +24,7 @@ import java.util.logging.Level;
  */
 public class SimpleSkills extends AbstractPonderPlugin {
     private static SimpleSkills instance;
-    private final String version = getDescription().getVersion();
+    private final String version = "v" + getDescription().getVersion();
     private final String nms = NMSVersion.getNMSVersion();
     private final String mcver = NMSVersion.formatNMSVersion(nms);
 
@@ -49,6 +49,8 @@ public class SimpleSkills extends AbstractPonderPlugin {
         int pluginId = 13470;
         Metrics metrics = new Metrics(this, pluginId);
 
+        getCommand("ss").setTabCompleter(new TabCommand());
+        getCommand("simpleskills").setTabCompleter(new TabCommand());
         ponderAPI_integrator = new PonderAPI_Integrator(this);
         toolbox = getPonderAPI().getToolbox();
 

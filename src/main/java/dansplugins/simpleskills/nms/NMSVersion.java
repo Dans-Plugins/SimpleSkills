@@ -13,23 +13,23 @@ public class NMSVersion extends JavaPlugin implements Listener {
     public static String formatNMSVersion(String nms){
         switch(nms){
             case "v1_13_R1":
-                return "1.13.1";
+                return "1.13.x";
             case "v1_13_R2":
-                return "1.13.2";
+                return "1.13.x";
             case "v1_14_R1":
                 return "1.14.x";
             case "v1_15_R1":
                 return "1.15.x";
             case "v1_16_R1":
-                return "1.16.1";
+                return "1.16.x";
             case "v1_16_R2":
-                return "1.16.2/1.16.3";
+                return "1.16.x";
             case "v1_16_R3":
-                return "1.16.4/1.16.5";
+                return "1.16.x";
             case "v1_17_R1":
-                return "1.17/1.17.1";
+                return "1.17.x";
             case "v1_18_R1":
-                return "1.18";
+                return "1.18.x";
 
         }
         throw new IllegalArgumentException(nms + " isn't a know version");
