@@ -24,7 +24,7 @@ import java.util.logging.Level;
  */
 public class SimpleSkills extends AbstractPonderPlugin {
     private static SimpleSkills instance;
-    private final String version = getDescription().getVersion();
+    private final String version = "v" + getDescription().getVersion();
     private String nms = NMSVersion.getNMSVersion();
     private String mcver = NMSVersion.formatNMSVersion(nms);
 
