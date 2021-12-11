@@ -49,6 +49,8 @@ public class SimpleSkills extends AbstractPonderPlugin {
         int pluginId = 13470;
         Metrics metrics = new Metrics(this, pluginId);
 
+        getCommand("ss").setTabCompleter(new TabCommand());
+        getCommand("simpleskills").setTabCompleter(new TabCommand());
         ponderAPI_integrator = new PonderAPI_Integrator(this);
         toolbox = getPonderAPI().getToolbox();
 
