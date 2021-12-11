@@ -5,6 +5,7 @@ import dansplugins.simpleskills.commands.*;
 import dansplugins.simpleskills.eventhandlers.*;
 import dansplugins.simpleskills.services.LocalConfigService;
 import dansplugins.simpleskills.services.LocalStorageService;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.Listener;
@@ -15,20 +16,29 @@ import preponderous.ponder.misc.specification.ICommand;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.logging.Level;
 
 /**
  * @author Daniel Stephenson
  */
 public class SimpleSkills extends AbstractPonderPlugin {
     private static SimpleSkills instance;
-    private final String version = "v1.2-alpha-1";
+    private final String version = getDescription().getVersion();
 
     public static SimpleSkills getInstance() {
         return instance;
     }
-
+    String nms = NMSVersion.getNMSVersion();
+    String mcver = NMSVersion.formatNMSVersion(nms);
     @Override
     public void onEnable() {
+        if (nms.contains("v1_13_R1") || nms.contains("v1_13_R2") || nms.contains("v1_14_R1") || nms.contains("v1_15_R1") || nms.contains("v1_16_R1") || nms.contains("v1_16_R2") || nms.contains("v1_16_R3") || nms.contains("v1_17_R1") || nms.contains("v1_18_R1")) {
+            getLogger().log(Level.INFO, "Loading Data For " + mcver);
+        }else{
+            getLogger().warning("The server version is not suitable to load the plugin");
+            getLogger().warning("Support version 1.13.x - 1.18.x");
+            Bukkit.getServer().getPluginManager().disablePlugin(this);
+        }
         instance = this;
 
         // bStats
@@ -55,6 +65,8 @@ public class SimpleSkills extends AbstractPonderPlugin {
         }
 
         LocalStorageService.getInstance().load();
+
+
     }
 
     @Override

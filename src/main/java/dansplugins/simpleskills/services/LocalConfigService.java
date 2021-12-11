@@ -7,7 +7,9 @@ package dansplugins.simpleskills.services;
     - sendConfigList()
  */
 
+import dansplugins.simpleskills.NMSVersion;
 import dansplugins.simpleskills.SimpleSkills;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -20,9 +22,13 @@ public class LocalConfigService {
     private static LocalConfigService instance;
     private boolean altered = false;
 
+    String nms = NMSVersion.getNMSVersion();
+    String mcver = NMSVersion.formatNMSVersion(nms);
+
     private LocalConfigService() {
 
     }
+
 
     public static LocalConfigService getInstance() {
         if (instance == null) {
@@ -44,7 +50,6 @@ public class LocalConfigService {
         if (!isSet("defaultMaxLevel")) { getConfig().set("defaultMaxLevel", 100); }
         if (!isSet("defaultBaseExperienceRequirement")) { getConfig().set("defaultBaseExperienceRequirement", 10); }
         if (!isSet("defaultExperienceIncreaseFactor")) { getConfig().set("defaultExperienceIncreaseFactor", 1.2); }
-
         getConfig().options().copyDefaults(true);
         SimpleSkills.getInstance().saveConfig();
     }

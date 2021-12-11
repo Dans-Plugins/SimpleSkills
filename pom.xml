@@ -6,7 +6,7 @@
 
     <groupId>dansplugins</groupId>
     <artifactId>SimpleSkills</artifactId>
-    <version>v1.2-alpha-1</version>
+    <version>1.2-alpha-2</version>
     <packaging>jar</packaging>
 
     <name>SimpleSkills</name>
@@ -58,8 +58,8 @@
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
         </repository>
         <repository>
-            <id>sonatype</id>
-            <url>https://oss.sonatype.org/content/groups/public/</url>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
         </repository>
     </repositories>
 
@@ -71,10 +71,9 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>preponderous</groupId>
-            <artifactId>ponder</artifactId>
+            <groupId>com.github.Preponderous-Software</groupId>
+            <artifactId>Ponder</artifactId>
             <version>v0.8</version>
-            <scope>compile</scope>
         </dependency>
     </dependencies>
 </project>
