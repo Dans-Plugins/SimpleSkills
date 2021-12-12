@@ -56,6 +56,9 @@ public class PersistentData {
     }
 
     public boolean addSkill(Skill skill) {
+        if (!skill.isActive()) {
+            return false;
+        }
         Logger.getInstance().log("Added skill: " + skill.getName());
         return skills.add(skill);
     }
