@@ -7,6 +7,7 @@ author: Daniel Stephenson
 commands:
   simpleskills:
   ss:
+  skills:
 
 permissions:
   ss.help:
