@@ -133,7 +133,7 @@ public class SimpleSkills extends AbstractPonderPlugin {
                 new HelpCommand(),
                 new InfoCommand(),
                 new StatsCommand(),
-                new WipeCommand(),
+                new ForceCommand(),
                 new SkillCommand(),
                 new TopCommand(),
                 new ConfigCommand()
