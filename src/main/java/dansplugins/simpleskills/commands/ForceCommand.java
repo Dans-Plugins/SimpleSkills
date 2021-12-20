@@ -81,8 +81,12 @@ public class ForceCommand extends AbstractCommand {
             commandSender.sendMessage(ChatColor.RED + "You don't have permission to use this command.");
             return false;
         }
+        if (skill.isActive()) {
+            commandSender.sendMessage(ChatColor.RED + "That skill is already active.");
+            return false;
+        }
         skill.setActive(true);
-        commandSender.sendMessage(ChatColor.RED + "The '" + skill.getName() + "' is now active.");
+        commandSender.sendMessage(ChatColor.GREEN + "The '" + skill.getName() + "' is now active.");
         return true;
     }
 
@@ -96,8 +100,12 @@ public class ForceCommand extends AbstractCommand {
             commandSender.sendMessage(ChatColor.RED + "You don't have permission to use this command.");
             return false;
         }
+        if (!skill.isActive()) {
+            commandSender.sendMessage(ChatColor.RED + "That skill is already inactive.");
+            return false;
+        }
         skill.setActive(false);
-        commandSender.sendMessage(ChatColor.RED + "The '" + skill.getName() + "' is now inactive.");
+        commandSender.sendMessage(ChatColor.GREEN + "The '" + skill.getName() + "' is now inactive.");
         return true;
     }
 }
