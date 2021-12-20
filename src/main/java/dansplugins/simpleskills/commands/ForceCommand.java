@@ -14,8 +14,8 @@ import java.util.Collections;
  * @author Daniel Stephenson
  */
 public class ForceCommand extends AbstractCommand {
-    private final ArrayList<String> names = new ArrayList<>(Collections.singletonList("wipe"));
-    private final ArrayList<String> permissions = new ArrayList<>(Collections.singletonList("ss.wipe"));
+    private final ArrayList<String> names = new ArrayList<>(Collections.singletonList("force"));
+    private final ArrayList<String> permissions = new ArrayList<>(Collections.singletonList("ss.force"));
 
     @Override
     public ArrayList<String> getNames() {

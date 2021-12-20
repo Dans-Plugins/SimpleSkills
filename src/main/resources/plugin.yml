@@ -21,5 +21,11 @@ permissions:
     default: true
   ss.config:
     default: op
-  ss.wipe:
+  ss.force:
+    default: op
+  ss.force.wipe:
+    default: op
+  ss.force.activate:
+    default: op
+  ss.force.deactivate:
     default: op
