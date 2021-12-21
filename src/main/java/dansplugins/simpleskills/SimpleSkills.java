@@ -47,6 +47,37 @@ public class SimpleSkills extends AbstractPonderPlugin {
         getPonderAPI().setDebug(false);
     }
 
+    @Override
+    public void onDisable() {
+        LocalStorageService.getInstance().save();
+    }
+
+    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+        if (args.length == 0) {
+            DefaultCommand defaultCommand = new DefaultCommand();
+            return defaultCommand.execute(sender);
+        }
+
+        return getPonderAPI().getCommandService().interpretCommand(sender, label, args);
+    }
+
+    public String getVersion() {
+        return pluginVersion;
+    }
+
+    public boolean isVersionMismatched() {
+        String configVersion = getConfig().getString("version");
+        if (configVersion == null || this.getVersion() == null) {
+            return true;
+        } else {
+            return !configVersion.equalsIgnoreCase(this.getVersion());
+        }
+    }
+
+    public boolean isDebugEnabled() {
+        return LocalConfigService.getInstance().getBoolean("debugMode");
+    }
+
     private void performNMSChecks() {
         if (nmsVersion.contains("v1_13_R1")
                 || nmsVersion.contains("v1_13_R2")
@@ -84,37 +115,6 @@ public class SimpleSkills extends AbstractPonderPlugin {
             }
             reloadConfig();
         }
-    }
-
-    @Override
-    public void onDisable() {
-        LocalStorageService.getInstance().save();
-    }
-
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if (args.length == 0) {
-            DefaultCommand defaultCommand = new DefaultCommand();
-            return defaultCommand.execute(sender);
-        }
-
-        return getPonderAPI().getCommandService().interpretCommand(sender, label, args);
-    }
-
-    public String getVersion() {
-        return pluginVersion;
-    }
-
-    public boolean isVersionMismatched() {
-        String configVersion = getConfig().getString("version");
-        if (configVersion == null || this.getVersion() == null) {
-            return true;
-        } else {
-            return !configVersion.equalsIgnoreCase(this.getVersion());
-        }
-    }
-
-    public boolean isDebugEnabled() {
-        return LocalConfigService.getInstance().getBoolean("debugMode");
     }
 
     private void setTabCompleterForCoreCommands() {
