@@ -29,19 +29,17 @@ public class SkillCommand extends AbstractCommand {
 
     @Override
     public boolean execute(CommandSender commandSender) {
-        commandSender.sendMessage(ChatColor.RED + "Usage: /ss skill \"skill name\"");
+        commandSender.sendMessage(ChatColor.RED + "Usage: /ss skill (skillName)");
         return false;
     }
 
     @Override
     public boolean execute(CommandSender commandSender, String[] args) {
-        ArrayList<String> doubleQuoteArgs = SimpleSkills.getInstance().getToolbox().getArgumentParser().getArgumentsInsideDoubleQuotes(args);
-        if (doubleQuoteArgs.size() == 0) {
-            commandSender.sendMessage(ChatColor.RED + "Skill name must be designated between double quotes.");
-            return false;
-        }
-        String skillName = doubleQuoteArgs.get(0);
+        String skillName = args[0];
         Skill skill = PersistentData.getInstance().getSkill(skillName);
+        if (skill == null) {
+            commandSender.sendMessage(ChatColor.RED + "That skill wasn't found.");
+        }
         skill.sendInfo(commandSender);
         return true;
     }
