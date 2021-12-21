@@ -1,7 +1,7 @@
 package dansplugins.simpleskills.objects.skills.blockplacing;
 
-import dansplugins.simpleskills.nms.NMSVersion;
 import dansplugins.simpleskills.enums.SupportedSkill;
+import dansplugins.simpleskills.nms.NMSVersion;
 import dansplugins.simpleskills.objects.abs.BlockPlacingSkill;
 import org.bukkit.Material;
 
