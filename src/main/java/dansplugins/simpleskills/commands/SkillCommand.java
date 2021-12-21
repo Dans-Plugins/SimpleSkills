@@ -1,6 +1,5 @@
 package dansplugins.simpleskills.commands;
 
-import dansplugins.simpleskills.SimpleSkills;
 import dansplugins.simpleskills.data.PersistentData;
 import dansplugins.simpleskills.objects.abs.Skill;
 import org.bukkit.ChatColor;

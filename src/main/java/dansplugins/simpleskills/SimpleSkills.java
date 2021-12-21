@@ -10,6 +10,7 @@ import dansplugins.simpleskills.services.LocalStorageService;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.PluginCommand;
 import org.bukkit.event.Listener;
 import preponderous.ponder.AbstractPonderPlugin;
 import preponderous.ponder.misc.PonderAPI_Integrator;
@@ -120,7 +121,11 @@ public class SimpleSkills extends AbstractPonderPlugin {
 
     private void setTabCompleterForCoreCommands() {
         for (String key : getDescription().getCommands().keySet()) {
-            getCommand(key).setTabCompleter(new TabCommand());
+            PluginCommand command = getCommand(key);
+            if (command == null) {
+                continue;
+            }
+            command.setTabCompleter(new TabCommand());
         }
     }
 
