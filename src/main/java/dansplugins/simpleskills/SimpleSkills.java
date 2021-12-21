@@ -35,10 +35,19 @@ public class SimpleSkills extends AbstractPonderPlugin {
     @Override
     public void onEnable() {
         instance = this;
-
         ponderAPI_integrator = new PonderAPI_Integrator(this);
         toolbox = getPonderAPI().getToolbox();
+        performNMSChecks();
+        handleIntegrations();
+        setTabCompleterForCoreCommands();
+        registerEventHandlers();
+        initializeCommandService();
+        initializeConfig();
+        LocalStorageService.getInstance().load();
+        getPonderAPI().setDebug(false);
+    }
 
+    private void performNMSChecks() {
         if (nmsVersion.contains("v1_13_R1")
                 || nmsVersion.contains("v1_13_R2")
                 || nmsVersion.contains("v1_14_R1")
@@ -55,19 +64,15 @@ public class SimpleSkills extends AbstractPonderPlugin {
             getLogger().warning("Support version 1.13.x - 1.18.x");
             Bukkit.getServer().getPluginManager().disablePlugin(this);
         }
+    }
 
+    private void handleIntegrations() {
         // bStats
         int pluginId = 13470;
         Metrics metrics = new Metrics(this, pluginId);
+    }
 
-        getCommand("ss").setTabCompleter(new TabCommand());
-        getCommand("simpleskills").setTabCompleter(new TabCommand());
-        getCommand("skills").setTabCompleter(new TabCommand());
-
-        registerEventHandlers();
-        initializeCommandService();
-        getPonderAPI().setDebug(false);
-
+    private void initializeConfig() {
         // create/load config
         if (!(new File("./plugins/SimpleSkills/config.yml").exists())) {
             LocalConfigService.getInstance().saveMissingConfigDefaultsIfNotPresent();
@@ -79,8 +84,6 @@ public class SimpleSkills extends AbstractPonderPlugin {
             }
             reloadConfig();
         }
-
-        LocalStorageService.getInstance().load();
     }
 
     @Override
@@ -112,6 +115,12 @@ public class SimpleSkills extends AbstractPonderPlugin {
 
     public boolean isDebugEnabled() {
         return LocalConfigService.getInstance().getBoolean("debugMode");
+    }
+
+    private void setTabCompleterForCoreCommands() {
+        for (String key : getDescription().getCommands().keySet()) {
+            getCommand(key).setTabCompleter(new TabCommand());
+        }
     }
 
     private void registerEventHandlers() {
