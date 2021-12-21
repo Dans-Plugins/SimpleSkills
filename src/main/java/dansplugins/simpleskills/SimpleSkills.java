@@ -62,6 +62,7 @@ public class SimpleSkills extends AbstractPonderPlugin {
 
         getCommand("ss").setTabCompleter(new TabCommand());
         getCommand("simpleskills").setTabCompleter(new TabCommand());
+        getCommand("skills").setTabCompleter(new TabCommand());
 
         registerEventHandlers();
         initializeCommandService();
