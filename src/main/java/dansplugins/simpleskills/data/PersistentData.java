@@ -63,6 +63,11 @@ public class PersistentData {
         return skills.add(skill);
     }
 
+    public boolean removeSkill(Skill skill) {
+        Logger.getInstance().log("Removed skill: " + skill.getName());
+        return skills.remove(skill);
+    }
+
     public HashSet<PlayerRecord> getPlayerRecords() {
         return playerRecords;
     }

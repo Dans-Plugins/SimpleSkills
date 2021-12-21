@@ -105,6 +105,7 @@ public class ForceCommand extends AbstractCommand {
             return false;
         }
         skill.setActive(false);
+        PersistentData.getInstance().removeSkill(skill);
         commandSender.sendMessage(ChatColor.GREEN + "The '" + skill.getName() + "' is now inactive.");
         return true;
     }
