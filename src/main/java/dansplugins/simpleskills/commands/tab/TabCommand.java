@@ -21,7 +21,7 @@ public class TabCommand implements TabCompleter {
             arg.add("top");
             arg.add("stats");
             if (sender instanceof ConsoleCommandSender){
-                arg.add("wipe");
+                arg.add("force");
             }
         }
         List<String> result = new ArrayList<String>();
