@@ -8,6 +8,6 @@ import dansplugins.simpleskills.objects.abs.Skill;
  */
 public class AnimalBreeding extends Skill {
     public AnimalBreeding() {
-        super(SupportedSkill.ANIMAL_BREEDING.ordinal(), "Animal Breeding");
+        super(SupportedSkill.ANIMAL_BREEDING.ordinal(), "Animal_Breeding");
     }
 }

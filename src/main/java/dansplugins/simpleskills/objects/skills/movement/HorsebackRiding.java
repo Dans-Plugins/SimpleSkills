@@ -8,6 +8,6 @@ import dansplugins.simpleskills.objects.abs.Skill;
  */
 public class HorsebackRiding extends Skill {
     public HorsebackRiding() {
-        super(SupportedSkill.HORSEBACK_RIDING.ordinal(), "Horseback Riding");
+        super(SupportedSkill.HORSEBACK_RIDING.ordinal(), "Horseback_Riding");
     }
 }

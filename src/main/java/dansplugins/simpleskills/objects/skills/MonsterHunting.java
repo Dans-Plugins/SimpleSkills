@@ -8,6 +8,6 @@ import dansplugins.simpleskills.objects.abs.Skill;
  */
 public class MonsterHunting extends Skill {
     public MonsterHunting() {
-        super(SupportedSkill.MONSTER_HUNTING.ordinal(), "Monster Hunting");
+        super(SupportedSkill.MONSTER_HUNTING.ordinal(), "Monster_Hunting");
     }
 }
