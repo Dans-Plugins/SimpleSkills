@@ -24,7 +24,7 @@ public class Logger {
 
     public void log(String message) {
         if (SimpleSkills.getInstance().isDebugEnabled()) {
-            SimpleSkills.getInstance().getLogger().log(Level.INFO, "[SimpleSkills] " + message);
+            SimpleSkills.getInstance().getLogger().log(Level.INFO, message);
         }
     }
 
