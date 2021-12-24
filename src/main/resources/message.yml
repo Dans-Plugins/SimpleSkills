@@ -1,0 +1,28 @@
+message-version: 0.1
+Default-Command:
+  - "&bSimpleSkills %version%"
+  - "&6Developed by %author%"
+  - "&aWiki: https://github.com/dmccoystephenson/SimpleSkills/wiki"
+  - "&9To view a list of commands. Type /ss help."
+Help-Command:
+  - "&9/ss help - View a list of helpful commands."
+  - "&9/ss info <IGN> - View your record or another player's record."
+  - "&9/ss skill (skillName) - View information about a skill."
+  - "&9/ss top (skillName) - View the top player in a skill."
+  - "&9/ss stats - View various statistics associated with the plugin."
+  - "&9/ss config - View or set config options."
+  - "&9/ss force - Force certain actions to occur."
+DontHaveRecord: "&cYou do not have a player record."
+NotFound: "&cThat player was not found."
+DoesntHaveRecord: "&cThat player doesn't have a player record."
+SkillHUsage: "&cUsage: /ss skill (skillName)"
+SkillNotFound: "&cThat skill wasn't found."
+Stats:
+  - "&9=== SimpleSkills Stats ==="
+  - "&bNumber of skills: %nos%"
+  - "&bNumber of player records: %nopr%"
+  - "&bUnknown skills: %uns%"
+  - "&bUseless skills: %uss"
+TopHUsage: "&cUsage: /ss top (skillName)"
+NoTop: "&cNo one is very skilled at %skill%."
+Top: "&aTop Player in %skill% -> %player% - LVL: %top%"

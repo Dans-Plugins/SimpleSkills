@@ -1,5 +1,5 @@
 name: '${project.name}'
-version: '${project.version}'
+version: '${project.version}-${devbuid.version}'
 main: dansplugins.simpleskills.SimpleSkills
 api-version: 1.13
 author: Daniel Stephenson

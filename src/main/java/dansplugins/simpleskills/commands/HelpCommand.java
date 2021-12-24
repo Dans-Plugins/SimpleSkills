@@ -1,5 +1,7 @@
 package dansplugins.simpleskills.commands;
 
+import dansplugins.simpleskills.SimpleSkills;
+import dansplugins.simpleskills.services.LocalMessageService;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import preponderous.ponder.misc.AbstractCommand;
@@ -26,13 +28,8 @@ public class HelpCommand extends AbstractCommand {
 
     @Override
     public boolean execute(CommandSender commandSender) {
-        commandSender.sendMessage(ChatColor.AQUA + "/ss help - View a list of helpful commands.");
-        commandSender.sendMessage(ChatColor.AQUA + "/ss info <IGN> - View your record or another player's record.");
-        commandSender.sendMessage(ChatColor.AQUA + "/ss skill (skillName) - View information about a skill.");
-        commandSender.sendMessage(ChatColor.AQUA + "/ss top (skillName) - View the top player in a skill.");
-        commandSender.sendMessage(ChatColor.AQUA + "/ss stats - View various statistics associated with the plugin.");
-        commandSender.sendMessage(ChatColor.AQUA + "/ss config - View or set config options.");
-        commandSender.sendMessage(ChatColor.AQUA + "/ss force - Force certain actions to occur.");
+        for (String Hc : LocalMessageService.getInstance().getlang().getStringList("Help-Command"))
+            commandSender.sendMessage(LocalMessageService.getInstance().convert(Hc));
         return true;
     }
 

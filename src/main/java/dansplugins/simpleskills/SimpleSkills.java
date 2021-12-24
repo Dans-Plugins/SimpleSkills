@@ -6,6 +6,7 @@ import dansplugins.simpleskills.commands.tab.TabCommand;
 import dansplugins.simpleskills.eventhandlers.*;
 import dansplugins.simpleskills.nms.NMSVersion;
 import dansplugins.simpleskills.services.LocalConfigService;
+import dansplugins.simpleskills.services.LocalMessageService;
 import dansplugins.simpleskills.services.LocalStorageService;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -46,6 +47,7 @@ public class SimpleSkills extends AbstractPonderPlugin {
         initializeCommandService();
         initializeConfig();
         LocalStorageService.getInstance().load();
+        LocalMessageService.getInstance().createlang();
         getPonderAPI().setDebug(false);
     }
 
