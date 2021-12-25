@@ -1,0 +1,7 @@
+config-version: 0.1
+debugMode: false
+defaultMaxLevel: 100
+defaultBaseExperienceRequirement: 10
+defaultExperienceIncreaseFactor: 1.2
+levelUpAlert: true
+benefitAlert: true

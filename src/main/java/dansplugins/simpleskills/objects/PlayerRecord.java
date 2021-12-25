@@ -178,7 +178,7 @@ public class PlayerRecord implements Savable, Cacheable {
         Player player = Bukkit.getPlayer(playerUUID);
         if (player != null) {
             Skill skill = PersistentData.getInstance().getSkill(ID);
-            if (LocalConfigService.getInstance().getBoolean("levelUpAlert")) {
+            if (LocalConfigService.getInstance().getconfig().getBoolean("levelUpAlert")) {
                 player.sendMessage(ChatColor.GREEN + "You've leveled up your " + skill.getName() + " skill to " + getSkillLevel(ID));
             }
 

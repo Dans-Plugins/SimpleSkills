@@ -45,10 +45,11 @@ public class SimpleSkills extends AbstractPonderPlugin {
         setTabCompleterForCoreCommands();
         registerEventHandlers();
         initializeCommandService();
-        initializeConfig();
+        LocalConfigService.getInstance().createconfig();
         LocalStorageService.getInstance().load();
         LocalMessageService.getInstance().createlang();
         getPonderAPI().setDebug(false);
+        checkversion();
     }
 
     @Override
@@ -79,7 +80,16 @@ public class SimpleSkills extends AbstractPonderPlugin {
     }
 
     public boolean isDebugEnabled() {
-        return LocalConfigService.getInstance().getBoolean("debugMode");
+        return LocalConfigService.getInstance().getconfig().getBoolean("debugMode");
+    }
+
+    private void checkversion(){
+        if (LocalMessageService.getInstance().getlang().getDouble("message-version") != 0.1) {
+            getLogger().warning("Outdated message.yml! Please backup & update message.yml file and restart server again!!");
+        }
+        if (LocalConfigService.getInstance().getconfig().getDouble("config-version") != 0.1) {
+            getLogger().warning("Outdated config.yml! Please backup & update config.yml file and restart server again!!");
+        }
     }
 
     private void performNMSChecks() {
@@ -107,19 +117,6 @@ public class SimpleSkills extends AbstractPonderPlugin {
         Metrics metrics = new Metrics(this, pluginId);
     }
 
-    private void initializeConfig() {
-        // create/load config
-        if (!(new File("./plugins/SimpleSkills/config.yml").exists())) {
-            LocalConfigService.getInstance().saveMissingConfigDefaultsIfNotPresent();
-        }
-        else {
-            // pre load compatibility checks
-            if (isVersionMismatched()) {
-                LocalConfigService.getInstance().saveMissingConfigDefaultsIfNotPresent();
-            }
-            reloadConfig();
-        }
-    }
 
     private void setTabCompleterForCoreCommands() {
         for (String key : getDescription().getCommands().keySet()) {
@@ -154,7 +151,7 @@ public class SimpleSkills extends AbstractPonderPlugin {
                 new ForceCommand(),
                 new SkillCommand(),
                 new TopCommand(),
-                new ConfigCommand()
+                new ReloadCommand()
         ));
         getPonderAPI().getCommandService().initialize(commands, "That command wasn't found.");
     }

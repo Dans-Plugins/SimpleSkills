@@ -20,6 +20,7 @@ public class TabCommand implements TabCompleter {
             arg.add("skill");
             arg.add("top");
             arg.add("stats");
+            arg.add("reload");
             if (sender instanceof ConsoleCommandSender){
                 arg.add("force");
             }
