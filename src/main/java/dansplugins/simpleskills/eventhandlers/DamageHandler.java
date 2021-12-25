@@ -40,7 +40,7 @@ public class DamageHandler extends SkillHandler {
         // handle damage negation benefit
         if (hardinessSkill.hasBenefit(SupportedBenefit.DAMAGE_NEGATION.ordinal()) && ChanceCalculator.getInstance().roll(playerRecord, hardinessSkill, 0.01)) {
             event.setCancelled(true);
-            if (LocalConfigService.getInstance().getBoolean("benefitAlert")) {
+            if (LocalConfigService.getInstance().getconfig().getBoolean("benefitAlert")) {
                 player.sendMessage(ChatColor.GREEN + "Due to your " + hardinessSkill.getName() + " skill, you manage to avoid taking damage.");
             }
             return;
@@ -49,7 +49,7 @@ public class DamageHandler extends SkillHandler {
         // handle damage reduction benefit
         if (hardinessSkill.hasBenefit(SupportedBenefit.DAMAGE_REDUCTION.ordinal()) && ChanceCalculator.getInstance().roll(playerRecord, hardinessSkill, 0.05)) {
             event.setDamage(event.getDamage() / 2);
-            if (LocalConfigService.getInstance().getBoolean("benefitAlert")) {
+            if (LocalConfigService.getInstance().getconfig().getBoolean("benefitAlert")) {
                 player.sendMessage(ChatColor.GREEN + "Due to your " + hardinessSkill.getName() + " skill, you manage to take reduced damage.");
             }
             return;

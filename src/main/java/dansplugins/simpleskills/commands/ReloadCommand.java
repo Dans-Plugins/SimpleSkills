@@ -1,6 +1,7 @@
 package dansplugins.simpleskills.commands;
 
 import dansplugins.simpleskills.SimpleSkills;
+import dansplugins.simpleskills.services.LocalConfigService;
 import dansplugins.simpleskills.services.LocalMessageService;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -9,12 +10,9 @@ import preponderous.ponder.misc.AbstractCommand;
 import java.util.ArrayList;
 import java.util.Collections;
 
-/**
- * @author Daniel Stephenson
- */
-public class HelpCommand extends AbstractCommand {
-    private final ArrayList<String> names = new ArrayList<>(Collections.singletonList("help"));
-    private final ArrayList<String> permissions = new ArrayList<>(Collections.singletonList("ss.help"));
+public class ReloadCommand extends AbstractCommand {
+    private final ArrayList<String> names = new ArrayList<>(Collections.singletonList("reload"));
+    private final ArrayList<String> permissions = new ArrayList<>(Collections.singletonList("ss.reload"));
 
     @Override
     public ArrayList<String> getNames() {
@@ -28,8 +26,9 @@ public class HelpCommand extends AbstractCommand {
 
     @Override
     public boolean execute(CommandSender commandSender) {
-        for (String Hc : LocalMessageService.getInstance().getlang().getStringList("Help-Command"))
-            commandSender.sendMessage(LocalMessageService.getInstance().convert(Hc));
+        LocalMessageService.getInstance().reloadlang();
+        LocalConfigService.getInstance().reloadconfig();
+        commandSender.sendMessage(ChatColor.GREEN + "Reloaded");
         return true;
     }
 

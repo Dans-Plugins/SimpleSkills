@@ -2,6 +2,7 @@ package dansplugins.simpleskills.commands;
 
 import dansplugins.simpleskills.data.PersistentData;
 import dansplugins.simpleskills.objects.abs.Skill;
+import dansplugins.simpleskills.services.LocalMessageService;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import preponderous.ponder.misc.AbstractCommand;
@@ -28,7 +29,8 @@ public class SkillCommand extends AbstractCommand {
 
     @Override
     public boolean execute(CommandSender commandSender) {
-        commandSender.sendMessage(ChatColor.RED + "Usage: /ss skill (skillName)");
+        commandSender.sendMessage(LocalMessageService.getInstance().convert(LocalMessageService.getInstance().getlang().getString("SkillHUsage")));
+
         return false;
     }
 
@@ -37,7 +39,8 @@ public class SkillCommand extends AbstractCommand {
         String skillName = args[0];
         Skill skill = PersistentData.getInstance().getSkill(skillName);
         if (skill == null) {
-            commandSender.sendMessage(ChatColor.RED + "That skill wasn't found.");
+            commandSender.sendMessage(LocalMessageService.getInstance().convert(LocalMessageService.getInstance().getlang().getString("SkillNotFound")));
+
         }
         skill.sendInfo(commandSender);
         return true;

@@ -1,6 +1,7 @@
 package dansplugins.simpleskills.commands;
 
 import dansplugins.simpleskills.SimpleSkills;
+import dansplugins.simpleskills.services.LocalMessageService;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import preponderous.ponder.misc.AbstractCommand;
@@ -27,11 +28,8 @@ public class DefaultCommand extends AbstractCommand {
 
     @Override
     public boolean execute(CommandSender commandSender) {
-        commandSender.sendMessage(ChatColor.AQUA + "SimpleSkills " + SimpleSkills.getInstance().getVersion());
-        commandSender.sendMessage(ChatColor.AQUA + "Developed by: Daniel Stephenson");
-        commandSender.sendMessage(ChatColor.AQUA + "Wiki: https://github.com/dmccoystephenson/SimpleSkills/wiki");
-        commandSender.sendMessage("");
-        commandSender.sendMessage(ChatColor.AQUA + "To view a list of commands, type /ss help.");
+        for (String Dfc : LocalMessageService.getInstance().getlang().getStringList("Default-Command"))
+            commandSender.sendMessage(LocalMessageService.getInstance().convert(Dfc).replaceAll("%version%", SimpleSkills.getInstance().getVersion()).replaceAll("%author%", SimpleSkills.getInstance().getDescription().getAuthors().toString()));
         return true;
     }
 

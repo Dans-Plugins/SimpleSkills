@@ -3,6 +3,7 @@ package dansplugins.simpleskills.commands;
 import dansplugins.simpleskills.SimpleSkills;
 import dansplugins.simpleskills.data.PersistentData;
 import dansplugins.simpleskills.objects.PlayerRecord;
+import dansplugins.simpleskills.services.LocalMessageService;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -38,7 +39,7 @@ public class InfoCommand extends AbstractCommand {
         Player player = (Player) commandSender;
         PlayerRecord playerRecord = PersistentData.getInstance().getPlayerRecord(player.getUniqueId());
         if (playerRecord == null) {
-            player.sendMessage(ChatColor.RED + "You don't have a player record.");
+            player.sendMessage(LocalMessageService.getInstance().convert(LocalMessageService.getInstance().getlang().getString("DontHaveRecord")));
             return false;
         }
         playerRecord.sendInfo(commandSender);
@@ -50,12 +51,12 @@ public class InfoCommand extends AbstractCommand {
         String playerName = args[0];
         UUID playerUUID = SimpleSkills.getInstance().getToolbox().getUUIDChecker().findUUIDBasedOnPlayerName(playerName);
         if (playerUUID == null) {
-            commandSender.sendMessage(ChatColor.RED + "That player wasn't found.");
+            commandSender.sendMessage(LocalMessageService.getInstance().convert(LocalMessageService.getInstance().getlang().getString("NotFound")));
             return false;
         }
         PlayerRecord playerRecord = PersistentData.getInstance().getPlayerRecord(playerUUID);
         if (playerRecord == null) {
-            commandSender.sendMessage(ChatColor.RED + "That player doesn't have a player record.");
+            commandSender.sendMessage(LocalMessageService.getInstance().convert(LocalMessageService.getInstance().getlang().getString("DoesntHaveRecord")));
             return false;
         }
         playerRecord.sendInfo(commandSender);

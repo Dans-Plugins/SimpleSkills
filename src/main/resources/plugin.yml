@@ -1,5 +1,5 @@
 name: '${project.name}'
-version: '${project.version}'
+version: '${project.version}-${devbuid.version}'
 main: dansplugins.simpleskills.SimpleSkills
 api-version: 1.13
 author: Daniel Stephenson
@@ -20,8 +20,6 @@ permissions:
     default: true
   ss.skill:
     default: true
-  ss.config:
-    default: op
   ss.force:
     default: op
   ss.force.wipe:
@@ -29,4 +27,6 @@ permissions:
   ss.force.activate:
     default: op
   ss.force.deactivate:
+    default: op
+  ss.reload:
     default: op
