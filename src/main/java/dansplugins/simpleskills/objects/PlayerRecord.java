@@ -7,6 +7,7 @@ import dansplugins.simpleskills.SimpleSkills;
 import dansplugins.simpleskills.data.PersistentData;
 import dansplugins.simpleskills.objects.abs.Skill;
 import dansplugins.simpleskills.services.LocalConfigService;
+import dansplugins.simpleskills.services.LocalMessageService;
 import dansplugins.simpleskills.utils.ExperienceCalculator;
 import dansplugins.simpleskills.utils.Logger;
 import org.bukkit.Bukkit;
@@ -122,10 +123,9 @@ public class PlayerRecord implements Savable, Cacheable {
 
     public void sendInfo(CommandSender commandSender) {
         if (getKnownSkills().size() == 0) {
-            commandSender.sendMessage(ChatColor.RED + "No skills known.");
+            commandSender.sendMessage(LocalMessageService.getInstance().convert(LocalMessageService.getInstance().getlang().getString("SkillNotFound")));
             return;
         }
-        commandSender.sendMessage(ChatColor.AQUA + "=== Skills of " + SimpleSkills.getInstance().getToolbox().getUUIDChecker().findPlayerNameBasedOnUUID(playerUUID) + " === ");
         for (int skillID : getKnownSkills()) {
             int currentLevel = getSkillLevel(skillID);
             int currentExperience = getExperience(skillID);
@@ -134,7 +134,10 @@ public class PlayerRecord implements Savable, Cacheable {
                 continue;
             }
             int experienceRequired = ExperienceCalculator.getInstance().getExperienceRequiredForLevelUp(getSkillLevel(skillID), skill.getBaseExperienceRequirement(), skill.getExperienceIncreaseFactor());
-            commandSender.sendMessage(ChatColor.AQUA + skill.getName() + " - LVL: " + currentLevel + " - EXP: " + currentExperience + "/" + experienceRequired);
+
+            for (String sendInfo : LocalMessageService.getInstance().getlang().getStringList("SendInfo"))
+                commandSender.sendMessage(LocalMessageService.getInstance().convert(sendInfo).replaceAll("%player%", SimpleSkills.getInstance().getToolbox().getUUIDChecker().findPlayerNameBasedOnUUID(playerUUID)).replaceAll("%skill%", skill.getName()).replaceAll("%level%", String.valueOf(currentLevel)).replaceAll("%min%", String.valueOf(currentExperience)).replaceAll("%max%", String.valueOf(experienceRequired)));
+
         }
     }
 
@@ -164,7 +167,7 @@ public class PlayerRecord implements Savable, Cacheable {
         // attempt to inform player
         Player player = Bukkit.getPlayer(playerUUID);
         if (player != null) {
-            player.sendMessage(ChatColor.GREEN + "You've learned the " + skill.getName() + " skill. Type /ss info to view your skills.");
+            player.sendMessage(LocalMessageService.getInstance().convert(LocalMessageService.getInstance().getlang().getString("LearnedSkill").replaceAll("%skill%", skill.getName())));
         }
         Logger.getInstance().log(SimpleSkills.getInstance().getToolbox().getUUIDChecker().findPlayerNameBasedOnUUID(playerUUID) + " learned the " + skill.getName() + " skill.");
     }
@@ -179,7 +182,8 @@ public class PlayerRecord implements Savable, Cacheable {
         if (player != null) {
             Skill skill = PersistentData.getInstance().getSkill(ID);
             if (LocalConfigService.getInstance().getconfig().getBoolean("levelUpAlert")) {
-                player.sendMessage(ChatColor.GREEN + "You've leveled up your " + skill.getName() + " skill to " + getSkillLevel(ID));
+                player.sendMessage(LocalMessageService.getInstance().convert(LocalMessageService.getInstance().getlang().getString("LevelUp").replaceAll("%skill%", skill.getName()).replaceAll("%level%", String.valueOf(getSkillLevel(ID)))));
+
             }
 
         }
