@@ -11,7 +11,6 @@ import dansplugins.simpleskills.services.LocalMessageService;
 import dansplugins.simpleskills.utils.ExperienceCalculator;
 import dansplugins.simpleskills.utils.Logger;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import preponderous.ponder.modifiers.Cacheable;

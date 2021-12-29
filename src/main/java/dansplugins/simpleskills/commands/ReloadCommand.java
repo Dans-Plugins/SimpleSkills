@@ -1,6 +1,5 @@
 package dansplugins.simpleskills.commands;
 
-import dansplugins.simpleskills.SimpleSkills;
 import dansplugins.simpleskills.services.LocalConfigService;
 import dansplugins.simpleskills.services.LocalMessageService;
 import org.bukkit.ChatColor;

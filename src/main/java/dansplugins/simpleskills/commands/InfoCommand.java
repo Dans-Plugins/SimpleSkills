@@ -4,7 +4,6 @@ import dansplugins.simpleskills.SimpleSkills;
 import dansplugins.simpleskills.data.PersistentData;
 import dansplugins.simpleskills.objects.PlayerRecord;
 import dansplugins.simpleskills.services.LocalMessageService;
-import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import preponderous.ponder.misc.AbstractCommand;
