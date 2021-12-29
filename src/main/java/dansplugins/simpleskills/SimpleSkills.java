@@ -30,10 +30,17 @@ public class SimpleSkills extends AbstractPonderPlugin {
     private final String nmsVersion = NMSVersion.getNMSVersion();
     private final String minecraftVersion = NMSVersion.formatNMSVersion(nmsVersion);
 
+    /**
+     * This can be utilized to access the self-managed instance of SimpleSkills.
+     * @return The self-managed instance of this class.
+     */
     public static SimpleSkills getInstance() {
         return instance;
     }
 
+    /**
+     * This runs when the server starts.
+     */
     @Override
     public void onEnable() {
         instance = this;
@@ -48,14 +55,25 @@ public class SimpleSkills extends AbstractPonderPlugin {
         LocalStorageService.getInstance().load();
         LocalMessageService.getInstance().createlang();
         getPonderAPI().setDebug(false);
-        checkversion();
+        checkMessageAndConfigVersions();
     }
 
+    /**
+     * This runs when the sever stops.
+     */
     @Override
     public void onDisable() {
         LocalStorageService.getInstance().save();
     }
 
+    /**
+     * This method handles commands sent to the minecraft server and interprets them if the label matches one of the core commands.
+     * @param sender The sender of the command.
+     * @param cmd The command that was sent. This is unused.
+     * @param label The core command that has been invoked.
+     * @param args Arguments of the core command. Often sub-commands.
+     * @return A boolean indicating whether the execution of the command was successful.
+     */
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (args.length == 0) {
             DefaultCommand defaultCommand = new DefaultCommand();
@@ -65,10 +83,18 @@ public class SimpleSkills extends AbstractPonderPlugin {
         return getPonderAPI().getCommandService().interpretCommand(sender, label, args);
     }
 
+    /**
+     * This can be used to get the version of the plugin.
+     * @return A string containing the version preceded by 'v'
+     */
     public String getVersion() {
         return pluginVersion;
     }
 
+    /**
+     * Checks if the version is mismatched.
+     * @return A boolean indicating if the version is mismatched.
+     */
     public boolean isVersionMismatched() {
         String configVersion = getConfig().getString("version");
         if (configVersion == null || this.getVersion() == null) {
@@ -78,11 +104,15 @@ public class SimpleSkills extends AbstractPonderPlugin {
         }
     }
 
+    /**
+     * Checks if debug is enabled.
+     * @return Whether debug is enabled.
+     */
     public boolean isDebugEnabled() {
         return LocalConfigService.getInstance().getconfig().getBoolean("debugMode");
     }
 
-    private void checkversion(){
+    private void checkMessageAndConfigVersions(){
         if (LocalMessageService.getInstance().getlang().getDouble("message-version") != 0.1) {
             getLogger().warning("Outdated message.yml! Please backup & update message.yml file and restart server again!!");
         }
