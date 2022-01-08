@@ -22,7 +22,7 @@ Stats:
   - "&bNumber of skills: %nos%"
   - "&bNumber of player records: %nopr%"
   - "&bUnknown skills: %uns%"
-  - "&bUseless skills: %uss"
+  - "&bUseless skills: %uss%"
 TopHUsage: "&cUsage: /ss top (skillName)"
 NoTop: "&cNo one is very skilled at %skill%."
 Top: "&aTop Player in %skill% -> %player% - LVL: %top%"
