@@ -13,9 +13,9 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.event.Listener;
-import preponderous.ponder.AbstractPonderPlugin;
-import preponderous.ponder.misc.PonderAPI_Integrator;
-import preponderous.ponder.misc.specification.ICommand;
+import preponderous.ponder.minecraft.abs.AbstractPluginCommand;
+import preponderous.ponder.minecraft.abs.PonderPlugin;
+import preponderous.ponder.minecraft.spigot.tools.EventHandlerRegistry;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,7 +24,7 @@ import java.util.logging.Level;
 /**
  * @author Daniel Stephenson
  */
-public class SimpleSkills extends AbstractPonderPlugin {
+public class SimpleSkills extends PonderPlugin {
     private static SimpleSkills instance;
     private final String pluginVersion = "v" + getDescription().getVersion();
     private final String nmsVersion = NMSVersion.getNMSVersion();
@@ -44,8 +44,6 @@ public class SimpleSkills extends AbstractPonderPlugin {
     @Override
     public void onEnable() {
         instance = this;
-        ponderAPI_integrator = new PonderAPI_Integrator(this);
-        toolbox = getPonderAPI().getToolbox();
         performNMSChecks();
         handleIntegrations();
         setTabCompleterForCoreCommands();
@@ -79,7 +77,6 @@ public class SimpleSkills extends AbstractPonderPlugin {
             DefaultCommand defaultCommand = new DefaultCommand();
             return defaultCommand.execute(sender);
         }
-
         return getPonderAPI().getCommandService().interpretCommand(sender, label, args);
     }
 
@@ -169,11 +166,12 @@ public class SimpleSkills extends AbstractPonderPlugin {
                 new BreedingHandler(),
                 new DeathHandler()
         ));
-        getToolbox().getEventHandlerRegistry().registerEventHandlers(listeners, this);
+        EventHandlerRegistry eventHandlerRegistry = new EventHandlerRegistry(getPonderAPI());
+        eventHandlerRegistry.registerEventHandlers(listeners, this);
     }
 
     private void initializeCommandService() {
-        ArrayList<ICommand> commands = new ArrayList<>(Arrays.asList(
+        ArrayList<AbstractPluginCommand> commands = new ArrayList<>(Arrays.asList(
                 new HelpCommand(),
                 new InfoCommand(),
                 new StatsCommand(),

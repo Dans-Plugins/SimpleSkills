@@ -6,23 +6,16 @@ import dansplugins.simpleskills.objects.PlayerRecord;
 import dansplugins.simpleskills.objects.abs.Skill;
 import dansplugins.simpleskills.services.LocalMessageService;
 import org.bukkit.command.CommandSender;
-import preponderous.ponder.misc.AbstractCommand;
+import preponderous.ponder.minecraft.abs.AbstractPluginCommand;
+import preponderous.ponder.minecraft.spigot.tools.UUIDChecker;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.List;
 
-public class TopCommand extends AbstractCommand {
-    private final ArrayList<String> names = new ArrayList<>(Collections.singletonList("top"));
-    private final ArrayList<String> permissions = new ArrayList<>(Collections.singletonList("ss.top"));
+public class TopCommand extends AbstractPluginCommand {
 
-    @Override
-    public ArrayList<String> getNames() {
-        return names;
-    }
-
-    @Override
-    public ArrayList<String> getPermissions() {
-        return permissions;
+    public TopCommand() {
+        super(new ArrayList<>(List.of("top")), new ArrayList<>(List.of("ss.top")));
     }
 
     @Override
@@ -45,7 +38,8 @@ public class TopCommand extends AbstractCommand {
 
             return false;
         }
-        String playerName = SimpleSkills.getInstance().getToolbox().getUUIDChecker().findPlayerNameBasedOnUUID(topPlayerRecord.getPlayerUUID());
+        UUIDChecker uuidChecker = new UUIDChecker();
+        String playerName = uuidChecker.findPlayerNameBasedOnUUID(topPlayerRecord.getPlayerUUID());
         commandSender.sendMessage(LocalMessageService.getInstance().convert(LocalMessageService.getInstance().getlang().getString("SkillNotFound").replaceAll("%skill%", skill.getName()).replaceAll("%player%", playerName).replaceAll("%top%", String.valueOf(topPlayerRecord.getSkillLevel(skill.getID())))));
 
         return true;

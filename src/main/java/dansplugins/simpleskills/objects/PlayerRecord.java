@@ -13,8 +13,9 @@ import dansplugins.simpleskills.utils.Logger;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import preponderous.ponder.modifiers.Cacheable;
-import preponderous.ponder.modifiers.Savable;
+import preponderous.ponder.minecraft.spigot.tools.UUIDChecker;
+import preponderous.ponder.misc.Cacheable;
+import preponderous.ponder.misc.Savable;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
@@ -134,9 +135,10 @@ public class PlayerRecord implements Savable, Cacheable {
             }
             int experienceRequired = ExperienceCalculator.getInstance().getExperienceRequiredForLevelUp(getSkillLevel(skillID), skill.getBaseExperienceRequirement(), skill.getExperienceIncreaseFactor());
 
-            for (String sendInfo : LocalMessageService.getInstance().getlang().getStringList("SendInfo"))
-                commandSender.sendMessage(LocalMessageService.getInstance().convert(sendInfo).replaceAll("%player%", SimpleSkills.getInstance().getToolbox().getUUIDChecker().findPlayerNameBasedOnUUID(playerUUID)).replaceAll("%skill%", skill.getName()).replaceAll("%level%", String.valueOf(currentLevel)).replaceAll("%min%", String.valueOf(currentExperience)).replaceAll("%max%", String.valueOf(experienceRequired)));
-
+            for (String sendInfo : LocalMessageService.getInstance().getlang().getStringList("SendInfo")) {
+                UUIDChecker uuidChecker = new UUIDChecker();
+                commandSender.sendMessage(LocalMessageService.getInstance().convert(sendInfo).replaceAll("%player%", uuidChecker.findPlayerNameBasedOnUUID(playerUUID)).replaceAll("%skill%", skill.getName()).replaceAll("%level%", String.valueOf(currentLevel)).replaceAll("%min%", String.valueOf(currentExperience)).replaceAll("%max%", String.valueOf(experienceRequired)));
+            }
         }
     }
 
@@ -168,7 +170,8 @@ public class PlayerRecord implements Savable, Cacheable {
         if (player != null) {
             player.sendMessage(LocalMessageService.getInstance().convert(LocalMessageService.getInstance().getlang().getString("LearnedSkill").replaceAll("%skill%", skill.getName())));
         }
-        Logger.getInstance().log(SimpleSkills.getInstance().getToolbox().getUUIDChecker().findPlayerNameBasedOnUUID(playerUUID) + " learned the " + skill.getName() + " skill.");
+        UUIDChecker uuidChecker = new UUIDChecker();
+        Logger.getInstance().log(uuidChecker.findPlayerNameBasedOnUUID(playerUUID) + " learned the " + skill.getName() + " skill.");
     }
 
     private void levelUp(int ID, int experienceRequiredForLevelUp) {

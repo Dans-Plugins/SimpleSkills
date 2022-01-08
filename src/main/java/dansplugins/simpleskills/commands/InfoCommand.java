@@ -6,27 +6,20 @@ import dansplugins.simpleskills.objects.PlayerRecord;
 import dansplugins.simpleskills.services.LocalMessageService;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import preponderous.ponder.misc.AbstractCommand;
+import preponderous.ponder.minecraft.abs.AbstractPluginCommand;
+import preponderous.ponder.minecraft.spigot.tools.UUIDChecker;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
 
 /**
  * @author Daniel Stephenson
  */
-public class InfoCommand extends AbstractCommand {
-    private ArrayList<String> names = new ArrayList<>(Collections.singletonList("info"));
-    private ArrayList<String> permissions = new ArrayList<>(Collections.singletonList("ss.info"));
+public class InfoCommand extends AbstractPluginCommand {
 
-    @Override
-    public ArrayList<String> getNames() {
-        return names;
-    }
-
-    @Override
-    public ArrayList<String> getPermissions() {
-        return permissions;
+    public InfoCommand() {
+        super(new ArrayList<>(List.of("info")), new ArrayList<>(List.of("ss.info")));
     }
 
     @Override
@@ -48,7 +41,8 @@ public class InfoCommand extends AbstractCommand {
     @Override
     public boolean execute(CommandSender commandSender, String[] args) {
         String playerName = args[0];
-        UUID playerUUID = SimpleSkills.getInstance().getToolbox().getUUIDChecker().findUUIDBasedOnPlayerName(playerName);
+        UUIDChecker uuidChecker = new UUIDChecker();
+        UUID playerUUID = uuidChecker.findUUIDBasedOnPlayerName(playerName);
         if (playerUUID == null) {
             commandSender.sendMessage(LocalMessageService.getInstance().convert(LocalMessageService.getInstance().getlang().getString("NotFound")));
             return false;
