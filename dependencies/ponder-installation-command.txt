@@ -1,1 +1,1 @@
-mvn install:install-file -Dfile=C:\Users\dmcco\IdeaProjects\SimpleSkills-12-10-2021\dependencies\Ponder-v0.13.jar -DgroupId=preponderous -DartifactId=ponder -Dversion=v0.13 -Dpackaging=Jar
+mvn install:install-file -Dfile=<path> -DgroupId=preponderous -DartifactId=ponder -Dversion=<version> -Dpackaging=Jar
