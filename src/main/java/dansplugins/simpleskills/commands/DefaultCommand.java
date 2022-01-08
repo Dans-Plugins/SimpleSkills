@@ -3,26 +3,18 @@ package dansplugins.simpleskills.commands;
 import dansplugins.simpleskills.SimpleSkills;
 import dansplugins.simpleskills.services.LocalMessageService;
 import org.bukkit.command.CommandSender;
-import preponderous.ponder.misc.AbstractCommand;
+import preponderous.ponder.minecraft.abs.AbstractPluginCommand;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Daniel Stephenson
  */
-public class DefaultCommand extends AbstractCommand {
-    private final ArrayList<String> names = new ArrayList<>(Collections.singletonList("default"));
-    private final ArrayList<String> permissions = new ArrayList<>(Collections.singletonList("ss.default"));
+public class DefaultCommand extends AbstractPluginCommand {
 
-    @Override
-    public ArrayList<String> getNames() {
-        return names;
-    }
-
-    @Override
-    public ArrayList<String> getPermissions() {
-        return permissions;
+    public DefaultCommand() {
+        super(new ArrayList<>(List.of("default")), new ArrayList<>(List.of("ss.default")));
     }
 
     @Override

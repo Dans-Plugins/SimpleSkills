@@ -10,6 +10,7 @@ import dansplugins.simpleskills.objects.skills.movement.Boating;
 import dansplugins.simpleskills.objects.skills.movement.Cardio;
 import dansplugins.simpleskills.objects.skills.movement.HorsebackRiding;
 import dansplugins.simpleskills.utils.Logger;
+import preponderous.ponder.minecraft.spigot.tools.UUIDChecker;
 
 import java.util.HashSet;
 import java.util.UUID;
@@ -86,7 +87,8 @@ public class PersistentData {
                 return record;
             }
         }
-        Logger.getInstance().log("A player record wasn't found for " + SimpleSkills.getInstance().getToolbox().getUUIDChecker().findPlayerNameBasedOnUUID(playerUUID) + " wasn't found. One is being created for them.");
+        UUIDChecker uuidChecker = new UUIDChecker();
+        Logger.getInstance().log("A player record wasn't found for " + uuidChecker.findPlayerNameBasedOnUUID(playerUUID) + " wasn't found. One is being created for them.");
         PlayerRecord record = new PlayerRecord(playerUUID);
         addPlayerRecord(record);
         return record;

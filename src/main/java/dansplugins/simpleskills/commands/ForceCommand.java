@@ -5,26 +5,18 @@ import dansplugins.simpleskills.objects.abs.Skill;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import preponderous.ponder.misc.AbstractCommand;
+import preponderous.ponder.minecraft.abs.AbstractPluginCommand;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Daniel Stephenson
  */
-public class ForceCommand extends AbstractCommand {
-    private final ArrayList<String> names = new ArrayList<>(Collections.singletonList("force"));
-    private final ArrayList<String> permissions = new ArrayList<>(Collections.singletonList("ss.force"));
+public class ForceCommand extends AbstractPluginCommand {
 
-    @Override
-    public ArrayList<String> getNames() {
-        return names;
-    }
-
-    @Override
-    public ArrayList<String> getPermissions() {
-        return permissions;
+    public ForceCommand() {
+        super(new ArrayList<>(List.of("force")), new ArrayList<>(List.of("ss.force")));
     }
 
     @Override

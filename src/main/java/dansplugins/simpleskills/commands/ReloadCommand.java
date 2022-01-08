@@ -4,23 +4,15 @@ import dansplugins.simpleskills.services.LocalConfigService;
 import dansplugins.simpleskills.services.LocalMessageService;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
-import preponderous.ponder.misc.AbstractCommand;
+import preponderous.ponder.minecraft.abs.AbstractPluginCommand;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.List;
 
-public class ReloadCommand extends AbstractCommand {
-    private final ArrayList<String> names = new ArrayList<>(Collections.singletonList("reload"));
-    private final ArrayList<String> permissions = new ArrayList<>(Collections.singletonList("ss.reload"));
+public class ReloadCommand extends AbstractPluginCommand {
 
-    @Override
-    public ArrayList<String> getNames() {
-        return names;
-    }
-
-    @Override
-    public ArrayList<String> getPermissions() {
-        return permissions;
+    public ReloadCommand() {
+        super(new ArrayList<>(List.of("reload")), new ArrayList<>(List.of("ss.reload")));
     }
 
     @Override
