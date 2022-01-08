@@ -1,6 +1,7 @@
 package dansplugins.simpleskills.objects.abs;
 
 import dansplugins.simpleskills.services.LocalConfigService;
+import dansplugins.simpleskills.services.LocalMessageService;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
@@ -112,12 +113,14 @@ public abstract class Skill {
     // ---
 
     public void sendInfo(CommandSender commandSender) {
-        commandSender.sendMessage(ChatColor.AQUA + "=== " + getName() + " ===");
-        commandSender.sendMessage(ChatColor.AQUA + "Active: " + isActive());
-        commandSender.sendMessage(ChatColor.AQUA + "Number of benefits: " + getBenefits().size());
-        commandSender.sendMessage(ChatColor.AQUA + "Max Level: " + getMaxLevel());
-        commandSender.sendMessage(ChatColor.AQUA + "Base Experience Requirement: " + getBaseExperienceRequirement());
-        commandSender.sendMessage(ChatColor.AQUA + "Experience Increase Factor: " + getExperienceIncreaseFactor());
+        for (String sinfo : LocalMessageService.getInstance().getlang().getStringList("Skill-Info"))
+            commandSender.sendMessage(LocalMessageService.getInstance().convert(sinfo)
+                    .replaceAll("%skillname%", getName())
+                    .replaceAll("%active%", String.valueOf(isActive()))
+                    .replaceAll("%nob%", String.valueOf(getBenefits().size()))
+                    .replaceAll("%mlevel%",  String.valueOf(getMaxLevel()))
+                    .replaceAll("%ber%",  String.valueOf(getBaseExperienceRequirement()))
+                    .replaceAll("%eif%",  String.valueOf(getExperienceIncreaseFactor())));
     }
 
     private static int getDefaultMaxLevel() {
