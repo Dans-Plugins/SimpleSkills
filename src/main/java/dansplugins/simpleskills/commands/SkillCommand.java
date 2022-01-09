@@ -7,6 +7,7 @@ import org.bukkit.command.CommandSender;
 import preponderous.ponder.minecraft.abs.AbstractPluginCommand;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -15,7 +16,7 @@ import java.util.List;
 public class SkillCommand extends AbstractPluginCommand {
 
     public SkillCommand() {
-        super(new ArrayList<>(List.of("skill")), new ArrayList<>(List.of("ss.skill")));
+        super(new ArrayList<>(Arrays.asList("skill")), new ArrayList<>(Arrays.asList("ss.skill")));
     }
 
     @Override

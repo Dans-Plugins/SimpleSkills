@@ -7,12 +7,13 @@ import org.bukkit.command.CommandSender;
 import preponderous.ponder.minecraft.abs.AbstractPluginCommand;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ReloadCommand extends AbstractPluginCommand {
 
     public ReloadCommand() {
-        super(new ArrayList<>(List.of("reload")), new ArrayList<>(List.of("ss.reload")));
+        super(new ArrayList<>(Arrays.asList("reload")), new ArrayList<>(Arrays.asList("ss.reload")));
     }
 
     @Override

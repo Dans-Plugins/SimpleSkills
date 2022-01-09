@@ -10,6 +10,7 @@ import preponderous.ponder.minecraft.abs.AbstractPluginCommand;
 import preponderous.ponder.minecraft.spigot.tools.UUIDChecker;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -19,7 +20,7 @@ import java.util.UUID;
 public class InfoCommand extends AbstractPluginCommand {
 
     public InfoCommand() {
-        super(new ArrayList<>(List.of("info")), new ArrayList<>(List.of("ss.info")));
+        super(new ArrayList<>(Arrays.asList("info")), new ArrayList<>(Arrays.asList("ss.info")));
     }
 
     @Override

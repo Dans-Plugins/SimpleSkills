@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import preponderous.ponder.minecraft.abs.AbstractPluginCommand;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -16,7 +17,7 @@ import java.util.List;
 public class ForceCommand extends AbstractPluginCommand {
 
     public ForceCommand() {
-        super(new ArrayList<>(List.of("force")), new ArrayList<>(List.of("ss.force")));
+        super(new ArrayList<>(Arrays.asList("force")), new ArrayList<>(Arrays.asList("ss.force")));
     }
 
     @Override

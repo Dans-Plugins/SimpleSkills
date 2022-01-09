@@ -6,6 +6,7 @@ import org.bukkit.command.CommandSender;
 import preponderous.ponder.minecraft.abs.AbstractPluginCommand;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -14,7 +15,7 @@ import java.util.List;
 public class StatsCommand extends AbstractPluginCommand {
 
     public StatsCommand() {
-        super(new ArrayList<>(List.of("stats")), new ArrayList<>(List.of("ss.stats")));
+        super(new ArrayList<>(Arrays.asList("stats")), new ArrayList<>(Arrays.asList("ss.stats")));
     }
 
     @Override
