@@ -15,6 +15,7 @@ import org.bukkit.command.PluginCommand;
 import org.bukkit.event.Listener;
 import preponderous.ponder.minecraft.abs.AbstractPluginCommand;
 import preponderous.ponder.minecraft.abs.PonderPlugin;
+import preponderous.ponder.minecraft.spigot.misc.PonderAPI_Integrator;
 import preponderous.ponder.minecraft.spigot.tools.EventHandlerRegistry;
 
 import java.util.ArrayList;
@@ -44,6 +45,7 @@ public class SimpleSkills extends PonderPlugin {
     @Override
     public void onEnable() {
         instance = this;
+        this.ponderAPI_integrator = new PonderAPI_Integrator(this);
         performNMSChecks();
         handleIntegrations();
         setTabCompleterForCoreCommands();
