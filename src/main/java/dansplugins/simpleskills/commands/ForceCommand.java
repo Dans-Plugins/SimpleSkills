@@ -1,15 +1,14 @@
 package dansplugins.simpleskills.commands;
 
+import dansplugins.simpleskills.AbstractSkill;
 import dansplugins.simpleskills.data.PersistentData;
-import dansplugins.simpleskills.objects.abs.Skill;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import preponderous.ponder.minecraft.abs.AbstractPluginCommand;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.Collections;
 
 /**
  * @author Daniel Stephenson
@@ -17,7 +16,10 @@ import java.util.List;
 public class ForceCommand extends AbstractPluginCommand {
 
     public ForceCommand() {
-        super(new ArrayList<>(Arrays.asList("force")), new ArrayList<>(Arrays.asList("ss.force")));
+        super(
+                new ArrayList<>(Collections.singletonList("force")),
+                new ArrayList<>(Collections.singletonList("ss.force"))
+        );
     }
 
     @Override
@@ -65,7 +67,7 @@ public class ForceCommand extends AbstractPluginCommand {
     }
 
     private boolean forceActivate(CommandSender commandSender, String skillName) {
-        Skill skill = PersistentData.getInstance().getSkill(skillName);
+        AbstractSkill skill = PersistentData.getInstance().getSkill(skillName);
         if (skill == null) {
             commandSender.sendMessage(ChatColor.RED + "That skill wasn't found.");
             return false;
@@ -84,7 +86,7 @@ public class ForceCommand extends AbstractPluginCommand {
     }
 
     private boolean forceDeactivate(CommandSender commandSender, String skillName) {
-        Skill skill = PersistentData.getInstance().getSkill(skillName);
+        AbstractSkill skill = PersistentData.getInstance().getSkill(skillName);
         if (skill == null) {
             commandSender.sendMessage(ChatColor.RED + "That skill wasn't found.");
             return false;

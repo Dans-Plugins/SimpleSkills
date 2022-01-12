@@ -10,8 +10,7 @@ import java.util.List;
 
 public class TabCommand implements TabCompleter {
 
-
-    List<String> arg = new ArrayList<String>();
+    private final List<String> arg = new ArrayList<>();
 
     public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
         if (arg.isEmpty()) {
@@ -25,7 +24,7 @@ public class TabCommand implements TabCompleter {
                 arg.add("force");
             }
         }
-        List<String> result = new ArrayList<String>();
+        List<String> result = new ArrayList<>();
         if (args.length == 1){
             for (String a : arg){
                 if (a.toLowerCase().startsWith(args[0].toLowerCase()))

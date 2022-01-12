@@ -8,7 +8,6 @@ package dansplugins.simpleskills.services;
  */
 
 import dansplugins.simpleskills.SimpleSkills;
-import dansplugins.simpleskills.nms.NMSVersion;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -24,13 +23,9 @@ public class LocalConfigService {
     private static LocalConfigService instance;
     private boolean altered = false;
 
-    String nms = NMSVersion.getNMSVersion();
-    String mcver = NMSVersion.formatNMSVersion(nms);
-
     private LocalConfigService() {
 
     }
-
 
     public static LocalConfigService getInstance() {
         if (instance == null) {

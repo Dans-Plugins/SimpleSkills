@@ -1,8 +1,7 @@
 package dansplugins.simpleskills.commands;
 
-import dansplugins.simpleskills.SimpleSkills;
 import dansplugins.simpleskills.data.PersistentData;
-import dansplugins.simpleskills.objects.PlayerRecord;
+import dansplugins.simpleskills.data.PlayerRecord;
 import dansplugins.simpleskills.services.LocalMessageService;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -10,8 +9,7 @@ import preponderous.ponder.minecraft.abs.AbstractPluginCommand;
 import preponderous.ponder.minecraft.spigot.tools.UUIDChecker;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.Collections;
 import java.util.UUID;
 
 /**
@@ -20,7 +18,10 @@ import java.util.UUID;
 public class InfoCommand extends AbstractPluginCommand {
 
     public InfoCommand() {
-        super(new ArrayList<>(Arrays.asList("info")), new ArrayList<>(Arrays.asList("ss.info")));
+        super(
+                new ArrayList<>(Collections.singletonList("info")),
+                new ArrayList<>(Collections.singletonList("ss.info"))
+        );
     }
 
     @Override
@@ -42,8 +43,7 @@ public class InfoCommand extends AbstractPluginCommand {
     @Override
     public boolean execute(CommandSender commandSender, String[] args) {
         String playerName = args[0];
-        UUIDChecker uuidChecker = new UUIDChecker();
-        UUID playerUUID = uuidChecker.findUUIDBasedOnPlayerName(playerName);
+        UUID playerUUID = new UUIDChecker().findUUIDBasedOnPlayerName(playerName);
         if (playerUUID == null) {
             commandSender.sendMessage(LocalMessageService.getInstance().convert(LocalMessageService.getInstance().getlang().getString("NotFound")));
             return false;

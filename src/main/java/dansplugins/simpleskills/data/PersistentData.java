@@ -1,26 +1,19 @@
 package dansplugins.simpleskills.data;
 
-import dansplugins.simpleskills.SimpleSkills;
-import dansplugins.simpleskills.objects.PlayerRecord;
-import dansplugins.simpleskills.objects.abs.Skill;
-import dansplugins.simpleskills.objects.skills.*;
-import dansplugins.simpleskills.objects.skills.blockbreaking.*;
-import dansplugins.simpleskills.objects.skills.blockplacing.Pyromania;
-import dansplugins.simpleskills.objects.skills.movement.Boating;
-import dansplugins.simpleskills.objects.skills.movement.Cardio;
-import dansplugins.simpleskills.objects.skills.movement.HorsebackRiding;
+import dansplugins.simpleskills.AbstractSkill;
+import dansplugins.simpleskills.skills.*;
 import dansplugins.simpleskills.utils.Logger;
 import preponderous.ponder.minecraft.spigot.tools.UUIDChecker;
 
-import java.util.HashSet;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author Daniel Stephenson
  */
 public class PersistentData {
     private static PersistentData instance;
-    private final HashSet<Skill> skills = new HashSet<>();
+    private final HashSet<AbstractSkill> skills = new HashSet<>();
     private HashSet<PlayerRecord> playerRecords = new HashSet<>();
 
     private PersistentData() {
@@ -34,21 +27,21 @@ public class PersistentData {
         return instance;
     }
 
-    public HashSet<Skill> getSkills() {
+    public HashSet<AbstractSkill> getSkills() {
         return skills;
     }
 
-    public Skill getSkill(int ID) {
-        for (Skill skill : skills) {
-            if (skill.getID() == ID) {
+    public AbstractSkill getSkill(int Id) {
+        for (AbstractSkill skill : skills) {
+            if (skill.getId() == Id) {
                 return skill;
             }
         }
         return null;
     }
 
-    public Skill getSkill(String skillName) {
-        for (Skill skill : skills) {
+    public AbstractSkill getSkill(String skillName) {
+        for (AbstractSkill skill : skills) {
             if (skill.getName().equalsIgnoreCase(skillName)) {
                 return skill;
             }
@@ -56,7 +49,7 @@ public class PersistentData {
         return null;
     }
 
-    public boolean addSkill(Skill skill) {
+    public boolean addSkill(AbstractSkill skill) {
         if (!skill.isActive()) {
             return false;
         }
@@ -64,7 +57,7 @@ public class PersistentData {
         return skills.add(skill);
     }
 
-    public boolean removeSkill(Skill skill) {
+    public boolean removeSkill(AbstractSkill skill) {
         Logger.getInstance().log("Removed skill: " + skill.getName());
         return skills.remove(skill);
     }
@@ -87,8 +80,7 @@ public class PersistentData {
                 return record;
             }
         }
-        UUIDChecker uuidChecker = new UUIDChecker();
-        Logger.getInstance().log("A player record wasn't found for " + uuidChecker.findPlayerNameBasedOnUUID(playerUUID) + " wasn't found. One is being created for them.");
+        Logger.getInstance().log("A player record wasn't found for " + new UUIDChecker().findPlayerNameBasedOnUUID(playerUUID) + " wasn't found. One is being created for them.");
         PlayerRecord record = new PlayerRecord(playerUUID);
         addPlayerRecord(record);
         return record;
@@ -102,7 +94,7 @@ public class PersistentData {
 
     public int getNumKnownSkills() {
         int knownSkills = 0;
-        for (Skill skill : skills) {
+        for (AbstractSkill skill : skills) {
             for (PlayerRecord record : playerRecords) {
                 if (record.isKnown(skill)) {
                     knownSkills++;
@@ -113,52 +105,53 @@ public class PersistentData {
         return knownSkills;
     }
 
+    @Deprecated
     public int getNumUselessSkills() {
-        return skills.size() - getNumUsefulSkills();
+        return 0;
     }
 
+    @Deprecated
     public int getNumUsefulSkills() {
-        int count = 0;
-        for (Skill skill : skills) {
-            if (skill.getBenefits().size() > 0) {
-                count++;
-            }
-        }
-        return count;
+        return 0;
     }
 
-    public PlayerRecord getTopPlayerRecord(int skillID) {
-        PlayerRecord toReturn = null;
-        int max = 0;
-        for (PlayerRecord playerRecord : playerRecords) {
-            int skillLevel = playerRecord.getSkillLevel(skillID);
-            if (skillLevel > max) {
-                toReturn = playerRecord;
-                max = skillLevel;
-            }
-        }
-        return toReturn;
+    public List<PlayerRecord> getTopPlayers() {
+        final Comparator<PlayerRecord> recordComparator = Comparator.comparingInt(PlayerRecord::getOverallSkillLevel);
+        final List<PlayerRecord> playerRecords = new ArrayList<>(this.playerRecords);
+        playerRecords.sort(recordComparator);
+        return playerRecords.subList(0, Math.min(playerRecords.size(), 9));
+    }
+
+    public List<PlayerRecord> getTopPlayerRecords(int skillID) {
+        final Comparator<PlayerRecord> recordComparator = Comparator.comparingInt(o -> o.getSkillLevel(skillID, false));
+        return new ArrayList<>(this.playerRecords)
+                .stream().sorted(recordComparator)
+                .filter(record -> record.getSkillLevel(skillID, false) != -1)
+                .limit(10)
+                .collect(Collectors.toList());
     }
 
     private void initializeSkills() {
-        addSkill(new Woodcutting());
-        addSkill(new Quarrying());
-        addSkill(new Mining());
-        addSkill(new Digging());
-        addSkill(new Harvesting());
-        addSkill(new Foraging());
-        addSkill(new Floriculture());
-        addSkill(new Crafting());
-        addSkill(new Fishing());
-        addSkill(new Hardiness());
-        addSkill(new Enchanting());
-        addSkill(new Dueling());
-        addSkill(new Cardio());
+        addSkill(new Athlete());
         addSkill(new Boating());
-        addSkill(new HorsebackRiding());
-        addSkill(new AnimalBreeding());
-        addSkill(new Strength());
+        addSkill(new Breeding());
+        addSkill(new Cardio());
+        addSkill(new Crafting());
+        addSkill(new Digging());
+        addSkill(new Dueling());
+        addSkill(new Enchanting());
+        addSkill(new Farming());
+        addSkill(new Fishing());
+        addSkill(new Floriculture());
+        addSkill(new Gliding());
+        addSkill(new Hardiness());
+        addSkill(new LumberJack());
+        addSkill(new Mining());
         addSkill(new MonsterHunting());
-        addSkill(new Pyromania());
+        addSkill(new Pyromaniac());
+        addSkill(new Quarrying());
+        addSkill(new Riding());
+        addSkill(new Strength());
     }
+
 }
