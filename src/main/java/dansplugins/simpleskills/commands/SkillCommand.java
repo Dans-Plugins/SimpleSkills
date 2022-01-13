@@ -35,7 +35,7 @@ public class SkillCommand extends AbstractPluginCommand {
             commandSender.sendMessage(LocalMessageService.getInstance()
                     .convert(LocalMessageService.getInstance().getlang().getString("SkillNotFound")));
         }
-        // TODO fix skill.sendInfo(commandSender);
+        skill.sendInfo(commandSender);
         return true;
     }
 

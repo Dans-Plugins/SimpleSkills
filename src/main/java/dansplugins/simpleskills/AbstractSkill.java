@@ -3,10 +3,12 @@ package dansplugins.simpleskills;
 import dansplugins.simpleskills.data.PersistentData;
 import dansplugins.simpleskills.data.PlayerRecord;
 import dansplugins.simpleskills.services.LocalConfigService;
+import dansplugins.simpleskills.services.LocalMessageService;
 import dansplugins.simpleskills.utils.Logger;
 import dansplugins.simpleskills.utils.Triggers;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
@@ -244,5 +246,20 @@ public abstract class AbstractSkill implements Listener {
      * @param skillData assigned data to the skill reward, 'Block' for 'BlockSkills' etc.
      */
     public abstract void executeReward(@NotNull Player player, Object... skillData);
+
+    /**
+     * Method to send the skill information to the command sender.
+     *
+     * @param commandSender to send the skill info to.
+     */
+    public void sendInfo(CommandSender commandSender) {
+        for (String sinfo : LocalMessageService.getInstance().getlang().getStringList("Skill-Info"))
+            commandSender.sendMessage(LocalMessageService.getInstance().convert(sinfo)
+                    .replaceAll("%skillname%", getName())
+                    .replaceAll("%active%", String.valueOf(isActive()))
+                    .replaceAll("%mlevel%",  String.valueOf(100))
+                    .replaceAll("%ber%",  String.valueOf(getExpRequirement()))
+                    .replaceAll("%eif%",  String.valueOf(getExpFactor())));
+    }
 
 }

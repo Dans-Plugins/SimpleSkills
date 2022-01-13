@@ -33,3 +33,9 @@ SendInfo-Body:
   - "&b%skill% - LVL: %level% - EXP: %min%/%max%"
 LearnedSkill: "&aYou've learned the %skill% skill. Type /ss info to view your skills."
 LevelUp: "&aYou've leveled up your %skill% skill to %level%"
+Skill-Info:
+  - "&b=== %skillname% ==="
+  - "&bActive: %active%"
+  - "&bMax Level: %mlevel%"
+  - "&bBase Experience Requirement: %ber%"
+  - "&bExperience Increase Factor: %eif%"
