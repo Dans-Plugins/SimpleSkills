@@ -116,18 +116,20 @@ public class PersistentData {
     }
 
     public List<PlayerRecord> getTopPlayers() {
-        final Comparator<PlayerRecord> recordComparator = Comparator.comparingInt(PlayerRecord::getOverallSkillLevel);
+        final Comparator<PlayerRecord> recordComparator = (o1, o2) ->
+                Integer.compare(o2.getOverallSkillLevel(), o1.getOverallSkillLevel());
         final List<PlayerRecord> playerRecords = new ArrayList<>(this.playerRecords);
         playerRecords.sort(recordComparator);
         return playerRecords.subList(0, Math.min(playerRecords.size(), 9));
     }
 
     public List<PlayerRecord> getTopPlayerRecords(int skillID) {
-        final Comparator<PlayerRecord> recordComparator = Comparator.comparingInt(o -> o.getSkillLevel(skillID, false));
+        final Comparator<PlayerRecord> recordComparator = (o1, o2) ->
+                Integer.compare(o2.getSkillLevel(skillID, false), o1.getSkillLevel(skillID, false));
         return new ArrayList<>(this.playerRecords)
                 .stream().sorted(recordComparator)
                 .filter(record -> record.getSkillLevel(skillID, false) != -1)
-                .limit(10)
+                .limit(11)
                 .collect(Collectors.toList());
     }
 
