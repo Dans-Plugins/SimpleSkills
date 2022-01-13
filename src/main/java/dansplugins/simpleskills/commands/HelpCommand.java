@@ -5,8 +5,7 @@ import org.bukkit.command.CommandSender;
 import preponderous.ponder.minecraft.abs.AbstractPluginCommand;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.Collections;
 
 /**
  * @author Daniel Stephenson
@@ -14,7 +13,10 @@ import java.util.List;
 public class HelpCommand extends AbstractPluginCommand {
 
     public HelpCommand() {
-        super(new ArrayList<>(Arrays.asList("help")), new ArrayList<>(Arrays.asList("ss.help")));
+        super(
+                new ArrayList<>(Collections.singletonList("help")),
+                new ArrayList<>(Collections.singletonList("ss.help"))
+        );
     }
 
     @Override

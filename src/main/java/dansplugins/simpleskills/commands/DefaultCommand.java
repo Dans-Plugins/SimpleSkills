@@ -6,8 +6,7 @@ import org.bukkit.command.CommandSender;
 import preponderous.ponder.minecraft.abs.AbstractPluginCommand;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.Collections;
 
 /**
  * @author Daniel Stephenson
@@ -15,7 +14,10 @@ import java.util.List;
 public class DefaultCommand extends AbstractPluginCommand {
 
     public DefaultCommand() {
-        super(new ArrayList<>(Arrays.asList("default")), new ArrayList<>(Arrays.asList("ss.default")));
+        super(
+                new ArrayList<>(Collections.singletonList("default")),
+                new ArrayList<>(Collections.singletonList("ss.default"))
+        );
     }
 
     @Override
