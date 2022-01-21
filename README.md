@@ -37,6 +37,7 @@ Name | Main Contributions
 ------------ | -------------
 Daniel Stephenson | Creator
 VoChiDanh | NMS utilization & other improvements
+Callum | Massively improved the plugin in many ways
 
 ## License
 GPL3
