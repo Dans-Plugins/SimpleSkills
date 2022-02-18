@@ -153,7 +153,7 @@ public class PersistentData {
         addSkill(new Pyromaniac());
         addSkill(new Quarrying());
         addSkill(new Riding());
-        addSkill(new Combat());
+        addSkill(new Strength());
     }
 
 }

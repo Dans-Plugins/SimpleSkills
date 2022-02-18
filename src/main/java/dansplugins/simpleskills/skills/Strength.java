@@ -16,13 +16,13 @@ import org.jetbrains.annotations.NotNull;
  * @author Callum Johnson
  * @since 11/01/2022 - 16:59
  */
-public class Combat extends AbstractSkill {
+public class Strength extends AbstractSkill {
 
     /**
-     * The Combat Skill is levelled by hitting Entities.
+     * The Strength Skill is levelled by hitting Entities.
      */
-    public Combat() {
-        super("Combat", EntityDamageByEntityEvent.class);
+    public Strength() {
+        super("Strength", EntityDamageByEntityEvent.class);
     }
 
     /**
@@ -47,7 +47,7 @@ public class Combat extends AbstractSkill {
     }
 
     /**
-     * Event handler for the Combat skill.
+     * Event handler for the Strength skill.
      *
      * @param event to handle.
      */
