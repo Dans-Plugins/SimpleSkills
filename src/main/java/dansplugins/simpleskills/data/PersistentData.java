@@ -3,7 +3,7 @@ package dansplugins.simpleskills.data;
 import dansplugins.simpleskills.AbstractSkill;
 import dansplugins.simpleskills.skills.*;
 import dansplugins.simpleskills.utils.Logger;
-import preponderous.ponder.minecraft.spigot.tools.UUIDChecker;
+import preponderous.ponder.minecraft.bukkit.tools.UUIDChecker;
 
 import java.util.*;
 import java.util.stream.Collectors;

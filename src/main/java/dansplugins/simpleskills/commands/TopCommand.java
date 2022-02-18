@@ -5,8 +5,8 @@ import dansplugins.simpleskills.data.PersistentData;
 import dansplugins.simpleskills.data.PlayerRecord;
 import dansplugins.simpleskills.services.LocalMessageService;
 import org.bukkit.command.CommandSender;
-import preponderous.ponder.minecraft.abs.AbstractPluginCommand;
-import preponderous.ponder.minecraft.spigot.tools.UUIDChecker;
+import preponderous.ponder.minecraft.bukkit.abs.AbstractPluginCommand;
+import preponderous.ponder.minecraft.bukkit.tools.UUIDChecker;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -37,9 +37,9 @@ public class TopCommand extends AbstractPluginCommand {
                     .findPlayerNameBasedOnUUID(topPlayer.getPlayerUUID());
             for (String message : LocalMessageService.getInstance().getlang().getStringList("Top-Body")) {
                 commandSender.sendMessage(LocalMessageService.getInstance().convert(message
-                        .replaceAll("%player%", playerName)
-                        .replaceAll("%top%", String.valueOf(topPlayer.getOverallSkillLevel())))
-                        .replaceAll("%rank%", String.valueOf(topPlayers.indexOf(topPlayer)+1))
+                                .replaceAll("%player%", playerName)
+                                .replaceAll("%top%", String.valueOf(topPlayer.getOverallSkillLevel())))
+                        .replaceAll("%rank%", String.valueOf(topPlayers.indexOf(topPlayer) + 1))
                 );
             }
         }
@@ -75,7 +75,7 @@ public class TopCommand extends AbstractPluginCommand {
                 commandSender.sendMessage(LocalMessageService.getInstance().convert(message
                         .replaceAll("%player%", playerName)
                         .replaceAll("%top%", String.valueOf(playerRecord.getSkillLevel(skill.getId(), false)))
-                        .replaceAll("%rank%", String.valueOf(topPlayerRecords.indexOf(playerRecord)+1))
+                        .replaceAll("%rank%", String.valueOf(topPlayerRecords.indexOf(playerRecord) + 1))
                 ));
             }
         }
