@@ -33,9 +33,9 @@ public class Mining extends AbstractBlockSkill {
     /**
      * Method to determine if the item provided is valid.
      *
-     * @param item to check.
+     * @param item        to check.
      * @param targetBlock to do sub-checks with.
-     * @param context of which the event happened.
+     * @param context     of which the event happened.
      * @return {@code true} if it is.
      */
     @Override

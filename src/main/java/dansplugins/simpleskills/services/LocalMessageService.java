@@ -11,10 +11,13 @@ import java.io.IOException;
 public class LocalMessageService {
 
     private static LocalMessageService instance;
+    private File langFile;
+    private FileConfiguration lang;
+
+
     private LocalMessageService() {
 
     }
-
 
     public static LocalMessageService getInstance() {
         if (instance == null) {
@@ -22,11 +25,6 @@ public class LocalMessageService {
         }
         return instance;
     }
-
-
-    private File langFile;
-    private FileConfiguration lang;
-
 
     public void createlang() {
         langFile = new File(SimpleSkills.getInstance().getDataFolder(), "message.yml");
@@ -40,6 +38,7 @@ public class LocalMessageService {
             e.printStackTrace();
         }
     }
+
     public FileConfiguration getlang() {
         return lang;
     }

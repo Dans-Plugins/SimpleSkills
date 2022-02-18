@@ -10,9 +10,9 @@ import java.util.*;
  * @author Daniel Stephenson
  */
 public class LocalStorageService {
-    private static LocalStorageService instance;
     private final static String FILE_PATH = "./plugins/SimpleSkills/";
     private final static String PLAYER_RECORDS_FILE_NAME = "playerRecords.json";
+    private static LocalStorageService instance;
     private final JsonWriterReader jsonWriterReader = new JsonWriterReader();
 
     private LocalStorageService() {
@@ -36,7 +36,7 @@ public class LocalStorageService {
 
     private void savePlayerRecords() {
         List<Map<String, String>> playerRecords = new ArrayList<>();
-        for (PlayerRecord playerRecord : PersistentData.getInstance().getPlayerRecords()){
+        for (PlayerRecord playerRecord : PersistentData.getInstance().getPlayerRecords()) {
             playerRecords.add(playerRecord.save());
         }
         jsonWriterReader.writeOutFiles(playerRecords, PLAYER_RECORDS_FILE_NAME);
@@ -47,7 +47,7 @@ public class LocalStorageService {
         PersistentData.getInstance().getPlayerRecords().clear();
         ArrayList<HashMap<String, String>> data = jsonWriterReader.loadDataFromFilename(FILE_PATH + PLAYER_RECORDS_FILE_NAME);
         HashSet<PlayerRecord> playerRecords = new HashSet<>();
-        for (Map<String, String> playerRecordData : data){
+        for (Map<String, String> playerRecordData : data) {
             PlayerRecord playerRecord = new PlayerRecord(playerRecordData);
             playerRecords.add(playerRecord);
         }

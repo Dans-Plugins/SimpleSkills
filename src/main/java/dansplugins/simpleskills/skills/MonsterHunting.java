@@ -11,6 +11,7 @@ import org.bukkit.Sound;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
@@ -57,6 +58,7 @@ public class MonsterHunting extends AbstractSkill {
      *
      * @param event to handle.
      */
+    @EventHandler
     public void onKill(@NotNull EntityDeathEvent event) {
         if (!(event.getEntity() instanceof Monster)) return; // Only Monsters, zombies, creepers etc. etc.
         final Player killer = event.getEntity().getKiller();

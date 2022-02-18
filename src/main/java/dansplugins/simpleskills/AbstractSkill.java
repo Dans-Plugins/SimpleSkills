@@ -40,24 +40,24 @@ public abstract class AbstractSkill implements Listener {
     /**
      * The overhead Skill abstraction class.
      * <p>
-     *      The trigger mechanism has been added to expand upon the current functionality
-     *      of the codebase, each trigger corresponds to a method within the extended class,
-     *      providing the ability to create multiple events/handlers for one skill, 'Farming'
-     *      would theoretically require both breaking and placing blocks for the skill to be
-     *      conceptually correct.<br>
-     *      For every '{@link Event}' specified in <em>triggers</em>, ensure a method
-     *      returning {@code void} exists which has {@code 1} parameter for that '{@link Event}'.
-     *      <br><br>
-     *      An example of this could be 'Farming' and {@link BlockBreakEvent} with a method defined
-     *      as such:
-     *      <br><code>
-     *          public void handleBlockBreak(BlockBreakEvent event) {
-     *              // Default Method Stub.
-     *          }
-     *      </code>
+     * The trigger mechanism has been added to expand upon the current functionality
+     * of the codebase, each trigger corresponds to a method within the extended class,
+     * providing the ability to create multiple events/handlers for one skill, 'Farming'
+     * would theoretically require both breaking and placing blocks for the skill to be
+     * conceptually correct.<br>
+     * For every '{@link Event}' specified in <em>triggers</em>, ensure a method
+     * returning {@code void} exists which has {@code 1} parameter for that '{@link Event}'.
+     * <br><br>
+     * An example of this could be 'Farming' and {@link BlockBreakEvent} with a method defined
+     * as such:
+     * <br><code>
+     * public void handleBlockBreak(BlockBreakEvent event) {
+     * // Default Method Stub.
+     * }
+     * </code>
      * </p>
      *
-     * @param name of the skill.
+     * @param name     of the skill.
      * @param triggers or events linked to the skill.
      */
     @SafeVarargs
@@ -75,11 +75,11 @@ public abstract class AbstractSkill implements Listener {
     /**
      * Method to scan the classes' methods for trigger-setting.
      * <p>
-     *      Due to the nature of the trigger->method connections formed for skills,
-     *      this method scans all of the methods in the class and checks them for
-     *      compatibility with the defined triggers, if the class matches, the method
-     *      is then added to the map of methods, these methods are <em>all</em> called
-     *      upon the trigger.
+     * Due to the nature of the trigger->method connections formed for skills,
+     * this method scans all of the methods in the class and checks them for
+     * compatibility with the defined triggers, if the class matches, the method
+     * is then added to the map of methods, these methods are <em>all</em> called
+     * upon the trigger.
      * </p>
      *
      * @param triggers to setup.
@@ -103,9 +103,9 @@ public abstract class AbstractSkill implements Listener {
     /**
      * Method to encapsulate all events for triggering the Skill.
      * <p>
-     *      This method references {@link #handlers} which is defined by {@link #setupTriggers(Class[])},
-     *      each method within the map is called if the event currently being handled by this method
-     *      is compatible with the specific trigger.
+     * This method references {@link #handlers} which is defined by {@link #setupTriggers(Class[])},
+     * each method within the map is called if the event currently being handled by this method
+     * is compatible with the specific trigger.
      * </p>
      *
      * @param event to handle.
@@ -194,8 +194,8 @@ public abstract class AbstractSkill implements Listener {
     /**
      * Method to dynamically register every listener defined in {@link Triggers}.
      * <p>
-     *     This enables the "Skill" class to listen to multiple events for the
-     *     listener-trigger-hook system.
+     * This enables the "Skill" class to listen to multiple events for the
+     * listener-trigger-hook system.
      * </p>
      */
     public void register() {
@@ -242,7 +242,7 @@ public abstract class AbstractSkill implements Listener {
     /**
      * Method to reward the player at their level.
      *
-     * @param player to reward.
+     * @param player    to reward.
      * @param skillData assigned data to the skill reward, 'Block' for 'BlockSkills' etc.
      */
     public abstract void executeReward(@NotNull Player player, Object... skillData);
@@ -257,9 +257,9 @@ public abstract class AbstractSkill implements Listener {
             commandSender.sendMessage(LocalMessageService.getInstance().convert(sinfo)
                     .replaceAll("%skillname%", getName())
                     .replaceAll("%active%", String.valueOf(isActive()))
-                    .replaceAll("%mlevel%",  String.valueOf(100))
-                    .replaceAll("%ber%",  String.valueOf(getExpRequirement()))
-                    .replaceAll("%eif%",  String.valueOf(getExpFactor())));
+                    .replaceAll("%mlevel%", String.valueOf(100))
+                    .replaceAll("%ber%", String.valueOf(getExpRequirement()))
+                    .replaceAll("%eif%", String.valueOf(getExpFactor())));
     }
 
 }

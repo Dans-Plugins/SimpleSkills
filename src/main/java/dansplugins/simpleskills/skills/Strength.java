@@ -73,7 +73,8 @@ public class Strength extends AbstractSkill {
         if (!(entityData instanceof Entity)) return;
         final Entity entity = (Entity) entityData;
         if (!ChanceCalculator.getInstance().roll(record, this, 0.05)) return;
-        if (player.hasPotionEffect(PotionEffectType.INCREASE_DAMAGE)) player.removePotionEffect(PotionEffectType.INCREASE_DAMAGE);
+        if (player.hasPotionEffect(PotionEffectType.INCREASE_DAMAGE))
+            player.removePotionEffect(PotionEffectType.INCREASE_DAMAGE);
         player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 600, 1, true, false));
         final String typeName = WordUtils.capitalizeFully(entity.getType().name().replaceAll("_", " ").toLowerCase());
         final boolean nRequired = "aeiou".contains(String.valueOf(typeName.toLowerCase().charAt(0)));

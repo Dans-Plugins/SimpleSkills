@@ -1,17 +1,20 @@
 package dansplugins.simpleskills.skills;
 
+import com.cryptomorin.xseries.XMaterial;
 import dansplugins.simpleskills.AbstractSkill;
 import dansplugins.simpleskills.data.PlayerRecord;
 import dansplugins.simpleskills.utils.ChanceCalculator;
 import org.apache.commons.lang.WordUtils;
-import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
 
 /**
  * @author Callum Johnson
@@ -52,6 +55,7 @@ public class Fishing extends AbstractSkill {
      *
      * @param event to handle.
      */
+    @EventHandler
     public void onFish(@NotNull PlayerFishEvent event) {
         final Player player = event.getPlayer();
         if (event.getCaught() != null && event.getState().name().contains("CAUGHT")) {
@@ -80,7 +84,7 @@ public class Fishing extends AbstractSkill {
         else entityName = entity.getType().getKey().getKey();
         entityName = WordUtils.capitalizeFully(entityName.toLowerCase().replaceAll("_", " "));
         player.sendMessage("§bAlongside your §a" + entityName + " §byou found a §6Golden Apple§b!");
-        player.getInventory().addItem(new ItemStack(Material.GOLDEN_APPLE, 1));
+        player.getInventory().addItem(new ItemStack(Objects.requireNonNull(XMaterial.GOLDEN_APPLE.parseMaterial()), 1));
         player.playSound(player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_CHIME, 5, 2);
     }
 

@@ -118,7 +118,7 @@ public abstract class AbstractMovementSkill extends AbstractSkill {
             incrementExperience(event.getPlayer());
             executeReward(player, event);
         } else if (getSkillType() == MovementSkillType.BOATING && player.isInsideVehicle()
-                && player.getVehicle() instanceof Boat){
+                && player.getVehicle() instanceof Boat) {
             if (!boat.containsKey(id)) {
                 boat.put(id, from.distanceSquared(to));
                 return;
@@ -137,17 +137,17 @@ public abstract class AbstractMovementSkill extends AbstractSkill {
      * Helper method to determine if "from" matches "to".
      *
      * @param from location
-     * @param to location
+     * @param to   location
      * @return {@code true} if it does.
      */
     private boolean matches(Location from, Location to) {
         int match = 0;
         final double movementConstant = 0.25;
-        if (Math.max(from.getX(), to.getX())-Math.min(from.getX(), to.getX()) < movementConstant) match++;
+        if (Math.max(from.getX(), to.getX()) - Math.min(from.getX(), to.getX()) < movementConstant) match++;
         else match--;
-        if (Math.max(from.getY(), to.getY())-Math.min(from.getY(), to.getY()) < movementConstant) match++;
+        if (Math.max(from.getY(), to.getY()) - Math.min(from.getY(), to.getY()) < movementConstant) match++;
         else match--;
-        if (Math.max(from.getZ(), to.getZ())-Math.min(from.getZ(), to.getZ()) < movementConstant) match++;
+        if (Math.max(from.getZ(), to.getZ()) - Math.min(from.getZ(), to.getZ()) < movementConstant) match++;
         else match--;
         return match >= 2;
     }

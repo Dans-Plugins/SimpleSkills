@@ -15,7 +15,8 @@ public class ChanceCalculator {
 
     private static ChanceCalculator instance;
 
-    private ChanceCalculator() {}
+    private ChanceCalculator() {
+    }
 
     public static ChanceCalculator getInstance() {
         if (instance == null) instance = new ChanceCalculator();
@@ -32,7 +33,7 @@ public class ChanceCalculator {
         final Random random = new Random();
         double skillLevel = playerRecord.getSkillLevel(skill.getId(), true);
         double maxLevel = LocalConfigService.getInstance().getconfig().getInt("defaultMaxLevel");
-        double chance = skillLevel/maxLevel;
+        double chance = skillLevel / maxLevel;
         double result = random.nextDouble() * maxLevel;
         double threshold = maxLevel * chance * nerfFactor;
         return (result < threshold);

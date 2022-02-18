@@ -20,13 +20,13 @@ public class TabCommand implements TabCompleter {
             arg.add("top");
             arg.add("stats");
             arg.add("reload");
-            if (sender instanceof ConsoleCommandSender){
+            if (sender instanceof ConsoleCommandSender) {
                 arg.add("force");
             }
         }
         List<String> result = new ArrayList<>();
-        if (args.length == 1){
-            for (String a : arg){
+        if (args.length == 1) {
+            for (String a : arg) {
                 if (a.toLowerCase().startsWith(args[0].toLowerCase()))
                     result.add(a);
             }

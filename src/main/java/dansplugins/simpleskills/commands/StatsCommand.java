@@ -3,7 +3,7 @@ package dansplugins.simpleskills.commands;
 import dansplugins.simpleskills.data.PersistentData;
 import dansplugins.simpleskills.services.LocalMessageService;
 import org.bukkit.command.CommandSender;
-import preponderous.ponder.minecraft.abs.AbstractPluginCommand;
+import preponderous.ponder.minecraft.bukkit.abs.AbstractPluginCommand;
 
 import java.util.ArrayList;
 import java.util.Collections;

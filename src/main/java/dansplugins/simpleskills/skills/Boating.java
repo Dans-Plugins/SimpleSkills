@@ -5,7 +5,6 @@ import dansplugins.simpleskills.data.PlayerRecord;
 import dansplugins.simpleskills.utils.ChanceCalculator;
 import org.bukkit.Sound;
 import org.bukkit.entity.Boat;
-import org.bukkit.entity.Creature;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 

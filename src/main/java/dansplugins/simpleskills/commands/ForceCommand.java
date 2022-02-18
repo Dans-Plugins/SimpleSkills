@@ -5,7 +5,7 @@ import dansplugins.simpleskills.data.PersistentData;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import preponderous.ponder.minecraft.abs.AbstractPluginCommand;
+import preponderous.ponder.minecraft.bukkit.abs.AbstractPluginCommand;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -32,7 +32,7 @@ public class ForceCommand extends AbstractPluginCommand {
     public boolean execute(CommandSender commandSender, String[] args) {
         String subCommand = args[0];
 
-        switch(subCommand) {
+        switch (subCommand) {
             case "wipe":
                 return forceWipe(commandSender);
             case "activate":

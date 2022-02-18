@@ -1,5 +1,6 @@
 package dansplugins.simpleskills.skills;
 
+import com.cryptomorin.xseries.XMaterial;
 import dansplugins.simpleskills.AbstractBlockSkill;
 import dansplugins.simpleskills.data.PlayerRecord;
 import dansplugins.simpleskills.utils.ChanceCalculator;
@@ -34,9 +35,9 @@ public class Digging extends AbstractBlockSkill {
     /**
      * Method to determine if the item provided is valid.
      *
-     * @param item to check.
+     * @param item        to check.
      * @param targetBlock to do sub-checks with.
-     * @param context of which the event happened.
+     * @param context     of which the event happened.
      * @return {@code true} if it is.
      */
     @Override
@@ -148,23 +149,27 @@ public class Digging extends AbstractBlockSkill {
     private List<Material> getRewardTypes(@NotNull Material material) {
         switch (material.name()) {
             case "GRASS_BLOCK":
+                return Collections.singletonList(XMaterial.GRASS_BLOCK.parseMaterial());
             case "DIRT":
+                return Collections.singletonList(XMaterial.DIRT.parseMaterial());
             case "COARSE_DIRT":
+                return Collections.singletonList(XMaterial.COARSE_DIRT.parseMaterial());
             case "ROOTED_DIRT":
+                return Collections.singletonList(XMaterial.ROOTED_DIRT.parseMaterial());
             case "RED_SAND":
-                return Arrays.asList(Material.IRON_NUGGET, Material.RAW_COPPER);
+                return Arrays.asList(XMaterial.IRON_NUGGET.parseMaterial(), XMaterial.RAW_COPPER.parseMaterial());
             case "SAND":
-                return Arrays.asList(Material.IRON_NUGGET, Material.GOLD_NUGGET);
+                return Arrays.asList(XMaterial.IRON_NUGGET.parseMaterial(), XMaterial.GOLD_NUGGET.parseMaterial());
             case "GRAVEL":
-                return Collections.singletonList(Material.FLINT);
+                return Collections.singletonList(XMaterial.FLINT.parseMaterial());
             case "SOUL_SAND":
-                return Collections.singletonList(Material.CHARCOAL);
+                return Collections.singletonList(XMaterial.CHARCOAL.parseMaterial());
             case "PODZOL":
-                return Collections.singletonList(Material.COAL);
+                return Collections.singletonList(XMaterial.COAL.parseMaterial());
             case "MYCELIUM":
-                return Arrays.asList(Material.BROWN_MUSHROOM, Material.RED_MUSHROOM);
+                return Arrays.asList(XMaterial.BROWN_MUSHROOM.parseMaterial(), XMaterial.RED_MUSHROOM.parseMaterial());
             case "MOSS_BLOCK":
-                return Arrays.asList(Material.BEETROOT_SEEDS, Material.MELON_SEEDS, Material.PUMPKIN_SEEDS, Material.WHEAT_SEEDS);
+                return Arrays.asList(XMaterial.BEETROOT_SEEDS.parseMaterial(), XMaterial.MELON_SEEDS.parseMaterial(), XMaterial.PUMPKIN_SEEDS.parseMaterial(), XMaterial.WHEAT_SEEDS.parseMaterial());
             default:
                 throw new IllegalArgumentException("Material " + material + " is not valid.");
         }

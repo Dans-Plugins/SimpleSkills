@@ -1,5 +1,6 @@
 package dansplugins.simpleskills.skills;
 
+import com.cryptomorin.xseries.XMaterial;
 import dansplugins.simpleskills.AbstractBlockSkill;
 import dansplugins.simpleskills.data.PlayerRecord;
 import dansplugins.simpleskills.utils.ChanceCalculator;
@@ -35,7 +36,7 @@ public class Pyromaniac extends AbstractBlockSkill {
      */
     @Override
     public boolean isRequiredItem(@NotNull ItemStack item, @NotNull Block targetBlock, @NotNull String context) {
-        return item.getType() == Material.FLINT_AND_STEEL || item.getType() == Material.FIRE_CHARGE;
+        return item.getType() == XMaterial.FLINT_AND_STEEL.parseMaterial() || item.getType() == XMaterial.FIRE_CHARGE.parseMaterial();
     }
 
     /**

@@ -72,7 +72,7 @@ public class Breeding extends AbstractSkill {
         if (!(eventData instanceof EntityBreedEvent)) return;
         if (!ChanceCalculator.getInstance().roll(record, this, 0.10)) return;
         final EntityBreedEvent breedEvent = (EntityBreedEvent) eventData;
-        breedEvent.setExperience(breedEvent.getExperience()*2);
+        breedEvent.setExperience(breedEvent.getExperience() * 2);
         final String type = WordUtils.capitalizeFully(breedEvent.getFather().getType()
                 .name().replaceAll("_", " ").toLowerCase() + "s");
         player.playSound(player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_CHIME, 5, 2);
