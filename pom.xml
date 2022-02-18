@@ -38,7 +38,7 @@
                         <relocation>
                             <pattern>com.cryptomorin.xseries</pattern>
                             <!-- Be sure to change the package below -->
-                            <shadedPattern>dansplugins.xseries</shadedPattern>
+                            <shadedPattern>cryptomorin.xseries</shadedPattern>
                         </relocation>
                     </relocations>
                     <!-- Here you can remove the classes you don't use. -->
@@ -108,7 +108,7 @@
         <dependency>
             <groupId>com.github.Preponderous-Software</groupId>
             <artifactId>Ponder</artifactId>
-            <version>v0.15-alpha-2</version>
+            <version>v1.0</version>
         </dependency>
         <dependency>
             <groupId>com.github.cryptomorin</groupId>
