@@ -6,6 +6,7 @@ import dansplugins.simpleskills.utils.ChanceCalculator;
 import org.bukkit.Sound;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.jetbrains.annotations.NotNull;
 
@@ -48,6 +49,7 @@ public class Hardiness extends AbstractSkill {
      *
      * @param event to handle.
      */
+    @EventHandler
     public void damageEvent(@NotNull EntityDamageEvent event) {
         if (event.getEntityType() != EntityType.PLAYER) return;
         if (!(event.getEntity() instanceof Player)) return;
@@ -55,12 +57,12 @@ public class Hardiness extends AbstractSkill {
         executeReward((Player) event.getEntity(), event.getCause(), event);
     }
 
-        /**
-         * Method to reward the player at their level.
-         *
-         * @param player    to reward.
-         * @param skillData assigned data to the skill reward, 'Block' for 'BlockSkills' etc.
-         */
+    /**
+     * Method to reward the player at their level.
+     *
+     * @param player    to reward.
+     * @param skillData assigned data to the skill reward, 'Block' for 'BlockSkills' etc.
+     */
     @Override
     public void executeReward(@NotNull Player player, Object... skillData) {
         final PlayerRecord record = getRecord(player);
@@ -68,7 +70,8 @@ public class Hardiness extends AbstractSkill {
         if (skillData.length != 2) throw new IllegalArgumentException("Skill Data is not of length '2'");
         final Object causeData = skillData[0];
         final Object eventData = skillData[1];
-        if (!(causeData instanceof EntityDamageEvent.DamageCause)) throw new IllegalArgumentException("Cause Data is not DamageCause.");
+        if (!(causeData instanceof EntityDamageEvent.DamageCause))
+            throw new IllegalArgumentException("Cause Data is not DamageCause.");
         if (!(eventData instanceof EntityDamageEvent)) throw new IllegalArgumentException("Event Data is not Event.");
         final EntityDamageEvent.DamageCause cause = (EntityDamageEvent.DamageCause) causeData;
         final EntityDamageEvent event = (EntityDamageEvent) eventData;

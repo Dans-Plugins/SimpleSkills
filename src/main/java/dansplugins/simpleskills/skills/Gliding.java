@@ -1,19 +1,19 @@
 package dansplugins.simpleskills.skills;
 
+import com.cryptomorin.xseries.XMaterial;
 import dansplugins.simpleskills.AbstractMovementSkill;
 import dansplugins.simpleskills.data.PlayerRecord;
 import dansplugins.simpleskills.utils.ChanceCalculator;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
-import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
 
 /**
  * @author Callum Johnson
@@ -71,7 +71,7 @@ public class Gliding extends AbstractMovementSkill {
         if (record == null) return;
         if (!ChanceCalculator.getInstance().roll(record, this, 0.10)) return;
         player.playSound(player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_CHIME, 5, 2);
-        final ItemStack stack = new ItemStack(Material.FIREWORK_ROCKET);
+        final ItemStack stack = new ItemStack(Objects.requireNonNull(XMaterial.FIREWORK_ROCKET.parseItem()));
         final ItemMeta itemMeta = stack.getItemMeta();
         if (itemMeta == null) return;
         if (!(itemMeta instanceof FireworkMeta)) return;

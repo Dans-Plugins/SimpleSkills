@@ -107,9 +107,9 @@ public abstract class AbstractBlockSkill extends AbstractSkill {
     /**
      * Method to determine if the item provided is valid.
      *
-     * @param item to check.
+     * @param item        to check.
      * @param targetBlock to do sub-checks with.
-     * @param context of which the event happened.
+     * @param context     of which the event happened.
      * @return {@code true} if it is.
      */
     public abstract boolean isRequiredItem(@NotNull ItemStack item, @NotNull Block targetBlock, @NotNull String context);
@@ -181,7 +181,7 @@ public abstract class AbstractBlockSkill extends AbstractSkill {
         /**
          * Skill is right-click, break or place specific.
          */
-        RIGHT_OR_BREAK_OR_PLACE;
+        RIGHT_OR_BREAK_OR_PLACE
 
     }
 

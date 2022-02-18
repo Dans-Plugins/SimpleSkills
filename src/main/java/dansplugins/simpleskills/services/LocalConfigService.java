@@ -21,7 +21,9 @@ import java.io.IOException;
 public class LocalConfigService {
 
     private static LocalConfigService instance;
-    private boolean altered = false;
+    private final boolean altered = false;
+    private File configFile;
+    private FileConfiguration config;
 
     private LocalConfigService() {
 
@@ -33,9 +35,6 @@ public class LocalConfigService {
         }
         return instance;
     }
-    private File configFile;
-    private FileConfiguration config;
-
 
     public void createconfig() {
         configFile = new File(SimpleSkills.getInstance().getDataFolder(), "config.yml");
@@ -49,6 +48,7 @@ public class LocalConfigService {
             e.printStackTrace();
         }
     }
+
     public FileConfiguration getconfig() {
         return config;
     }

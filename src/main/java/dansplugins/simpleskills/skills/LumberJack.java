@@ -55,7 +55,7 @@ public class LumberJack extends AbstractBlockSkill {
     /**
      * Method to reward the player at their level.
      *
-     * @param player to reward.
+     * @param player    to reward.
      * @param skillData assigned data to the skill reward, 'Block' for 'BlockSkills' etc.
      */
     @Override
@@ -81,9 +81,9 @@ public class LumberJack extends AbstractBlockSkill {
     /**
      * Method to determine if the item provided is valid.
      *
-     * @param item to check.
+     * @param item        to check.
      * @param targetBlock to do sub-checks with.
-     * @param context of which the event happened.
+     * @param context     of which the event happened.
      * @return {@code true} if it is.
      */
     @Override

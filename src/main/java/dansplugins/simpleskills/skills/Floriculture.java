@@ -1,5 +1,6 @@
 package dansplugins.simpleskills.skills;
 
+import com.cryptomorin.xseries.XMaterial;
 import dansplugins.simpleskills.AbstractBlockSkill;
 import dansplugins.simpleskills.data.PlayerRecord;
 import dansplugins.simpleskills.utils.ChanceCalculator;
@@ -9,6 +10,8 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
 
 /**
  * @author Callum Johnson
@@ -26,16 +29,16 @@ public class Floriculture extends AbstractBlockSkill {
     /**
      * Method to determine if the item provided is valid.
      *
-     * @param item to check.
+     * @param item        to check.
      * @param targetBlock to do sub-checks with.
-     * @param context of which the event happened.
+     * @param context     of which the event happened.
      * @return {@code true} if it is.
      */
     @Override
     public boolean isRequiredItem(@NotNull ItemStack item, @NotNull Block targetBlock, @NotNull String context) {
         if (context.equals("playerinteractevent")) {
-            return targetBlock.getType() == Material.FLOWER_POT && isValidMaterial(item.getType())
-                    && item.getType() != Material.FLOWER_POT;
+            return targetBlock.getType() == XMaterial.FLOWER_POT.parseMaterial() && isValidMaterial(item.getType())
+                    && item.getType() != XMaterial.FLOWER_POT.parseMaterial();
         } else if (context.equals("blockbreakevent")) {
             return true;
         } else {
@@ -133,7 +136,7 @@ public class Floriculture extends AbstractBlockSkill {
         final Block block = (Block) blockData;
         if (!ChanceCalculator.getInstance().roll(record, this, 0.10)) return;
         player.playSound(block.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_CHIME, 5, 2);
-        block.getWorld().dropItemNaturally(block.getLocation(), new ItemStack(Material.BONE_MEAL));
+        block.getWorld().dropItemNaturally(block.getLocation(), new ItemStack(Objects.requireNonNull(XMaterial.BONE_MEAL.parseItem())));
         player.sendMessage("§bYou got bone meal, make more flowers!");
     }
 

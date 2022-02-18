@@ -1,5 +1,6 @@
 package dansplugins.simpleskills.skills;
 
+import com.cryptomorin.xseries.XMaterial;
 import dansplugins.simpleskills.AbstractBlockSkill;
 import dansplugins.simpleskills.data.PlayerRecord;
 import dansplugins.simpleskills.utils.ChanceCalculator;
@@ -29,9 +30,9 @@ public class Quarrying extends AbstractBlockSkill {
     /**
      * Method to determine if the item provided is valid.
      *
-     * @param item to check.
+     * @param item        to check.
      * @param targetBlock to do sub-checks with.
-     * @param context of which the event happened.
+     * @param context     of which the event happened.
      * @return {@code true} if it is.
      */
     @Override
@@ -134,7 +135,8 @@ public class Quarrying extends AbstractBlockSkill {
             final List<Material> rewardTypes = getRewardTypes(block.getType());
             final Material reward = rewardTypes.get(new Random().nextInt(rewardTypes.size()));
             block.getWorld().dropItemNaturally(block.getLocation(), new ItemStack(reward));
-            if (reward == Material.GLASS_BOTTLE) player.sendMessage("§bMake sure you get water for your thirst!");
+            if (reward == XMaterial.GLASS_BOTTLE.parseMaterial())
+                player.sendMessage("§bMake sure you get water for your thirst!");
             else player.sendMessage("§bYou got extra lucky and found something §6special§b!");
         }
     }
@@ -143,29 +145,30 @@ public class Quarrying extends AbstractBlockSkill {
     private List<Material> getRewardTypes(@NotNull Material material) {
         switch (material.name()) {
             case "STONE":
-                return Collections.singletonList(Material.STONE);
+                return Collections.singletonList(XMaterial.STONE.parseMaterial());
             case "TERRACOTTA":
-                return Arrays.asList(Material.WHITE_TERRACOTTA, Material.ORANGE_TERRACOTTA, Material.MAGENTA_TERRACOTTA,
-                        Material.LIGHT_BLUE_TERRACOTTA, Material.YELLOW_TERRACOTTA, Material.LIME_TERRACOTTA,
-                        Material.PINK_TERRACOTTA, Material.GRAY_TERRACOTTA, Material.LIGHT_GRAY_TERRACOTTA,
-                        Material.CYAN_TERRACOTTA, Material.PURPLE_TERRACOTTA, Material.BLUE_TERRACOTTA,
-                        Material.BROWN_TERRACOTTA, Material.GREEN_TERRACOTTA, Material.RED_TERRACOTTA,
-                        Material.BLACK_TERRACOTTA);
+                return Arrays.asList(XMaterial.WHITE_TERRACOTTA.parseMaterial(), XMaterial.ORANGE_TERRACOTTA.parseMaterial(), XMaterial.MAGENTA_TERRACOTTA.parseMaterial(),
+                        XMaterial.LIGHT_BLUE_TERRACOTTA.parseMaterial(), XMaterial.YELLOW_TERRACOTTA.parseMaterial(), XMaterial.LIME_TERRACOTTA.parseMaterial(),
+                        XMaterial.PINK_TERRACOTTA.parseMaterial(), XMaterial.GRAY_TERRACOTTA.parseMaterial(), XMaterial.LIGHT_GRAY_TERRACOTTA.parseMaterial(),
+                        XMaterial.CYAN_TERRACOTTA.parseMaterial(), XMaterial.PURPLE_TERRACOTTA.parseMaterial(), XMaterial.BLUE_TERRACOTTA.parseMaterial(),
+                        XMaterial.BROWN_TERRACOTTA.parseMaterial(), XMaterial.GREEN_TERRACOTTA.parseMaterial(), XMaterial.RED_TERRACOTTA.parseMaterial(),
+                        XMaterial.BLACK_TERRACOTTA.parseMaterial());
             case "GRANITE":
-                return Collections.singletonList(Material.POLISHED_GRANITE);
+                return Collections.singletonList(XMaterial.POLISHED_GRANITE.parseMaterial());
             case "ANDESITE":
-                return Collections.singletonList(Material.POLISHED_ANDESITE);
+                return Collections.singletonList(XMaterial.POLISHED_ANDESITE.parseMaterial());
             case "DIORITE":
-                return Collections.singletonList(Material.POLISHED_DIORITE);
+                return Collections.singletonList(XMaterial.POLISHED_DIORITE.parseMaterial());
             case "DEEPSLATE":
-                return Collections.singletonList(Material.DEEPSLATE);
+                return Collections.singletonList(XMaterial.DEEPSLATE.parseMaterial());
             case "SANDSTONE":
+                return Collections.singletonList(XMaterial.SANDSTONE.parseMaterial());
             case "RED_SANDSTONE":
-                return Collections.singletonList(Material.GLASS_BOTTLE);
+                return Collections.singletonList(XMaterial.GLASS_BOTTLE.parseMaterial());
             case "END_STONE":
-                return Collections.singletonList(Material.ENDER_PEARL);
+                return Collections.singletonList(XMaterial.ENDER_PEARL.parseMaterial());
             case "NETHERRACK":
-                return Collections.singletonList(Material.NETHER_BRICK);
+                return Collections.singletonList(XMaterial.NETHER_BRICK.parseMaterial());
             default:
                 throw new IllegalArgumentException("Material " + material + " is not valid.");
         }

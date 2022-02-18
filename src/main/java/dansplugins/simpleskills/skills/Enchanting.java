@@ -70,7 +70,8 @@ public class Enchanting extends AbstractSkill {
     public void executeReward(@NotNull Player player, Object... skillData) {
         if (skillData.length != 1) throw new IllegalArgumentException("Skill Data is not of length '1'");
         final Object eventData = skillData[0];
-        if (!(eventData instanceof EnchantItemEvent)) throw new IllegalArgumentException("Skill Data[0] is not EnchantEvent");
+        if (!(eventData instanceof EnchantItemEvent))
+            throw new IllegalArgumentException("Skill Data[0] is not EnchantEvent");
         final PlayerRecord record = getRecord(player);
         if (record == null) return;
         if (!ChanceCalculator.getInstance().roll(record, this, 0.10)) return;
@@ -84,7 +85,7 @@ public class Enchanting extends AbstractSkill {
                     .filter(e -> e.canEnchantItem(event.getItem()))
                     .collect(Collectors.toList());
             enchant = collect.get(random.nextInt(collect.size()));
-            event.getEnchantsToAdd().put( enchant, random.nextInt(enchant.getMaxLevel()-1) + 1);
+            event.getEnchantsToAdd().put(enchant, random.nextInt(enchant.getMaxLevel() - 1) + 1);
         } else event.getEnchantsToAdd().put(enchant, level + 1);
         level = event.getEnchantsToAdd().get(enchant);
         player.playSound(player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_CHIME, 5, 2);
@@ -108,9 +109,9 @@ public class Enchanting extends AbstractSkill {
     /**
      * Method to convert 'number' into 'number' of "I"s.
      * <p>
-     *      Converts 2 -> "II"<br>
-     *      Converts 4 -> "IIII"<br>
-     *      And so on...
+     * Converts 2 -> "II"<br>
+     * Converts 4 -> "IIII"<br>
+     * And so on...
      * </p>
      *
      * @param number to convert.

@@ -1,5 +1,6 @@
 package dansplugins.simpleskills.skills;
 
+import com.cryptomorin.xseries.XMaterial;
 import dansplugins.simpleskills.AbstractBlockSkill;
 import dansplugins.simpleskills.data.PlayerRecord;
 import dansplugins.simpleskills.utils.ChanceCalculator;
@@ -45,8 +46,8 @@ public class Farming extends AbstractBlockSkill {
     public boolean isRequiredItem(@NotNull ItemStack item, @NotNull Block targetBlock, @NotNull String context) {
         if (context.contains("break")) return true;
         else return isValidMaterial(item.getType()) &&
-                targetBlock.getRelative(BlockFace.DOWN).getType().equals(Material.FARMLAND) &&
-                item.getType() != Material.FARMLAND;
+                targetBlock.getRelative(BlockFace.DOWN).getType().equals(XMaterial.FARMLAND.parseMaterial()) &&
+                item.getType() != XMaterial.FARMLAND.parseMaterial();
     }
 
     /**
@@ -150,7 +151,7 @@ public class Farming extends AbstractBlockSkill {
         final Event event = (Event) eventData;
         if (!ChanceCalculator.getInstance().roll(record, this, 0.10)) return;
         if (event instanceof BlockBreakEvent) {
-            if (block.getType().equals(Material.FARMLAND)) return;
+            if (block.getType().equals(XMaterial.FARMLAND.parseMaterial())) return;
             final BlockState state = block.getState();
             if (state.getBlockData() instanceof Ageable) {
                 final Ageable cropState = (Ageable) state.getBlockData();
