@@ -147,7 +147,7 @@ public class PersistentData {
         addSkill(new Floriculture());
         addSkill(new Gliding());
         addSkill(new Hardiness());
-        addSkill(new LumberJack());
+        addSkill(new Woodcutting());
         addSkill(new Mining());
         addSkill(new MonsterHunting());
         addSkill(new Pyromaniac());

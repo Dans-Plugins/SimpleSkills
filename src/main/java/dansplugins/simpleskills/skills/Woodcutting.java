@@ -17,7 +17,7 @@ import java.util.Collection;
  * @author Callum Johnson
  * @since 05/01/2022 - 13:55
  */
-public class LumberJack extends AbstractBlockSkill {
+public class Woodcutting extends AbstractBlockSkill {
 
     /**
      * Variable used for the determination of random reward chance.
@@ -25,9 +25,9 @@ public class LumberJack extends AbstractBlockSkill {
     private static final double scalar = 0.2;
 
     /**
-     * The LumberJack skill is a skill where players mine Logs/Wood to gain experience.
+     * The Woodcutting skill is a skill where players mine Logs/Wood to gain experience.
      */
-    public LumberJack() {
+    public Woodcutting() {
         super("lumberjack");
     }
 
