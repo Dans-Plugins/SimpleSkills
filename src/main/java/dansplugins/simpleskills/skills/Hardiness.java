@@ -2,6 +2,7 @@ package dansplugins.simpleskills.skills;
 
 import dansplugins.simpleskills.AbstractSkill;
 import dansplugins.simpleskills.data.PlayerRecord;
+import dansplugins.simpleskills.services.LocalMessageService;
 import dansplugins.simpleskills.utils.ChanceCalculator;
 import org.bukkit.Sound;
 import org.bukkit.entity.EntityType;
@@ -9,6 +10,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
 
 /**
  * @author Callum Johnson
@@ -83,12 +86,13 @@ public class Hardiness extends AbstractSkill {
             // Damage Negation
             event.setCancelled(true);
             player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, 5, 2);
-            player.sendMessage("§bYour skin and bones have grown tough, you've sustained §ano §bdamage!");
+            player.sendMessage(LocalMessageService.getInstance().convert(Objects.requireNonNull(LocalMessageService.getInstance().getlang().getString("Skills.Hardiness.Negation"))));
         } else {
             // Damage Reduction
             event.setDamage(event.getDamage() / 2);
             player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_ATTACK_SWEEP, 5, 2);
-            player.sendMessage("§bYour skin and bones have grown tough, you've sustained §aminimal §bdamage!");
+            player.sendMessage(LocalMessageService.getInstance().convert(Objects.requireNonNull(LocalMessageService.getInstance().getlang().getString("Skills.Hardiness.Reduction"))));
+
         }
     }
 

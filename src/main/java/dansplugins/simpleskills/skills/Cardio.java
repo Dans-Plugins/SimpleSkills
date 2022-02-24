@@ -2,12 +2,15 @@ package dansplugins.simpleskills.skills;
 
 import dansplugins.simpleskills.AbstractMovementSkill;
 import dansplugins.simpleskills.data.PlayerRecord;
+import dansplugins.simpleskills.services.LocalMessageService;
 import dansplugins.simpleskills.utils.ChanceCalculator;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
 
 /**
  * @author Callum Johnson
@@ -67,7 +70,7 @@ public class Cardio extends AbstractMovementSkill {
         if (player.hasPotionEffect(PotionEffectType.SPEED)) player.removePotionEffect(PotionEffectType.SPEED);
         player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 600, 1, true, false));
         player.playSound(player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_CHIME, 5, 2);
-        player.sendMessage("§bPractice makes perfect, you've received a §aSpeed Boost§b!");
+        player.sendMessage(LocalMessageService.getInstance().convert(Objects.requireNonNull(LocalMessageService.getInstance().getlang().getString("Skills.Cardio"))));
     }
 
 }

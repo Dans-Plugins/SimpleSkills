@@ -1,4 +1,4 @@
-message-version: 0.1
+message-version: 0.2
 Default-Command:
   - "&bSimpleSkills %version%"
   - "&6Developed by %author%"
@@ -39,3 +39,36 @@ Skill-Info:
   - "&bMax Level: %mlevel%"
   - "&bBase Experience Requirement: %ber%"
   - "&bExperience Increase Factor: %eif%"
+Skills:
+  Athlete: "&bThe &aDolphins &bhave taught you many secrets, you can swim with &6grace&b!"
+  Boating: "&bWhoosh! Your boating skill has trained you in the ways of the water!"
+  Breeding: "&bYou got double experience for breeding your &a%type% &b!"
+  Cardio: "&bPractice makes perfect, you've received a &aSpeed Boost&b!"
+  Digging:
+    DoubleDrop: "&bYou got double drops for that &a%type% &b!"
+    Special: "&bYou got extra lucky and found something &6special&b!"
+  Dueling: "&bYou got a boost after killing &a%type% &b!"
+  Enchanting: "&bYou got lucky and got &6%enchant% %level% &b!"
+  Farming:
+    Replant: "&bThat %block% was &areplanted&b!"
+    Exp: "&bYou found &a%exp%&b experience!"
+    DoubleCrop: "&bDouble Crop Drops!"
+  Fishing: "&bAlongside your &a%entityName% &byou found a &6Golden Apple&b!"
+  Floriculture: "&bYou got bone meal, make more flowers!"
+  Gliding: "&bYou've been given a &6Power 3 &aFirework&b!"
+  Hardiness:
+    Negation: "&bYour skin and bones have grown tough, you've sustained &ano &bdamage!"
+    Reduction: "&bYour skin and bones have grown tough, you've sustained &aminimal &bdamage!"
+  Mining:
+    Smelt: "&6*Sizzle* &aThat ore was automagically smelted!"
+    Drop: "&bYou got double drops for that &a%item%&b!"
+  Quarrying:
+    DoubleDrop: "&bYou got double drops for that &a%item%&b!"
+    Water: "&bMake sure you get water for your thirst!"
+    Luck: "&bYou got extra lucky and found something &6special&b!"
+  Riding: "&bYour companion has received a &aSpeed Boost&b!"
+  Strength: "&bAfter attacking %attacked% &b you have a &cbloodlust&b, you must continue to &aattack&b to satisfy your urges!"
+  WoodCutting: "&bYou got double drops for that &a%item%&b!"
+  MonsterHunting: "&bUsing your hunting skills, you tracked down &a%nearbyEntities% &b other &a%mobName% &b!"
+  Pyromaniac: "&bThe fire has made you &6crazy&b!"
+  Crafting: "&bYou were sneaky and quickly grabbed a &a%typeName% &bfrom the recipe book!"

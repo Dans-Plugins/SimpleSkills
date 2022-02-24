@@ -3,6 +3,7 @@ package dansplugins.simpleskills.skills;
 import com.cryptomorin.xseries.XMaterial;
 import dansplugins.simpleskills.AbstractMovementSkill;
 import dansplugins.simpleskills.data.PlayerRecord;
+import dansplugins.simpleskills.services.LocalMessageService;
 import dansplugins.simpleskills.utils.ChanceCalculator;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
@@ -80,7 +81,7 @@ public class Gliding extends AbstractMovementSkill {
         meta.setPower(3);
         stack.setItemMeta(meta);
         player.getInventory().addItem(stack);
-        player.sendMessage("§bYou've been given a §6Power 3 §aFirework§b!");
+        player.sendMessage(LocalMessageService.getInstance().convert(Objects.requireNonNull(LocalMessageService.getInstance().getlang().getString("Skills.Gliding"))));
     }
 
 }

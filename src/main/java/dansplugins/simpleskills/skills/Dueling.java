@@ -2,13 +2,17 @@ package dansplugins.simpleskills.skills;
 
 import dansplugins.simpleskills.AbstractSkill;
 import dansplugins.simpleskills.data.PlayerRecord;
+import dansplugins.simpleskills.services.LocalMessageService;
 import dansplugins.simpleskills.utils.ChanceCalculator;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
 
 /**
  * @author Callum Johnson
@@ -49,6 +53,7 @@ public class Dueling extends AbstractSkill {
      *
      * @param event to handle.
      */
+    @EventHandler
     public void onKill(@NotNull PlayerDeathEvent event) {
         final Player killer = event.getEntity().getKiller();
         if (killer == null) return;
@@ -70,7 +75,8 @@ public class Dueling extends AbstractSkill {
         if (!ChanceCalculator.getInstance().roll(record, this, 0.10)) return;
         if (player.hasPotionEffect(PotionEffectType.ABSORPTION)) player.removePotionEffect(PotionEffectType.ABSORPTION);
         player.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 500, 5, true, false));
-        player.sendMessage("§bYou got a boost after killing §a" + skillData[0] + "§b!");
+        player.sendMessage(LocalMessageService.getInstance().convert(Objects.requireNonNull(Objects.requireNonNull(LocalMessageService.getInstance().getlang().getString("Skills.Dueling"))
+                .replaceAll("%type%", String.valueOf(skillData[0])))));
         player.playSound(player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_CHIME, 5, 2);
         player.playSound(player.getLocation(), Sound.ENTITY_BAT_TAKEOFF, 5, 2);
     }

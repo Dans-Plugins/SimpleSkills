@@ -2,12 +2,16 @@ package dansplugins.simpleskills.skills;
 
 import dansplugins.simpleskills.AbstractSkill;
 import dansplugins.simpleskills.data.PlayerRecord;
+import dansplugins.simpleskills.services.LocalMessageService;
 import dansplugins.simpleskills.utils.ChanceCalculator;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityBreedEvent;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
 
 /**
  * @author Callum Johnson
@@ -44,10 +48,11 @@ public class Breeding extends AbstractSkill {
     }
 
     /**
-     * Method handle the {@link EntityBreedEvent} event.
+     * Method handles the {@link EntityBreedEvent} event.
      *
      * @param event to handle.
      */
+    @EventHandler
     public void breed(@NotNull EntityBreedEvent event) {
         if (event.getBreeder() == null) return;
         if (!(event.getBreeder() instanceof Player)) return;
@@ -76,7 +81,8 @@ public class Breeding extends AbstractSkill {
         final String type = WordUtils.capitalizeFully(breedEvent.getFather().getType()
                 .name().replaceAll("_", " ").toLowerCase() + "s");
         player.playSound(player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_CHIME, 5, 2);
-        player.sendMessage("§bYou got double experience for breeding your §a" + type + "§b!");
+        player.sendMessage(LocalMessageService.getInstance().convert(Objects.requireNonNull(Objects.requireNonNull(LocalMessageService.getInstance().getlang().getString("Skills.Breeding"))
+                .replaceAll("%type%", type))));
     }
 
 }

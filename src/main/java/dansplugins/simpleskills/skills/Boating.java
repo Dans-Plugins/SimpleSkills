@@ -2,11 +2,14 @@ package dansplugins.simpleskills.skills;
 
 import dansplugins.simpleskills.AbstractMovementSkill;
 import dansplugins.simpleskills.data.PlayerRecord;
+import dansplugins.simpleskills.services.LocalMessageService;
 import dansplugins.simpleskills.utils.ChanceCalculator;
 import org.bukkit.Sound;
 import org.bukkit.entity.Boat;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
 
 /**
  * @author Callum Johnson
@@ -66,7 +69,7 @@ public class Boating extends AbstractMovementSkill {
         if (!(player.getVehicle() instanceof Boat)) return;
         final Boat boat = (Boat) player.getVehicle();
         boat.setVelocity(boat.getVelocity().multiply(4));
-        player.sendMessage("§bWhoosh! Your boating skill has trained you in the ways of the water!");
+        player.sendMessage(LocalMessageService.getInstance().convert(Objects.requireNonNull(LocalMessageService.getInstance().getlang().getString("Skills.Boating"))));
         player.playSound(player.getLocation(), Sound.ENTITY_BOAT_PADDLE_WATER, 5, 2);
     }
 

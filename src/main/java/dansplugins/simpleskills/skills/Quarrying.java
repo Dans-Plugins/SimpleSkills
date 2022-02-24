@@ -3,6 +3,7 @@ package dansplugins.simpleskills.skills;
 import com.cryptomorin.xseries.XMaterial;
 import dansplugins.simpleskills.AbstractBlockSkill;
 import dansplugins.simpleskills.data.PlayerRecord;
+import dansplugins.simpleskills.services.LocalMessageService;
 import dansplugins.simpleskills.utils.ChanceCalculator;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.Material;
@@ -128,16 +129,18 @@ public class Quarrying extends AbstractBlockSkill {
                     if (drop.getType().isAir()) return;
                     block.getWorld().dropItemNaturally(block.getLocation(), drop);
                 });
-                player.sendMessage("§bYou got double drops for that §a" + WordUtils.capitalizeFully(block.getType()
-                        .name().replaceAll("_", " ").toLowerCase()) + "!");
+                player.sendMessage(LocalMessageService.getInstance().convert(Objects.requireNonNull(Objects.requireNonNull(LocalMessageService.getInstance().getlang().getString("Skills.Quarrying.DoubleDrop"))
+                        .replaceAll("%item%", WordUtils.capitalizeFully(block.getType()
+                                .name().replaceAll("_", " ").toLowerCase())))));
                 return;
             }
             final List<Material> rewardTypes = getRewardTypes(block.getType());
             final Material reward = rewardTypes.get(new Random().nextInt(rewardTypes.size()));
             block.getWorld().dropItemNaturally(block.getLocation(), new ItemStack(reward));
             if (reward == XMaterial.GLASS_BOTTLE.parseMaterial())
-                player.sendMessage("§bMake sure you get water for your thirst!");
-            else player.sendMessage("§bYou got extra lucky and found something §6special§b!");
+                player.sendMessage(LocalMessageService.getInstance().convert(Objects.requireNonNull(LocalMessageService.getInstance().getlang().getString("Skills.Quarrying.Water"))));
+            else
+                player.sendMessage(LocalMessageService.getInstance().convert(Objects.requireNonNull(LocalMessageService.getInstance().getlang().getString("Skills.Quarrying.Luck"))));
         }
     }
 
