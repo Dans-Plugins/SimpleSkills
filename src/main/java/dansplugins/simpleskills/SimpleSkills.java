@@ -54,7 +54,7 @@ public class SimpleSkills extends PonderBukkitPlugin {
         LocalMessageService.getInstance().createlang();
         registerEvents();
         initializeCommandService();
-        checkMessageAndConfigVersions();
+        checkFilesVersion();
     }
 
     /**
@@ -103,12 +103,12 @@ public class SimpleSkills extends PonderBukkitPlugin {
         return LocalConfigService.getInstance().getconfig().getBoolean("debugMode");
     }
 
-    private void checkMessageAndConfigVersions() {
-        if (LocalMessageService.getInstance().getlang().getDouble("message-version") != 0.1) {
-            getLogger().warning("Outdated message.yml! Please backup & update message.yml file and restart server again!!");
+    private void checkFilesVersion() {
+        if (LocalMessageService.getInstance().getlang().getDouble("message-version") != 0.2) {
+            getLogger().log( Level.SEVERE, "Outdated message.yml! Please backup & update message.yml file and restart server again!!");
         }
         if (LocalConfigService.getInstance().getconfig().getDouble("config-version") != 0.1) {
-            getLogger().warning("Outdated config.yml! Please backup & update config.yml file and restart server again!!");
+            getLogger().log( Level.SEVERE, "Outdated config.yml! Please backup & update config.yml file and restart server again!!");
         }
     }
 
@@ -137,15 +137,6 @@ public class SimpleSkills extends PonderBukkitPlugin {
                 continue;
             }
             command.setTabCompleter(new TabCommand());
-        }
-    }
-
-    private void checkVersion() {
-        if (LocalMessageService.getInstance().getlang().getDouble("message-version") != 0.2) {
-            getLogger().log(Level.WARNING, "Your message file is old! Stop server, backup and delete it to load new message file!");
-        }
-        if (LocalConfigService.getInstance().getconfig().getDouble("config-version") != 0.1) {
-            getLogger().log(Level.WARNING, "Your config file is old! Stop server, backup and delete it to load new config file!");
         }
     }
 
