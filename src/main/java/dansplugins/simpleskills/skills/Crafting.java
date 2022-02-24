@@ -2,11 +2,13 @@ package dansplugins.simpleskills.skills;
 
 import dansplugins.simpleskills.AbstractSkill;
 import dansplugins.simpleskills.data.PlayerRecord;
+import dansplugins.simpleskills.services.LocalMessageService;
 import dansplugins.simpleskills.utils.ChanceCalculator;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.inventory.*;
 import org.jetbrains.annotations.NotNull;
@@ -14,6 +16,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -55,6 +58,7 @@ public class Crafting extends AbstractSkill {
      *
      * @param event to track and handle.
      */
+    @EventHandler
     public void onCraft(CraftItemEvent event) {
         if (event.isCancelled()) return;
         if (!(event.getWhoClicked() instanceof Player)) return;
@@ -101,8 +105,8 @@ public class Crafting extends AbstractSkill {
         player.getInventory().addItem(new ItemStack(material, Math.random() > 0.5 ? 2 : 1));
         final String typeName = WordUtils.capitalizeFully(material.name().toLowerCase().replaceAll("_", " "));
         final boolean nRequired = "aeiou".contains(String.valueOf(typeName.toLowerCase().charAt(0)));
-        player.sendMessage("§bYou were sneaky and quickly grabbed a"
-                + ((nRequired ? "n" : "") + "§a" + typeName) + " §bfrom the recipe book!");
+        player.sendMessage(LocalMessageService.getInstance().convert(Objects.requireNonNull(Objects.requireNonNull(LocalMessageService.getInstance().getlang().getString("Skills.Crafting"))
+                .replaceAll("%typeName%", ((nRequired ? "n" : "") + "§a" + typeName)))));
     }
 
 }

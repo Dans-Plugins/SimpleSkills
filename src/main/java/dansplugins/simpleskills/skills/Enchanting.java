@@ -2,18 +2,17 @@ package dansplugins.simpleskills.skills;
 
 import dansplugins.simpleskills.AbstractSkill;
 import dansplugins.simpleskills.data.PlayerRecord;
+import dansplugins.simpleskills.services.LocalMessageService;
 import dansplugins.simpleskills.utils.ChanceCalculator;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.Sound;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.enchantment.EnchantItemEvent;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -55,6 +54,7 @@ public class Enchanting extends AbstractSkill {
      *
      * @param event to handle.
      */
+    @EventHandler
     public void onEnchant(@NotNull EnchantItemEvent event) {
         incrementExperience(event.getEnchanter());
         executeReward(event.getEnchanter(), event);
@@ -90,9 +90,9 @@ public class Enchanting extends AbstractSkill {
         level = event.getEnchantsToAdd().get(enchant);
         player.playSound(player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_CHIME, 5, 2);
         player.playSound(event.getEnchantBlock().getLocation(), Sound.ENTITY_ENDERMAN_AMBIENT, 5, 2);
-        player.sendMessage("§bYou got lucky and got §6"
-                + WordUtils.capitalizeFully(enchant.getKey().getKey().replaceAll("_", " ").toLowerCase())
-                + " " + getRomanNumber(level));
+        player.sendMessage(LocalMessageService.getInstance().convert(Objects.requireNonNull(Objects.requireNonNull(LocalMessageService.getInstance().getlang().getString("Skills.Enchanting"))
+                .replaceAll("%enchant%", WordUtils.capitalizeFully(enchant.getKey().getKey().replaceAll("_", " ").toLowerCase()))
+                .replaceAll("%level%", getRomanNumber(level)))));
     }
 
     /**

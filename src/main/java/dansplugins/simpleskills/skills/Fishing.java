@@ -3,6 +3,7 @@ package dansplugins.simpleskills.skills;
 import com.cryptomorin.xseries.XMaterial;
 import dansplugins.simpleskills.AbstractSkill;
 import dansplugins.simpleskills.data.PlayerRecord;
+import dansplugins.simpleskills.services.LocalMessageService;
 import dansplugins.simpleskills.utils.ChanceCalculator;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.Sound;
@@ -83,7 +84,8 @@ public class Fishing extends AbstractSkill {
         if (entity instanceof Item) entityName = ((Item) entity).getItemStack().getType().name();
         else entityName = entity.getType().getKey().getKey();
         entityName = WordUtils.capitalizeFully(entityName.toLowerCase().replaceAll("_", " "));
-        player.sendMessage("§bAlongside your §a" + entityName + " §byou found a §6Golden Apple§b!");
+        player.sendMessage(LocalMessageService.getInstance().convert(Objects.requireNonNull(Objects.requireNonNull(LocalMessageService.getInstance().getlang().getString("Skills.Fishing"))
+                .replaceAll("%entityname%", entityName))));
         player.getInventory().addItem(new ItemStack(Objects.requireNonNull(XMaterial.GOLDEN_APPLE.parseMaterial()), 1));
         player.playSound(player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_CHIME, 5, 2);
     }

@@ -2,15 +2,19 @@ package dansplugins.simpleskills.skills;
 
 import dansplugins.simpleskills.AbstractSkill;
 import dansplugins.simpleskills.data.PlayerRecord;
+import dansplugins.simpleskills.services.LocalMessageService;
 import dansplugins.simpleskills.utils.ChanceCalculator;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.Sound;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
 
 /**
  * @author Callum Johnson
@@ -51,6 +55,7 @@ public class Strength extends AbstractSkill {
      *
      * @param event to handle.
      */
+    @EventHandler
     public void onKill(@NotNull EntityDamageByEntityEvent event) {
         if (!(event.getDamager() instanceof Player)) return;
         final Player killer = (Player) event.getDamager();
@@ -82,8 +87,8 @@ public class Strength extends AbstractSkill {
                 "a" + (nRequired ? "n" : "") + " §b"
                         + WordUtils.capitalizeFully(entity.getType().name().replaceAll("_", " ").toLowerCase());
         player.playSound(player.getLocation(), Sound.ENTITY_ENDER_DRAGON_GROWL, 5, 2);
-        player.sendMessage("§bAfter attacking " + attacked + "§b you have a §cbloodlust§b, you must continue " +
-                "to §aattack§b to satisfy your urges!");
+        player.sendMessage(LocalMessageService.getInstance().convert(Objects.requireNonNull(Objects.requireNonNull(LocalMessageService.getInstance().getlang().getString("Skills.Strength"))
+                .replaceAll("%attacked%", attacked))));
     }
 
 }

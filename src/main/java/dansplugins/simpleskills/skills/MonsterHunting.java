@@ -2,6 +2,7 @@ package dansplugins.simpleskills.skills;
 
 import dansplugins.simpleskills.AbstractSkill;
 import dansplugins.simpleskills.data.PlayerRecord;
+import dansplugins.simpleskills.services.LocalMessageService;
 import dansplugins.simpleskills.utils.ChanceCalculator;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.Color;
@@ -17,6 +18,7 @@ import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -107,8 +109,9 @@ public class MonsterHunting extends AbstractSkill {
         }
         final String mobName = WordUtils.capitalizeFully(monster.getType().name().toLowerCase().replaceAll("_", " "));
         final boolean sRequired = mobName.charAt(mobName.length() - 1) != 'd';
-        player.sendMessage("§bUsing your hunting skills, you tracked down §a" +
-                nearbyEntities.size() + "§b other §a" + mobName + (sRequired ? "s" : "") + "§b!");
+        player.sendMessage(LocalMessageService.getInstance().convert(Objects.requireNonNull(Objects.requireNonNull(LocalMessageService.getInstance().getlang().getString("Skills.MonsterHunting"))
+                .replaceAll("%nearbyEntities%", String.valueOf(nearbyEntities.size()))
+                .replaceAll("%mobName%", mobName + (sRequired ? "s" : "")))));
     }
 
 }

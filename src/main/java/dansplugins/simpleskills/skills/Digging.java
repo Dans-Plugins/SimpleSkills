@@ -3,6 +3,7 @@ package dansplugins.simpleskills.skills;
 import com.cryptomorin.xseries.XMaterial;
 import dansplugins.simpleskills.AbstractBlockSkill;
 import dansplugins.simpleskills.data.PlayerRecord;
+import dansplugins.simpleskills.services.LocalMessageService;
 import dansplugins.simpleskills.utils.ChanceCalculator;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.Material;
@@ -134,14 +135,14 @@ public class Digging extends AbstractBlockSkill {
                     if (drop.getType().isAir()) return;
                     block.getWorld().dropItemNaturally(block.getLocation(), drop);
                 });
-                player.sendMessage("§bYou got double drops for that §a" + WordUtils.capitalizeFully(block.getType()
-                        .name().replaceAll("_", " ").toLowerCase()) + "!");
+                player.sendMessage(LocalMessageService.getInstance().convert(Objects.requireNonNull(LocalMessageService.getInstance().getlang().getString("Skills.Digging.DoubleDrop"))
+                        .replaceAll("%type%", WordUtils.capitalizeFully(block.getType().name().replaceAll("_", " ").toLowerCase()))));
                 return;
             }
             final List<Material> rewardTypes = getRewardTypes(block.getType());
             final Material reward = rewardTypes.get(new Random().nextInt(rewardTypes.size()));
             block.getWorld().dropItemNaturally(block.getLocation(), new ItemStack(reward));
-            player.sendMessage("§bYou got extra lucky and found something §6special§b!");
+            player.sendMessage(LocalMessageService.getInstance().convert(Objects.requireNonNull(LocalMessageService.getInstance().getlang().getString("Skills.Digging.Special"))));
         }
     }
 

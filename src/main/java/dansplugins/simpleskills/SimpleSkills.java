@@ -11,6 +11,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
+import org.jetbrains.annotations.NotNull;
 import preponderous.ponder.minecraft.bukkit.PonderMC;
 import preponderous.ponder.minecraft.bukkit.abs.AbstractPluginCommand;
 import preponderous.ponder.minecraft.bukkit.abs.PonderBukkitPlugin;
@@ -62,6 +63,8 @@ public class SimpleSkills extends PonderBukkitPlugin {
     @Override
     public void onDisable() {
         LocalStorageService.getInstance().save();
+        LocalMessageService.getInstance().savelang();
+        LocalConfigService.getInstance().saveconfig();
     }
 
     /**
@@ -73,7 +76,7 @@ public class SimpleSkills extends PonderBukkitPlugin {
      * @param args   Arguments of the core command. Often sub-commands.
      * @return A boolean indicating whether the execution of the command was successful.
      */
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, String[] args) {
         if (args.length == 0) {
             DefaultCommand defaultCommand = new DefaultCommand();
             return defaultCommand.execute(sender);
@@ -89,20 +92,6 @@ public class SimpleSkills extends PonderBukkitPlugin {
      */
     public String getVersion() {
         return pluginVersion;
-    }
-
-    /**
-     * Checks if the version is mismatched.
-     *
-     * @return A boolean indicating if the version is mismatched.
-     */
-    public boolean isVersionMismatched() {
-        String configVersion = getConfig().getString("version");
-        if (configVersion == null || this.getVersion() == null) {
-            return true;
-        } else {
-            return !configVersion.equalsIgnoreCase(this.getVersion());
-        }
     }
 
     /**
@@ -148,6 +137,15 @@ public class SimpleSkills extends PonderBukkitPlugin {
                 continue;
             }
             command.setTabCompleter(new TabCommand());
+        }
+    }
+
+    private void checkVersion() {
+        if (LocalMessageService.getInstance().getlang().getDouble("message-version") != 0.2) {
+            getLogger().log(Level.WARNING, "Your message file is old! Stop server, backup and delete it to load new message file!");
+        }
+        if (LocalConfigService.getInstance().getconfig().getDouble("config-version") != 0.1) {
+            getLogger().log(Level.WARNING, "Your config file is old! Stop server, backup and delete it to load new config file!");
         }
     }
 

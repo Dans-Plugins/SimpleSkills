@@ -2,6 +2,7 @@ package dansplugins.simpleskills.skills;
 
 import dansplugins.simpleskills.AbstractBlockSkill;
 import dansplugins.simpleskills.data.PlayerRecord;
+import dansplugins.simpleskills.services.LocalMessageService;
 import dansplugins.simpleskills.utils.ChanceCalculator;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.Material;
@@ -12,6 +13,7 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
+import java.util.Objects;
 
 /**
  * @author Callum Johnson
@@ -73,8 +75,9 @@ public class Woodcutting extends AbstractBlockSkill {
                 if (drop.getType().isAir()) return;
                 block.getWorld().dropItemNaturally(block.getLocation(), drop);
             });
-            player.sendMessage("§bYou got double drops for that §a" + WordUtils.capitalizeFully(block.getType()
-                    .name().replaceAll("_", " ").toLowerCase()) + "!");
+            player.sendMessage(LocalMessageService.getInstance().convert(Objects.requireNonNull(Objects.requireNonNull(LocalMessageService.getInstance().getlang().getString("Skills.WoodCutting"))
+                    .replaceAll("%item%", WordUtils.capitalizeFully(block.getType()
+                            .name().replaceAll("_", " ").toLowerCase())))));
         }
     }
 

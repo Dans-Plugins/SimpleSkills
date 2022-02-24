@@ -2,6 +2,7 @@ package dansplugins.simpleskills.skills;
 
 import dansplugins.simpleskills.AbstractBlockSkill;
 import dansplugins.simpleskills.data.PlayerRecord;
+import dansplugins.simpleskills.services.LocalMessageService;
 import dansplugins.simpleskills.utils.ChanceCalculator;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.Bukkit;
@@ -16,6 +17,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.Objects;
 
 /**
  * @author Callum Johnson
@@ -122,7 +124,7 @@ public class Mining extends AbstractBlockSkill {
                     block.getWorld().dropItemNaturally(block.getLocation(), result);
                     player.playSound(player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_CHIME, 5, 2);
                     player.playSound(player.getLocation(), Sound.BLOCK_LAVA_EXTINGUISH, 5, 2);
-                    player.sendMessage("§6*Sizzle* §aThat ore was automagically smelted!");
+                    player.sendMessage(LocalMessageService.getInstance().convert(Objects.requireNonNull(LocalMessageService.getInstance().getlang().getString("Skills.Mining.Smelt"))));
                     return;
                 }
             }
@@ -132,8 +134,9 @@ public class Mining extends AbstractBlockSkill {
                 if (drop.getType().isAir()) return;
                 block.getWorld().dropItemNaturally(block.getLocation(), drop);
             });
-            player.sendMessage("§bYou got double drops for that §a" + WordUtils.capitalizeFully(block.getType().name()
-                    .replaceAll("_", " ").toLowerCase()) + "!");
+            player.sendMessage(LocalMessageService.getInstance().convert(Objects.requireNonNull(Objects.requireNonNull(LocalMessageService.getInstance().getlang().getString("Skills.Mining.Drop"))
+                    .replaceAll("%item%", WordUtils.capitalizeFully(block.getType().name()
+                            .replaceAll("_", " ").toLowerCase())))));
         }
     }
 

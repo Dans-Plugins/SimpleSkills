@@ -3,6 +3,7 @@ package dansplugins.simpleskills.skills;
 import com.cryptomorin.xseries.XMaterial;
 import dansplugins.simpleskills.AbstractBlockSkill;
 import dansplugins.simpleskills.data.PlayerRecord;
+import dansplugins.simpleskills.services.LocalMessageService;
 import dansplugins.simpleskills.utils.ChanceCalculator;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -20,6 +21,7 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
+import java.util.Objects;
 
 /**
  * @author Callum Johnson
@@ -161,8 +163,8 @@ public class Farming extends AbstractBlockSkill {
                     final Collection<ItemStack> drops = block.getDrops(player.getInventory().getItemInMainHand(), player);
                     drops.forEach(drop -> block.getWorld().dropItemNaturally(block.getLocation(), drop));
                     player.playSound(block.getLocation(), Sound.ITEM_CROP_PLANT, 5, 2);
-                    player.sendMessage("§bThat " + block.getType().name().replaceAll("_", " ").toLowerCase() +
-                            " was §areplanted§b!");
+                    player.sendMessage(LocalMessageService.getInstance().convert(Objects.requireNonNull(Objects.requireNonNull(LocalMessageService.getInstance().getlang().getString("Skills.Farming.Replant"))
+                            .replaceAll("%block%", block.getType().name().replaceAll("_", " ").toLowerCase()))));
                     cropState.setAge(0);
                     block.setBlockData(cropState);
                 }
@@ -175,7 +177,8 @@ public class Farming extends AbstractBlockSkill {
             final int exp = (int) (Math.random() * 10.0);
             entity.setExperience(exp);
             entity.setGlowing(true);
-            player.sendMessage("§bYou found §a" + exp + "§b experience!");
+            player.sendMessage(LocalMessageService.getInstance().convert(Objects.requireNonNull(Objects.requireNonNull(LocalMessageService.getInstance().getlang().getString("Skills.Farming.Exp"))
+                    .replaceAll("%exp%", String.valueOf(exp)))));
             return;
         }
         player.playSound(block.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_CHIME, 5, 2);
@@ -184,7 +187,7 @@ public class Farming extends AbstractBlockSkill {
             if (drop.getType().isAir()) return;
             block.getWorld().dropItemNaturally(block.getLocation(), drop);
         });
-        player.sendMessage("§bDouble Crop Drops!");
+        player.sendMessage(LocalMessageService.getInstance().convert(Objects.requireNonNull(LocalMessageService.getInstance().getlang().getString("Skills.Farming.DoubleCrop"))));
     }
 
 }

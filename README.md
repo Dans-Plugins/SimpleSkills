@@ -33,12 +33,12 @@ Please fill out a bug report [here](https://github.com/dmccoystephenson/SimpleSk
 - [Notes for Developers](https://github.com/dmccoystephenson/SimpleSkills/wiki/Developer-Notes) (coming soon)
 
 ## Authors and acknowledgement
-Name | Main Contributions
------------- | -------------
-Daniel Stephenson | Creator
-VoChiDanh | NMS utilization & other improvements
-Callum | Massively improved the plugin in many ways
-Deej | Renamed a skill.
+| Name              | Main Contributions                         |
+|-------------------|--------------------------------------------|
+| Daniel Stephenson | Creator                                    |
+| VoChiDanh         | NMS utilization & other improvements       |
+| Callum            | Massively improved the plugin in many ways |
+| Deej              | Renamed a skill.                           |
 
 ## License
 GPL3

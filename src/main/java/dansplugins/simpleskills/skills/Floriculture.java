@@ -3,6 +3,7 @@ package dansplugins.simpleskills.skills;
 import com.cryptomorin.xseries.XMaterial;
 import dansplugins.simpleskills.AbstractBlockSkill;
 import dansplugins.simpleskills.data.PlayerRecord;
+import dansplugins.simpleskills.services.LocalMessageService;
 import dansplugins.simpleskills.utils.ChanceCalculator;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -137,7 +138,7 @@ public class Floriculture extends AbstractBlockSkill {
         if (!ChanceCalculator.getInstance().roll(record, this, 0.10)) return;
         player.playSound(block.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_CHIME, 5, 2);
         block.getWorld().dropItemNaturally(block.getLocation(), new ItemStack(Objects.requireNonNull(XMaterial.BONE_MEAL.parseItem())));
-        player.sendMessage("§bYou got bone meal, make more flowers!");
+        player.sendMessage(LocalMessageService.getInstance().convert(Objects.requireNonNull(LocalMessageService.getInstance().getlang().getString("Skills.Floriculture"))));
     }
 
 }

@@ -2,6 +2,7 @@ package dansplugins.simpleskills.skills;
 
 import dansplugins.simpleskills.AbstractMovementSkill;
 import dansplugins.simpleskills.data.PlayerRecord;
+import dansplugins.simpleskills.services.LocalMessageService;
 import dansplugins.simpleskills.utils.ChanceCalculator;
 import org.bukkit.Sound;
 import org.bukkit.entity.Creature;
@@ -9,6 +10,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
 
 /**
  * @author Callum Johnson
@@ -70,7 +73,7 @@ public class Riding extends AbstractMovementSkill {
         if (vehicle.hasPotionEffect(PotionEffectType.SPEED)) vehicle.removePotionEffect(PotionEffectType.SPEED);
         vehicle.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 600, 1, true, false));
         player.playSound(player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_CHIME, 5, 2);
-        player.sendMessage("§bYour companion has received a §aSpeed Boost§b!");
+        player.sendMessage(LocalMessageService.getInstance().convert(Objects.requireNonNull(LocalMessageService.getInstance().getlang().getString("Skills.Riding"))));
     }
 
 }

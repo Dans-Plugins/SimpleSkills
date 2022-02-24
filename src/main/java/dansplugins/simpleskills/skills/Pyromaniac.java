@@ -3,6 +3,7 @@ package dansplugins.simpleskills.skills;
 import com.cryptomorin.xseries.XMaterial;
 import dansplugins.simpleskills.AbstractBlockSkill;
 import dansplugins.simpleskills.data.PlayerRecord;
+import dansplugins.simpleskills.services.LocalMessageService;
 import dansplugins.simpleskills.utils.ChanceCalculator;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -12,6 +13,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
 
 /**
  * @author Callum Johnson
@@ -102,7 +105,7 @@ public class Pyromaniac extends AbstractBlockSkill {
         final PlayerRecord record = getRecord(player);
         if (record == null) return;
         if (!ChanceCalculator.getInstance().roll(record, this, 0.10)) return;
-        player.sendMessage("§bThe fire has made you §6crazy§b!");
+        player.sendMessage(LocalMessageService.getInstance().convert(Objects.requireNonNull(LocalMessageService.getInstance().getlang().getString("Skills.Pyromaniac"))));
         player.playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_SCREAM, 5, 2);
         player.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 320, 5, true, false));
         player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 320, 2, true, false));
