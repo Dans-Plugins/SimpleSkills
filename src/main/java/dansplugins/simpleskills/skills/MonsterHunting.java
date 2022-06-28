@@ -1,9 +1,13 @@
 package dansplugins.simpleskills.skills;
 
-import dansplugins.simpleskills.AbstractSkill;
-import dansplugins.simpleskills.data.PlayerRecord;
-import dansplugins.simpleskills.services.LocalMessageService;
+import dansplugins.simpleskills.SimpleSkills;
+import dansplugins.simpleskills.data.PersistentData;
+import dansplugins.simpleskills.data.objects.PlayerRecord;
+import dansplugins.simpleskills.services.ConfigService;
+import dansplugins.simpleskills.services.MessageService;
+import dansplugins.simpleskills.skills.abs.AbstractSkill;
 import dansplugins.simpleskills.utils.ChanceCalculator;
+import dansplugins.simpleskills.utils.Logger;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.Color;
 import org.bukkit.Location;
@@ -26,12 +30,14 @@ import java.util.stream.Collectors;
  * @since 11/01/2022 - 16:42
  */
 public class MonsterHunting extends AbstractSkill {
+    private final ChanceCalculator chanceCalculator;
 
     /**
      * The Monster Hunting skill is levelled by killing Monsters.
      */
-    public MonsterHunting() {
-        super("Monster Hunting", EntityDeathEvent.class);
+    public MonsterHunting(ConfigService configService, Logger logger, PersistentData persistentData, SimpleSkills simpleSkills, MessageService messageService, ChanceCalculator chanceCalculator) {
+        super(configService, logger, persistentData, simpleSkills, messageService, "Monster Hunting", EntityDeathEvent.class);
+        this.chanceCalculator = chanceCalculator;
     }
 
     /**
@@ -83,7 +89,7 @@ public class MonsterHunting extends AbstractSkill {
         final Object entityData = skillData[0];
         if (!(entityData instanceof Monster)) throw new IllegalArgumentException("Skill Data[0] is not Monster.");
         final Monster monster = (Monster) entityData;
-        if (!ChanceCalculator.getInstance().roll(record, this, 0.10)) return;
+        if (!chanceCalculator.roll(record, this, 0.10)) return;
         final List<LivingEntity> nearbyEntities = monster.getNearbyEntities(15, 5, 15).stream()
                 .filter(e -> e.getType().equals(monster.getType()))
                 .filter(e -> e instanceof LivingEntity)
@@ -109,7 +115,7 @@ public class MonsterHunting extends AbstractSkill {
         }
         final String mobName = WordUtils.capitalizeFully(monster.getType().name().toLowerCase().replaceAll("_", " "));
         final boolean sRequired = mobName.charAt(mobName.length() - 1) != 'd';
-        player.sendMessage(LocalMessageService.getInstance().convert(Objects.requireNonNull(Objects.requireNonNull(LocalMessageService.getInstance().getlang().getString("Skills.MonsterHunting"))
+        player.sendMessage(messageService.convert(Objects.requireNonNull(Objects.requireNonNull(messageService.getlang().getString("Skills.MonsterHunting"))
                 .replaceAll("%nearbyEntities%", String.valueOf(nearbyEntities.size()))
                 .replaceAll("%mobName%", mobName + (sRequired ? "s" : "")))));
     }

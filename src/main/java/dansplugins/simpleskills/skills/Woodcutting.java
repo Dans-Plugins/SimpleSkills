@@ -1,9 +1,13 @@
 package dansplugins.simpleskills.skills;
 
-import dansplugins.simpleskills.AbstractBlockSkill;
-import dansplugins.simpleskills.data.PlayerRecord;
-import dansplugins.simpleskills.services.LocalMessageService;
+import dansplugins.simpleskills.SimpleSkills;
+import dansplugins.simpleskills.data.PersistentData;
+import dansplugins.simpleskills.data.objects.PlayerRecord;
+import dansplugins.simpleskills.services.ConfigService;
+import dansplugins.simpleskills.services.MessageService;
+import dansplugins.simpleskills.skills.abs.AbstractBlockSkill;
 import dansplugins.simpleskills.utils.ChanceCalculator;
+import dansplugins.simpleskills.utils.Logger;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -20,6 +24,7 @@ import java.util.Objects;
  * @since 05/01/2022 - 13:55
  */
 public class Woodcutting extends AbstractBlockSkill {
+    private final ChanceCalculator chanceCalculator;
 
     /**
      * Variable used for the determination of random reward chance.
@@ -29,8 +34,9 @@ public class Woodcutting extends AbstractBlockSkill {
     /**
      * The Woodcutting skill is a skill where players mine Logs/Wood to gain experience.
      */
-    public Woodcutting() {
-        super("lumberjack");
+    public Woodcutting(ConfigService configService, Logger logger, PersistentData persistentData, SimpleSkills simpleSkills, MessageService messageService, ChanceCalculator chanceCalculator) {
+        super(configService, logger, persistentData, simpleSkills, messageService, "lumberjack");
+        this.chanceCalculator = chanceCalculator;
     }
 
     /**
@@ -68,14 +74,14 @@ public class Woodcutting extends AbstractBlockSkill {
         final PlayerRecord record = getRecord(player);
         if (record == null) return;
         final Block block = (Block) blockData;
-        if (ChanceCalculator.getInstance().roll(record, this, 0.10)) {
+        if (chanceCalculator.roll(record, this, 0.10)) {
             player.playSound(player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_CHIME, 5, 2);
             final Collection<ItemStack> drops = block.getDrops(player.getInventory().getItemInMainHand());
             drops.forEach(drop -> {
                 if (drop.getType().isAir()) return;
                 block.getWorld().dropItemNaturally(block.getLocation(), drop);
             });
-            player.sendMessage(LocalMessageService.getInstance().convert(Objects.requireNonNull(Objects.requireNonNull(LocalMessageService.getInstance().getlang().getString("Skills.WoodCutting"))
+            player.sendMessage(messageService.convert(Objects.requireNonNull(Objects.requireNonNull(messageService.getlang().getString("Skills.WoodCutting"))
                     .replaceAll("%item%", WordUtils.capitalizeFully(block.getType()
                             .name().replaceAll("_", " ").toLowerCase())))));
         }

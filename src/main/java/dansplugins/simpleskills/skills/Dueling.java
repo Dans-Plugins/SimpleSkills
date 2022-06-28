@@ -1,9 +1,13 @@
 package dansplugins.simpleskills.skills;
 
-import dansplugins.simpleskills.AbstractSkill;
-import dansplugins.simpleskills.data.PlayerRecord;
-import dansplugins.simpleskills.services.LocalMessageService;
+import dansplugins.simpleskills.SimpleSkills;
+import dansplugins.simpleskills.data.PersistentData;
+import dansplugins.simpleskills.data.objects.PlayerRecord;
+import dansplugins.simpleskills.services.ConfigService;
+import dansplugins.simpleskills.services.MessageService;
+import dansplugins.simpleskills.skills.abs.AbstractSkill;
 import dansplugins.simpleskills.utils.ChanceCalculator;
+import dansplugins.simpleskills.utils.Logger;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -19,12 +23,14 @@ import java.util.Objects;
  * @since 11/01/2022 - 11:17
  */
 public class Dueling extends AbstractSkill {
+    private final ChanceCalculator chanceCalculator;
 
     /**
      * The dueling skill is levelled by killing Players.
      */
-    public Dueling() {
-        super("Dueling", PlayerDeathEvent.class);
+    public Dueling(ConfigService configService, Logger logger, PersistentData persistentData, SimpleSkills simpleSkills, MessageService messageService, ChanceCalculator chanceCalculator) {
+        super(configService, logger, persistentData, simpleSkills, messageService, "Dueling", PlayerDeathEvent.class);
+        this.chanceCalculator = chanceCalculator;
     }
 
     /**
@@ -72,10 +78,10 @@ public class Dueling extends AbstractSkill {
         if (skillData.length != 1) throw new IllegalArgumentException("Skill Data is not of length [0].");
         final PlayerRecord record = getRecord(player);
         if (record == null) return;
-        if (!ChanceCalculator.getInstance().roll(record, this, 0.10)) return;
+        if (!chanceCalculator.roll(record, this, 0.10)) return;
         if (player.hasPotionEffect(PotionEffectType.ABSORPTION)) player.removePotionEffect(PotionEffectType.ABSORPTION);
         player.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 500, 5, true, false));
-        player.sendMessage(LocalMessageService.getInstance().convert(Objects.requireNonNull(Objects.requireNonNull(LocalMessageService.getInstance().getlang().getString("Skills.Dueling"))
+        player.sendMessage(messageService.convert(Objects.requireNonNull(Objects.requireNonNull(messageService.getlang().getString("Skills.Dueling"))
                 .replaceAll("%type%", String.valueOf(skillData[0])))));
         player.playSound(player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_CHIME, 5, 2);
         player.playSound(player.getLocation(), Sound.ENTITY_BAT_TAKEOFF, 5, 2);

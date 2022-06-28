@@ -1,7 +1,7 @@
 package dansplugins.simpleskills.commands;
 
-import dansplugins.simpleskills.services.LocalConfigService;
-import dansplugins.simpleskills.services.LocalMessageService;
+import dansplugins.simpleskills.services.ConfigService;
+import dansplugins.simpleskills.services.MessageService;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import preponderous.ponder.minecraft.bukkit.abs.AbstractPluginCommand;
@@ -10,18 +10,22 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class ReloadCommand extends AbstractPluginCommand {
+    private final MessageService messageService;
+    private final ConfigService configService;
 
-    public ReloadCommand() {
+    public ReloadCommand(MessageService messageService, ConfigService configService) {
         super(
                 new ArrayList<>(Collections.singletonList("reload")),
                 new ArrayList<>(Collections.singletonList("ss.reload"))
         );
+        this.messageService = messageService;
+        this.configService = configService;
     }
 
     @Override
     public boolean execute(CommandSender commandSender) {
-        LocalMessageService.getInstance().reloadlang();
-        LocalConfigService.getInstance().reloadconfig();
+        messageService.reloadlang();
+        configService.reloadconfig();
         commandSender.sendMessage(ChatColor.GREEN + "Reloaded");
         return true;
     }

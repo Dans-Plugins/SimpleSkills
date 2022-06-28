@@ -1,7 +1,8 @@
 package dansplugins.simpleskills.commands;
 
-import dansplugins.simpleskills.AbstractSkill;
 import dansplugins.simpleskills.data.PersistentData;
+import dansplugins.simpleskills.skills.abs.AbstractSkill;
+
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -14,12 +15,14 @@ import java.util.Collections;
  * @author Daniel Stephenson
  */
 public class ForceCommand extends AbstractPluginCommand {
+    private final PersistentData persistentData;
 
-    public ForceCommand() {
+    public ForceCommand(PersistentData persistentData) {
         super(
                 new ArrayList<>(Collections.singletonList("force")),
                 new ArrayList<>(Collections.singletonList("ss.force"))
         );
+        this.persistentData = persistentData;
     }
 
     @Override
@@ -61,13 +64,13 @@ public class ForceCommand extends AbstractPluginCommand {
             commandSender.sendMessage(ChatColor.RED + "You don't have permission to use this command.");
             return false;
         }
-        PersistentData.getInstance().getPlayerRecords().clear();
+        persistentData.getPlayerRecords().clear();
         commandSender.sendMessage("Player records have been cleared.");
         return true;
     }
 
     private boolean forceActivate(CommandSender commandSender, String skillName) {
-        AbstractSkill skill = PersistentData.getInstance().getSkill(skillName);
+        AbstractSkill skill = persistentData.getSkill(skillName);
         if (skill == null) {
             commandSender.sendMessage(ChatColor.RED + "That skill wasn't found.");
             return false;
@@ -86,7 +89,7 @@ public class ForceCommand extends AbstractPluginCommand {
     }
 
     private boolean forceDeactivate(CommandSender commandSender, String skillName) {
-        AbstractSkill skill = PersistentData.getInstance().getSkill(skillName);
+        AbstractSkill skill = persistentData.getSkill(skillName);
         if (skill == null) {
             commandSender.sendMessage(ChatColor.RED + "That skill wasn't found.");
             return false;
@@ -100,7 +103,7 @@ public class ForceCommand extends AbstractPluginCommand {
             return false;
         }
         skill.setActive(false);
-        PersistentData.getInstance().removeSkill(skill);
+        persistentData.removeSkill(skill);
         commandSender.sendMessage(ChatColor.GREEN + "The '" + skill.getName() + "' is now inactive.");
         return true;
     }

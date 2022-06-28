@@ -8,23 +8,15 @@ import java.util.logging.Level;
  * @author Daniel Stephenson
  */
 public class Logger {
+    private final SimpleSkills simpleSkills;
 
-    private static Logger instance;
-
-    private Logger() {
-
-    }
-
-    public static Logger getInstance() {
-        if (instance == null) {
-            instance = new Logger();
-        }
-        return instance;
+    public Logger(SimpleSkills simpleSkills) {
+        this.simpleSkills = simpleSkills;
     }
 
     public void log(String message) {
-        if (SimpleSkills.getInstance().isDebugEnabled()) {
-            SimpleSkills.getInstance().getLogger().log(Level.INFO, message);
+        if (simpleSkills.isDebugEnabled()) {
+            simpleSkills.getLogger().log(Level.INFO, message);
         }
     }
 

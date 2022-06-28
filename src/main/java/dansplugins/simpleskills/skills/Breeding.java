@@ -1,9 +1,13 @@
 package dansplugins.simpleskills.skills;
 
-import dansplugins.simpleskills.AbstractSkill;
-import dansplugins.simpleskills.data.PlayerRecord;
-import dansplugins.simpleskills.services.LocalMessageService;
+import dansplugins.simpleskills.SimpleSkills;
+import dansplugins.simpleskills.data.PersistentData;
+import dansplugins.simpleskills.data.objects.PlayerRecord;
+import dansplugins.simpleskills.services.ConfigService;
+import dansplugins.simpleskills.services.MessageService;
+import dansplugins.simpleskills.skills.abs.AbstractSkill;
 import dansplugins.simpleskills.utils.ChanceCalculator;
+import dansplugins.simpleskills.utils.Logger;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -18,12 +22,14 @@ import java.util.Objects;
  * @since 09/01/2022 - 16:55
  */
 public class Breeding extends AbstractSkill {
+    private final ChanceCalculator chanceCalculator;
 
     /**
      * Breeding is levelled up via mob-breeding.
      */
-    public Breeding() {
-        super("Breeding", EntityBreedEvent.class);
+    public Breeding(ConfigService configService, Logger logger, PersistentData persistentData, SimpleSkills simpleSkills, MessageService messageService, ChanceCalculator chanceCalculator) {
+        super(configService, logger, persistentData, simpleSkills, messageService, "Breeding", EntityBreedEvent.class);
+        this.chanceCalculator = chanceCalculator;
     }
 
     /**
@@ -75,13 +81,13 @@ public class Breeding extends AbstractSkill {
         if (skillData.length != 1) throw new IllegalArgumentException("Skill Data is not of length '1'");
         final Object eventData = skillData[0];
         if (!(eventData instanceof EntityBreedEvent)) return;
-        if (!ChanceCalculator.getInstance().roll(record, this, 0.10)) return;
+        if (!chanceCalculator.roll(record, this, 0.10)) return;
         final EntityBreedEvent breedEvent = (EntityBreedEvent) eventData;
         breedEvent.setExperience(breedEvent.getExperience() * 2);
         final String type = WordUtils.capitalizeFully(breedEvent.getFather().getType()
                 .name().replaceAll("_", " ").toLowerCase() + "s");
         player.playSound(player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_CHIME, 5, 2);
-        player.sendMessage(LocalMessageService.getInstance().convert(Objects.requireNonNull(Objects.requireNonNull(LocalMessageService.getInstance().getlang().getString("Skills.Breeding"))
+        player.sendMessage(messageService.convert(Objects.requireNonNull(Objects.requireNonNull(messageService.getlang().getString("Skills.Breeding"))
                 .replaceAll("%type%", type))));
     }
 

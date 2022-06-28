@@ -4,9 +4,14 @@ import dansplugins.simpleskills.bstats.Metrics;
 import dansplugins.simpleskills.commands.*;
 import dansplugins.simpleskills.commands.tab.TabCommand;
 import dansplugins.simpleskills.data.PersistentData;
-import dansplugins.simpleskills.services.LocalConfigService;
-import dansplugins.simpleskills.services.LocalMessageService;
-import dansplugins.simpleskills.services.LocalStorageService;
+import dansplugins.simpleskills.services.ConfigService;
+import dansplugins.simpleskills.services.MessageService;
+import dansplugins.simpleskills.services.StorageService;
+import dansplugins.simpleskills.skills.abs.AbstractSkill;
+import dansplugins.simpleskills.utils.ChanceCalculator;
+import dansplugins.simpleskills.utils.ExperienceCalculator;
+
+import dansplugins.simpleskills.utils.Logger;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -25,33 +30,30 @@ import java.util.logging.Level;
  * @author Daniel Stephenson
  */
 public class SimpleSkills extends PonderBukkitPlugin {
-
-    private static SimpleSkills instance;
     private final String pluginVersion = "v" + getDescription().getVersion();
     private PonderMC ponder;
 
-    /**
-     * This can be utilized to access the self-managed instance of SimpleSkills.
-     *
-     * @return The self-managed instance of this class.
-     */
-    public static SimpleSkills getInstance() {
-        return instance;
-    }
+    private final Logger logger = new Logger(this);
+    private final MessageService messageService = new MessageService(this);
+    private final ConfigService configService = new ConfigService(this);
+    private final ExperienceCalculator experienceCalculator = new ExperienceCalculator();
+    private final PersistentData persistentData = new PersistentData(logger, messageService, configService, experienceCalculator, chanceCalculator, this);
+    private final StorageService storageService = new StorageService(persistentData, messageService, configService, experienceCalculator, logger);
+    private final ChanceCalculator chanceCalculator = new ChanceCalculator(persistentData, configService);
+
 
     /**
      * This runs when the server starts.
      */
     @Override
     public void onEnable() {
-        instance = this;
         this.ponder = new PonderMC(this);
         performNMSChecks();
         handleIntegrations();
         setTabCompleterForCoreCommands();
-        LocalConfigService.getInstance().createconfig();
-        LocalStorageService.getInstance().load();
-        LocalMessageService.getInstance().createlang();
+        configService.createconfig();
+        storageService.load();
+        messageService.createlang();
         registerEvents();
         initializeCommandService();
         checkFilesVersion();
@@ -62,9 +64,9 @@ public class SimpleSkills extends PonderBukkitPlugin {
      */
     @Override
     public void onDisable() {
-        LocalStorageService.getInstance().save();
-        LocalMessageService.getInstance().savelang();
-        LocalConfigService.getInstance().saveconfig();
+        storageService.save();
+        messageService.savelang();
+        configService.saveconfig();
     }
 
     /**
@@ -78,7 +80,7 @@ public class SimpleSkills extends PonderBukkitPlugin {
      */
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, String[] args) {
         if (args.length == 0) {
-            DefaultCommand defaultCommand = new DefaultCommand();
+            DefaultCommand defaultCommand = new DefaultCommand(messageService, this);
             return defaultCommand.execute(sender);
         }
 
@@ -100,14 +102,14 @@ public class SimpleSkills extends PonderBukkitPlugin {
      * @return Whether debug is enabled.
      */
     public boolean isDebugEnabled() {
-        return LocalConfigService.getInstance().getconfig().getBoolean("debugMode");
+        return configService.getconfig().getBoolean("debugMode");
     }
 
     private void checkFilesVersion() {
-        if (LocalMessageService.getInstance().getlang().getDouble("message-version") != 0.2) {
+        if (messageService.getlang().getDouble("message-version") != 0.2) {
             getLogger().log( Level.SEVERE, "Outdated message.yml! Please backup & update message.yml file and restart server again!!");
         }
-        if (LocalConfigService.getInstance().getconfig().getDouble("config-version") != 0.1) {
+        if (configService.getconfig().getDouble("config-version") != 0.1) {
             getLogger().log( Level.SEVERE, "Outdated config.yml! Please backup & update config.yml file and restart server again!!");
         }
     }
@@ -141,20 +143,20 @@ public class SimpleSkills extends PonderBukkitPlugin {
     }
 
     private void registerEvents() {
-        for (AbstractSkill skill : PersistentData.getInstance().getSkills()) {
+        for (AbstractSkill skill : persistentData.getSkills()) {
             skill.register();
         }
     }
 
     private void initializeCommandService() {
         ArrayList<AbstractPluginCommand> commands = new ArrayList<>(Arrays.asList(
-                new HelpCommand(),
-                new InfoCommand(),
-                new StatsCommand(),
-                new ForceCommand(),
-                new SkillCommand(),
-                new TopCommand(),
-                new ReloadCommand()
+                new HelpCommand(messageService),
+                new InfoCommand(persistentData, messageService),
+                new StatsCommand(messageService, persistentData),
+                new ForceCommand(persistentData),
+                new SkillCommand(messageService, persistentData),
+                new TopCommand(persistentData, messageService),
+                new ReloadCommand(messageService, configService)
         ));
         ponder.getCommandService().initialize(commands, "That command wasn't found.");
     }
