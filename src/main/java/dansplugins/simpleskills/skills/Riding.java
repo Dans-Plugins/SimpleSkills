@@ -1,9 +1,13 @@
 package dansplugins.simpleskills.skills;
 
-import dansplugins.simpleskills.AbstractMovementSkill;
-import dansplugins.simpleskills.data.PlayerRecord;
-import dansplugins.simpleskills.services.LocalMessageService;
+import dansplugins.simpleskills.SimpleSkills;
+import dansplugins.simpleskills.data.PersistentData;
+import dansplugins.simpleskills.data.objects.PlayerRecord;
+import dansplugins.simpleskills.services.ConfigService;
+import dansplugins.simpleskills.services.MessageService;
+import dansplugins.simpleskills.skills.abs.AbstractMovementSkill;
 import dansplugins.simpleskills.utils.ChanceCalculator;
+import dansplugins.simpleskills.utils.Logger;
 import org.bukkit.Sound;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.Player;
@@ -18,12 +22,14 @@ import java.util.Objects;
  * @since 11/01/2022 - 23:48
  */
 public class Riding extends AbstractMovementSkill {
+    private final ChanceCalculator chanceCalculator;
 
     /**
      * The Riding skill is levelled through riding entities.
      */
-    public Riding() {
-        super("Riding");
+    public Riding(ConfigService configService, Logger logger, PersistentData persistentData, SimpleSkills simpleSkills, MessageService messageService, ChanceCalculator chanceCalculator) {
+        super(configService, logger, persistentData, simpleSkills, messageService, "Riding");
+        this.chanceCalculator = chanceCalculator;
     }
 
     /**
@@ -67,13 +73,13 @@ public class Riding extends AbstractMovementSkill {
     public void executeReward(@NotNull Player player, Object... skillData) {
         final PlayerRecord record = getRecord(player);
         if (record == null) return;
-        if (!ChanceCalculator.getInstance().roll(record, this, 0.10)) return;
+        if (!chanceCalculator.roll(record, this, 0.10)) return;
         if (!(player.getVehicle() instanceof Creature)) return;
         final Creature vehicle = (Creature) player.getVehicle();
         if (vehicle.hasPotionEffect(PotionEffectType.SPEED)) vehicle.removePotionEffect(PotionEffectType.SPEED);
         vehicle.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 600, 1, true, false));
         player.playSound(player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_CHIME, 5, 2);
-        player.sendMessage(LocalMessageService.getInstance().convert(Objects.requireNonNull(LocalMessageService.getInstance().getlang().getString("Skills.Riding"))));
+        player.sendMessage(messageService.convert(Objects.requireNonNull(messageService.getlang().getString("Skills.Riding"))));
     }
 
 }

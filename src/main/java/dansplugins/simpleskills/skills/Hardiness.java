@@ -1,9 +1,13 @@
 package dansplugins.simpleskills.skills;
 
-import dansplugins.simpleskills.AbstractSkill;
-import dansplugins.simpleskills.data.PlayerRecord;
-import dansplugins.simpleskills.services.LocalMessageService;
+import dansplugins.simpleskills.SimpleSkills;
+import dansplugins.simpleskills.data.PersistentData;
+import dansplugins.simpleskills.data.objects.PlayerRecord;
+import dansplugins.simpleskills.services.ConfigService;
+import dansplugins.simpleskills.services.MessageService;
+import dansplugins.simpleskills.skills.abs.AbstractSkill;
 import dansplugins.simpleskills.utils.ChanceCalculator;
+import dansplugins.simpleskills.utils.Logger;
 import org.bukkit.Sound;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -18,12 +22,14 @@ import java.util.Objects;
  * @since 11/01/2022 - 16:30
  */
 public class Hardiness extends AbstractSkill {
+    private final ChanceCalculator chanceCalculator;
 
     /**
      * The Hardiness skill is levelled by taking damage.
      */
-    public Hardiness() {
-        super("Hardiness", EntityDamageEvent.class);
+    public Hardiness(ConfigService configService, Logger logger, PersistentData persistentData, SimpleSkills simpleSkills, MessageService messageService, ChanceCalculator chanceCalculator) {
+        super(configService, logger, persistentData, simpleSkills, messageService, "Hardiness", EntityDamageEvent.class);
+        this.chanceCalculator = chanceCalculator;
     }
 
     /**
@@ -78,20 +84,20 @@ public class Hardiness extends AbstractSkill {
         if (!(eventData instanceof EntityDamageEvent)) throw new IllegalArgumentException("Event Data is not Event.");
         final EntityDamageEvent.DamageCause cause = (EntityDamageEvent.DamageCause) causeData;
         final EntityDamageEvent event = (EntityDamageEvent) eventData;
-        if (!ChanceCalculator.getInstance().roll(record, this, 0.10)) return;
+        if (!chanceCalculator.roll(record, this, 0.10)) return;
         final float weight = cause == EntityDamageEvent.DamageCause.FALL ? 0.75f : 0.5f;
         // More likely to cancel out if the damage is fall.
         player.playSound(player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_CHIME, 5, 2);
-        if (ChanceCalculator.getInstance().roll(record, this, weight)) {
+        if (chanceCalculator.roll(record, this, weight)) {
             // Damage Negation
             event.setCancelled(true);
             player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, 5, 2);
-            player.sendMessage(LocalMessageService.getInstance().convert(Objects.requireNonNull(LocalMessageService.getInstance().getlang().getString("Skills.Hardiness.Negation"))));
+            player.sendMessage(messageService.convert(Objects.requireNonNull(messageService.getlang().getString("Skills.Hardiness.Negation"))));
         } else {
             // Damage Reduction
             event.setDamage(event.getDamage() / 2);
             player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_ATTACK_SWEEP, 5, 2);
-            player.sendMessage(LocalMessageService.getInstance().convert(Objects.requireNonNull(LocalMessageService.getInstance().getlang().getString("Skills.Hardiness.Reduction"))));
+            player.sendMessage(messageService.convert(Objects.requireNonNull(messageService.getlang().getString("Skills.Hardiness.Reduction"))));
 
         }
     }

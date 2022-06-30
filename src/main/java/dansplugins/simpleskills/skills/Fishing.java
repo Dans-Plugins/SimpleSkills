@@ -1,10 +1,15 @@
 package dansplugins.simpleskills.skills;
 
 import com.cryptomorin.xseries.XMaterial;
-import dansplugins.simpleskills.AbstractSkill;
-import dansplugins.simpleskills.data.PlayerRecord;
-import dansplugins.simpleskills.services.LocalMessageService;
+
+import dansplugins.simpleskills.SimpleSkills;
+import dansplugins.simpleskills.data.PersistentData;
+import dansplugins.simpleskills.data.objects.PlayerRecord;
+import dansplugins.simpleskills.services.ConfigService;
+import dansplugins.simpleskills.services.MessageService;
+import dansplugins.simpleskills.skills.abs.AbstractSkill;
 import dansplugins.simpleskills.utils.ChanceCalculator;
+import dansplugins.simpleskills.utils.Logger;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.Sound;
 import org.bukkit.entity.Entity;
@@ -22,12 +27,14 @@ import java.util.Objects;
  * @since 11/01/2022 - 16:16
  */
 public class Fishing extends AbstractSkill {
+    private final ChanceCalculator chanceCalculator;
 
     /**
      * The Fishing skill is levelled through fishing up fishies and goodies.
      */
-    public Fishing() {
-        super("Fishing", PlayerFishEvent.class);
+    public Fishing(ConfigService configService, Logger logger, PersistentData persistentData, SimpleSkills simpleSkills, MessageService messageService, ChanceCalculator chanceCalculator) {
+        super(configService, logger, persistentData, simpleSkills, messageService, "Fishing", PlayerFishEvent.class);
+        this.chanceCalculator = chanceCalculator;
     }
 
     /**
@@ -79,12 +86,12 @@ public class Fishing extends AbstractSkill {
         final Entity entity = (Entity) fishedData;
         final PlayerRecord record = getRecord(player);
         if (record == null) return;
-        if (!ChanceCalculator.getInstance().roll(record, this, 0.10)) return;
+        if (!chanceCalculator.roll(record, this, 0.10)) return;
         String entityName;
         if (entity instanceof Item) entityName = ((Item) entity).getItemStack().getType().name();
         else entityName = entity.getType().getKey().getKey();
         entityName = WordUtils.capitalizeFully(entityName.toLowerCase().replaceAll("_", " "));
-        player.sendMessage(LocalMessageService.getInstance().convert(Objects.requireNonNull(Objects.requireNonNull(LocalMessageService.getInstance().getlang().getString("Skills.Fishing"))
+        player.sendMessage(messageService.convert(Objects.requireNonNull(Objects.requireNonNull(messageService.getlang().getString("Skills.Fishing"))
                 .replaceAll("%entityname%", entityName))));
         player.getInventory().addItem(new ItemStack(Objects.requireNonNull(XMaterial.GOLDEN_APPLE.parseMaterial()), 1));
         player.playSound(player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_CHIME, 5, 2);

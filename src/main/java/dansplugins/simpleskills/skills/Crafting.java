@@ -1,9 +1,13 @@
 package dansplugins.simpleskills.skills;
 
-import dansplugins.simpleskills.AbstractSkill;
-import dansplugins.simpleskills.data.PlayerRecord;
-import dansplugins.simpleskills.services.LocalMessageService;
+import dansplugins.simpleskills.SimpleSkills;
+import dansplugins.simpleskills.data.PersistentData;
+import dansplugins.simpleskills.data.objects.PlayerRecord;
+import dansplugins.simpleskills.services.ConfigService;
+import dansplugins.simpleskills.services.MessageService;
+import dansplugins.simpleskills.skills.abs.AbstractSkill;
 import dansplugins.simpleskills.utils.ChanceCalculator;
+import dansplugins.simpleskills.utils.Logger;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -24,12 +28,14 @@ import java.util.stream.Collectors;
  * @since 09/01/2022 - 17:04
  */
 public class Crafting extends AbstractSkill {
+    private final ChanceCalculator chanceCalculator;
 
     /**
      * The crafting skill is levelled through the usage of the crafting windows.
      */
-    public Crafting() {
-        super("Crafting", CraftItemEvent.class);
+    public Crafting(ConfigService configService, Logger logger, PersistentData persistentData, SimpleSkills simpleSkills, MessageService messageService, ChanceCalculator chanceCalculator) {
+        super(configService, logger, persistentData, simpleSkills, messageService, "Crafting", CraftItemEvent.class);
+        this.chanceCalculator = chanceCalculator;
     }
 
     /**
@@ -81,7 +87,7 @@ public class Crafting extends AbstractSkill {
         if (!(createdData instanceof Recipe)) throw new IllegalArgumentException("SkillData[0] is not Recipe");
         final Recipe created = (Recipe) createdData;
         if (!(created instanceof ShapedRecipe) && !(created instanceof ShapelessRecipe)) return;
-        if (!ChanceCalculator.getInstance().roll(record, this, 0.10)) return;
+        if (!chanceCalculator.roll(record, this, 0.10)) return;
         player.playSound(player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_CHIME, 5, 2);
         final List<RecipeChoice> choices;
         if (created instanceof ShapedRecipe) {
@@ -105,7 +111,7 @@ public class Crafting extends AbstractSkill {
         player.getInventory().addItem(new ItemStack(material, Math.random() > 0.5 ? 2 : 1));
         final String typeName = WordUtils.capitalizeFully(material.name().toLowerCase().replaceAll("_", " "));
         final boolean nRequired = "aeiou".contains(String.valueOf(typeName.toLowerCase().charAt(0)));
-        player.sendMessage(LocalMessageService.getInstance().convert(Objects.requireNonNull(Objects.requireNonNull(LocalMessageService.getInstance().getlang().getString("Skills.Crafting"))
+        player.sendMessage(messageService.convert(Objects.requireNonNull(Objects.requireNonNull(messageService.getlang().getString("Skills.Crafting"))
                 .replaceAll("%typeName%", ((nRequired ? "n" : "") + "§a" + typeName)))));
     }
 

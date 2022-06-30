@@ -1,10 +1,15 @@
 package dansplugins.simpleskills.skills;
 
 import com.cryptomorin.xseries.XMaterial;
-import dansplugins.simpleskills.AbstractBlockSkill;
-import dansplugins.simpleskills.data.PlayerRecord;
-import dansplugins.simpleskills.services.LocalMessageService;
+
+import dansplugins.simpleskills.SimpleSkills;
+import dansplugins.simpleskills.data.PersistentData;
+import dansplugins.simpleskills.data.objects.PlayerRecord;
+import dansplugins.simpleskills.services.ConfigService;
+import dansplugins.simpleskills.services.MessageService;
+import dansplugins.simpleskills.skills.abs.AbstractBlockSkill;
 import dansplugins.simpleskills.utils.ChanceCalculator;
+import dansplugins.simpleskills.utils.Logger;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
@@ -21,12 +26,14 @@ import java.util.Objects;
  * @since 09/01/2022 - 16:34
  */
 public class Pyromaniac extends AbstractBlockSkill {
+    private final ChanceCalculator chanceCalculator;
 
     /**
      * The pyromaniac skill is levelled through fire :)
      */
-    public Pyromaniac() {
-        super("Pyromaniac");
+    public Pyromaniac(ConfigService configService, Logger logger, PersistentData persistentData, SimpleSkills simpleSkills, MessageService messageService, ChanceCalculator chanceCalculator) {
+        super(configService, logger, persistentData, simpleSkills, messageService, "Pyromaniac");
+        this.chanceCalculator = chanceCalculator;
     }
 
     /**
@@ -104,8 +111,8 @@ public class Pyromaniac extends AbstractBlockSkill {
     public void executeReward(@NotNull Player player, Object... skillData) {
         final PlayerRecord record = getRecord(player);
         if (record == null) return;
-        if (!ChanceCalculator.getInstance().roll(record, this, 0.10)) return;
-        player.sendMessage(LocalMessageService.getInstance().convert(Objects.requireNonNull(LocalMessageService.getInstance().getlang().getString("Skills.Pyromaniac"))));
+        if (!chanceCalculator.roll(record, this, 0.10)) return;
+        player.sendMessage(messageService.convert(Objects.requireNonNull(messageService.getlang().getString("Skills.Pyromaniac"))));
         player.playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_SCREAM, 5, 2);
         player.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 320, 5, true, false));
         player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 320, 2, true, false));

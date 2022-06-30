@@ -1,10 +1,15 @@
 package dansplugins.simpleskills.skills;
 
 import com.cryptomorin.xseries.XMaterial;
-import dansplugins.simpleskills.AbstractBlockSkill;
-import dansplugins.simpleskills.data.PlayerRecord;
-import dansplugins.simpleskills.services.LocalMessageService;
+
+import dansplugins.simpleskills.SimpleSkills;
+import dansplugins.simpleskills.data.PersistentData;
+import dansplugins.simpleskills.data.objects.PlayerRecord;
+import dansplugins.simpleskills.services.ConfigService;
+import dansplugins.simpleskills.services.MessageService;
+import dansplugins.simpleskills.skills.abs.AbstractBlockSkill;
 import dansplugins.simpleskills.utils.ChanceCalculator;
+import dansplugins.simpleskills.utils.Logger;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -20,6 +25,7 @@ import java.util.*;
  * @since 05/01/2022 - 23:55
  */
 public class Digging extends AbstractBlockSkill {
+    private final ChanceCalculator chanceCalculator;
 
     /**
      * Variable used for the determination of random reward chance.
@@ -29,8 +35,9 @@ public class Digging extends AbstractBlockSkill {
     /**
      * The Digging skill is incremented by mining sand, gravel, dirt etc. etc.
      */
-    public Digging() {
-        super("Digging");
+    public Digging(ConfigService configService, Logger logger, PersistentData persistentData, SimpleSkills simpleSkills, MessageService messageService, ChanceCalculator chanceCalculator) {
+        super(configService, logger, persistentData, simpleSkills, messageService, "Digging");
+        this.chanceCalculator = chanceCalculator;
     }
 
     /**
@@ -127,22 +134,22 @@ public class Digging extends AbstractBlockSkill {
         final PlayerRecord record = getRecord(player);
         if (record == null) return;
         final Block block = (Block) blockData;
-        if (ChanceCalculator.getInstance().roll(record, this, 0.10)) {
+        if (chanceCalculator.roll(record, this, 0.10)) {
             player.playSound(player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_CHIME, 5, 2);
-            if (ChanceCalculator.getInstance().roll(record, this, 0.50)) {
+            if (chanceCalculator.roll(record, this, 0.50)) {
                 final Collection<ItemStack> drops = block.getDrops(player.getInventory().getItemInMainHand());
                 drops.forEach(drop -> {
                     if (drop.getType().isAir()) return;
                     block.getWorld().dropItemNaturally(block.getLocation(), drop);
                 });
-                player.sendMessage(LocalMessageService.getInstance().convert(Objects.requireNonNull(LocalMessageService.getInstance().getlang().getString("Skills.Digging.DoubleDrop"))
+                player.sendMessage(messageService.convert(Objects.requireNonNull(messageService.getlang().getString("Skills.Digging.DoubleDrop"))
                         .replaceAll("%type%", WordUtils.capitalizeFully(block.getType().name().replaceAll("_", " ").toLowerCase()))));
                 return;
             }
             final List<Material> rewardTypes = getRewardTypes(block.getType());
             final Material reward = rewardTypes.get(new Random().nextInt(rewardTypes.size()));
             block.getWorld().dropItemNaturally(block.getLocation(), new ItemStack(reward));
-            player.sendMessage(LocalMessageService.getInstance().convert(Objects.requireNonNull(LocalMessageService.getInstance().getlang().getString("Skills.Digging.Special"))));
+            player.sendMessage(messageService.convert(Objects.requireNonNull(messageService.getlang().getString("Skills.Digging.Special"))));
         }
     }
 

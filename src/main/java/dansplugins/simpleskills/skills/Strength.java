@@ -1,9 +1,13 @@
 package dansplugins.simpleskills.skills;
 
-import dansplugins.simpleskills.AbstractSkill;
-import dansplugins.simpleskills.data.PlayerRecord;
-import dansplugins.simpleskills.services.LocalMessageService;
+import dansplugins.simpleskills.SimpleSkills;
+import dansplugins.simpleskills.data.PersistentData;
+import dansplugins.simpleskills.data.objects.PlayerRecord;
+import dansplugins.simpleskills.services.ConfigService;
+import dansplugins.simpleskills.services.MessageService;
+import dansplugins.simpleskills.skills.abs.AbstractSkill;
 import dansplugins.simpleskills.utils.ChanceCalculator;
+import dansplugins.simpleskills.utils.Logger;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.Sound;
 import org.bukkit.entity.Entity;
@@ -21,12 +25,14 @@ import java.util.Objects;
  * @since 11/01/2022 - 16:59
  */
 public class Strength extends AbstractSkill {
+    private final ChanceCalculator chanceCalculator;
 
     /**
      * The Strength Skill is levelled by hitting Entities.
      */
-    public Strength() {
-        super("Strength", EntityDamageByEntityEvent.class);
+    public Strength(ConfigService configService, Logger logger, PersistentData persistentData, SimpleSkills simpleSkills, MessageService messageService, ChanceCalculator chanceCalculator) {
+        super(configService, logger, persistentData, simpleSkills, messageService, "Strength", EntityDamageByEntityEvent.class);
+        this.chanceCalculator = chanceCalculator;
     }
 
     /**
@@ -77,7 +83,7 @@ public class Strength extends AbstractSkill {
         final Object entityData = skillData[0];
         if (!(entityData instanceof Entity)) return;
         final Entity entity = (Entity) entityData;
-        if (!ChanceCalculator.getInstance().roll(record, this, 0.05)) return;
+        if (!chanceCalculator.roll(record, this, 0.05)) return;
         if (player.hasPotionEffect(PotionEffectType.INCREASE_DAMAGE))
             player.removePotionEffect(PotionEffectType.INCREASE_DAMAGE);
         player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 600, 1, true, false));
@@ -87,7 +93,7 @@ public class Strength extends AbstractSkill {
                 "a" + (nRequired ? "n" : "") + " §b"
                         + WordUtils.capitalizeFully(entity.getType().name().replaceAll("_", " ").toLowerCase());
         player.playSound(player.getLocation(), Sound.ENTITY_ENDER_DRAGON_GROWL, 5, 2);
-        player.sendMessage(LocalMessageService.getInstance().convert(Objects.requireNonNull(Objects.requireNonNull(LocalMessageService.getInstance().getlang().getString("Skills.Strength"))
+        player.sendMessage(messageService.convert(Objects.requireNonNull(Objects.requireNonNull(messageService.getlang().getString("Skills.Strength"))
                 .replaceAll("%attacked%", attacked))));
     }
 

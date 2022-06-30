@@ -1,10 +1,15 @@
 package dansplugins.simpleskills.skills;
 
 import com.cryptomorin.xseries.XMaterial;
-import dansplugins.simpleskills.AbstractBlockSkill;
-import dansplugins.simpleskills.data.PlayerRecord;
-import dansplugins.simpleskills.services.LocalMessageService;
+
+import dansplugins.simpleskills.SimpleSkills;
+import dansplugins.simpleskills.data.PersistentData;
+import dansplugins.simpleskills.data.objects.PlayerRecord;
+import dansplugins.simpleskills.services.ConfigService;
+import dansplugins.simpleskills.services.MessageService;
+import dansplugins.simpleskills.skills.abs.AbstractBlockSkill;
 import dansplugins.simpleskills.utils.ChanceCalculator;
+import dansplugins.simpleskills.utils.Logger;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
@@ -19,12 +24,14 @@ import java.util.Objects;
  * @since 07/01/2022 - 22:31
  */
 public class Floriculture extends AbstractBlockSkill {
+    private final ChanceCalculator chanceCalculator;
 
     /**
      * Floriculture is levelled up via mining flowers.
      */
-    public Floriculture() {
-        super("Floriculture");
+    public Floriculture(ConfigService configService, Logger logger, PersistentData persistentData, SimpleSkills simpleSkills, MessageService messageService, ChanceCalculator chanceCalculator) {
+        super(configService, logger, persistentData, simpleSkills, messageService, "Floriculture");
+        this.chanceCalculator = chanceCalculator;
     }
 
     /**
@@ -135,10 +142,10 @@ public class Floriculture extends AbstractBlockSkill {
         final PlayerRecord record = getRecord(player);
         if (record == null) return;
         final Block block = (Block) blockData;
-        if (!ChanceCalculator.getInstance().roll(record, this, 0.10)) return;
+        if (!chanceCalculator.roll(record, this, 0.10)) return;
         player.playSound(block.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_CHIME, 5, 2);
         block.getWorld().dropItemNaturally(block.getLocation(), new ItemStack(Objects.requireNonNull(XMaterial.BONE_MEAL.parseItem())));
-        player.sendMessage(LocalMessageService.getInstance().convert(Objects.requireNonNull(LocalMessageService.getInstance().getlang().getString("Skills.Floriculture"))));
+        player.sendMessage(messageService.convert(Objects.requireNonNull(messageService.getlang().getString("Skills.Floriculture"))));
     }
 
 }

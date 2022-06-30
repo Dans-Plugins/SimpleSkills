@@ -1,7 +1,13 @@
 package dansplugins.simpleskills.data;
 
-import dansplugins.simpleskills.AbstractSkill;
+import dansplugins.simpleskills.SimpleSkills;
+import dansplugins.simpleskills.data.objects.PlayerRecord;
+import dansplugins.simpleskills.services.ConfigService;
+import dansplugins.simpleskills.services.MessageService;
 import dansplugins.simpleskills.skills.*;
+import dansplugins.simpleskills.skills.abs.AbstractSkill;
+import dansplugins.simpleskills.utils.ChanceCalculator;
+import dansplugins.simpleskills.utils.ExperienceCalculator;
 import dansplugins.simpleskills.utils.Logger;
 import preponderous.ponder.minecraft.bukkit.tools.UUIDChecker;
 
@@ -12,19 +18,24 @@ import java.util.stream.Collectors;
  * @author Daniel Stephenson
  */
 public class PersistentData {
-    private static PersistentData instance;
+    private final Logger logger;
+    private final MessageService messageService;
+    private final ConfigService configService;
+    private final ExperienceCalculator experienceCalculator;
+    private final ChanceCalculator chanceCalculator;
+    private final SimpleSkills simpleSkills;
+
     private final HashSet<AbstractSkill> skills = new HashSet<>();
     private HashSet<PlayerRecord> playerRecords = new HashSet<>();
 
-    private PersistentData() {
+    public PersistentData(Logger logger, MessageService messageService, ConfigService configService, ExperienceCalculator experienceCalculator, ChanceCalculator chanceCalculator, SimpleSkills simpleSkills) {
+        this.logger = logger;
+        this.messageService = messageService;
+        this.configService = configService;
+        this.experienceCalculator = experienceCalculator;
+        this.chanceCalculator = chanceCalculator;
+        this.simpleSkills = simpleSkills;
         initializeSkills();
-    }
-
-    public static PersistentData getInstance() {
-        if (instance == null) {
-            instance = new PersistentData();
-        }
-        return instance;
     }
 
     public HashSet<AbstractSkill> getSkills() {
@@ -53,12 +64,12 @@ public class PersistentData {
         if (!skill.isActive()) {
             return false;
         }
-        Logger.getInstance().log("Added skill: " + skill.getName());
+        logger.log("Added skill: " + skill.getName());
         return skills.add(skill);
     }
 
     public boolean removeSkill(AbstractSkill skill) {
-        Logger.getInstance().log("Removed skill: " + skill.getName());
+        logger.log("Removed skill: " + skill.getName());
         return skills.remove(skill);
     }
 
@@ -80,8 +91,8 @@ public class PersistentData {
                 return record;
             }
         }
-        Logger.getInstance().log("A player record wasn't found for " + new UUIDChecker().findPlayerNameBasedOnUUID(playerUUID) + " wasn't found. One is being created for them.");
-        PlayerRecord record = new PlayerRecord(playerUUID);
+        logger.log("A player record wasn't found for " + new UUIDChecker().findPlayerNameBasedOnUUID(playerUUID) + " wasn't found. One is being created for them.");
+        PlayerRecord record = new PlayerRecord(this, messageService, configService, experienceCalculator, logger, playerUUID);
         addPlayerRecord(record);
         return record;
     }
@@ -134,26 +145,26 @@ public class PersistentData {
     }
 
     private void initializeSkills() {
-        addSkill(new Athlete());
-        addSkill(new Boating());
-        addSkill(new Breeding());
-        addSkill(new Cardio());
-        addSkill(new Crafting());
-        addSkill(new Digging());
-        addSkill(new Dueling());
-        addSkill(new Enchanting());
-        addSkill(new Farming());
-        addSkill(new Fishing());
-        addSkill(new Floriculture());
-        addSkill(new Gliding());
-        addSkill(new Hardiness());
-        addSkill(new Woodcutting());
-        addSkill(new Mining());
-        addSkill(new MonsterHunting());
-        addSkill(new Pyromaniac());
-        addSkill(new Quarrying());
-        addSkill(new Riding());
-        addSkill(new Strength());
+        addSkill(new Athlete(configService, logger, this, simpleSkills, messageService, chanceCalculator));
+        addSkill(new Boating(configService, logger, this, simpleSkills, messageService, chanceCalculator));
+        addSkill(new Breeding(configService, logger, this, simpleSkills, messageService, chanceCalculator));
+        addSkill(new Cardio(configService, logger, this, simpleSkills, messageService, chanceCalculator));
+        addSkill(new Crafting(configService, logger, this, simpleSkills, messageService, chanceCalculator));
+        addSkill(new Digging(configService, logger, this, simpleSkills, messageService, chanceCalculator));
+        addSkill(new Dueling(configService, logger, this, simpleSkills, messageService, chanceCalculator));
+        addSkill(new Enchanting(configService, logger, this, simpleSkills, messageService, chanceCalculator));
+        addSkill(new Farming(configService, logger, this, simpleSkills, messageService, chanceCalculator));
+        addSkill(new Fishing(configService, logger, this, simpleSkills, messageService, chanceCalculator));
+        addSkill(new Floriculture(configService, logger, this, simpleSkills, messageService, chanceCalculator));
+        addSkill(new Gliding(configService, logger, this, simpleSkills, messageService, chanceCalculator));
+        addSkill(new Hardiness(configService, logger, this, simpleSkills, messageService, chanceCalculator));
+        addSkill(new Woodcutting(configService, logger, this, simpleSkills, messageService, chanceCalculator));
+        addSkill(new Mining(configService, logger, this, simpleSkills, messageService, chanceCalculator));
+        addSkill(new MonsterHunting(configService, logger, this, simpleSkills, messageService, chanceCalculator));
+        addSkill(new Pyromaniac(configService, logger, this, simpleSkills, messageService, chanceCalculator));
+        addSkill(new Quarrying(configService, logger, this, simpleSkills, messageService, chanceCalculator));
+        addSkill(new Riding(configService, logger, this, simpleSkills, messageService, chanceCalculator));
+        addSkill(new Strength(configService, logger, this, simpleSkills, messageService, chanceCalculator));
     }
 
 }

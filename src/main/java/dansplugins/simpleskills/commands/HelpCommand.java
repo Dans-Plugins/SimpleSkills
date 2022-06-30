@@ -1,6 +1,6 @@
 package dansplugins.simpleskills.commands;
 
-import dansplugins.simpleskills.services.LocalMessageService;
+import dansplugins.simpleskills.services.MessageService;
 import org.bukkit.command.CommandSender;
 import preponderous.ponder.minecraft.bukkit.abs.AbstractPluginCommand;
 
@@ -11,18 +11,20 @@ import java.util.Collections;
  * @author Daniel Stephenson
  */
 public class HelpCommand extends AbstractPluginCommand {
+    private final MessageService messageService;
 
-    public HelpCommand() {
+    public HelpCommand(MessageService messageService) {
         super(
                 new ArrayList<>(Collections.singletonList("help")),
                 new ArrayList<>(Collections.singletonList("ss.help"))
         );
+        this.messageService = messageService;
     }
 
     @Override
     public boolean execute(CommandSender commandSender) {
-        for (String Hc : LocalMessageService.getInstance().getlang().getStringList("Help-Command"))
-            commandSender.sendMessage(LocalMessageService.getInstance().convert(Hc));
+        for (String Hc : messageService.getlang().getStringList("Help-Command"))
+            commandSender.sendMessage(messageService.convert(Hc));
         return true;
     }
 

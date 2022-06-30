@@ -1,10 +1,15 @@
 package dansplugins.simpleskills.skills;
 
 import com.cryptomorin.xseries.XMaterial;
-import dansplugins.simpleskills.AbstractBlockSkill;
-import dansplugins.simpleskills.data.PlayerRecord;
-import dansplugins.simpleskills.services.LocalMessageService;
+
+import dansplugins.simpleskills.SimpleSkills;
+import dansplugins.simpleskills.data.PersistentData;
+import dansplugins.simpleskills.data.objects.PlayerRecord;
+import dansplugins.simpleskills.services.ConfigService;
+import dansplugins.simpleskills.services.MessageService;
+import dansplugins.simpleskills.skills.abs.AbstractBlockSkill;
 import dansplugins.simpleskills.utils.ChanceCalculator;
+import dansplugins.simpleskills.utils.Logger;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
@@ -28,12 +33,14 @@ import java.util.Objects;
  * @since 09/01/2022 - 15:23
  */
 public class Farming extends AbstractBlockSkill {
+    private final ChanceCalculator chanceCalculator;
 
     /**
      * The farming skill is levelled by... farming!
      */
-    public Farming() {
-        super("Farming");
+    public Farming(ConfigService configService, Logger logger, PersistentData persistentData, SimpleSkills simpleSkills, MessageService messageService, ChanceCalculator chanceCalculator) {
+        super(configService, logger, persistentData, simpleSkills, messageService, "Farming");
+        this.chanceCalculator = chanceCalculator;
     }
 
     /**
@@ -151,7 +158,7 @@ public class Farming extends AbstractBlockSkill {
         if (record == null) return;
         final Block block = (Block) blockData;
         final Event event = (Event) eventData;
-        if (!ChanceCalculator.getInstance().roll(record, this, 0.10)) return;
+        if (!chanceCalculator.roll(record, this, 0.10)) return;
         if (event instanceof BlockBreakEvent) {
             if (block.getType().equals(XMaterial.FARMLAND.parseMaterial())) return;
             final BlockState state = block.getState();
@@ -163,7 +170,7 @@ public class Farming extends AbstractBlockSkill {
                     final Collection<ItemStack> drops = block.getDrops(player.getInventory().getItemInMainHand(), player);
                     drops.forEach(drop -> block.getWorld().dropItemNaturally(block.getLocation(), drop));
                     player.playSound(block.getLocation(), Sound.ITEM_CROP_PLANT, 5, 2);
-                    player.sendMessage(LocalMessageService.getInstance().convert(Objects.requireNonNull(Objects.requireNonNull(LocalMessageService.getInstance().getlang().getString("Skills.Farming.Replant"))
+                    player.sendMessage(messageService.convert(Objects.requireNonNull(Objects.requireNonNull(messageService.getlang().getString("Skills.Farming.Replant"))
                             .replaceAll("%block%", block.getType().name().replaceAll("_", " ").toLowerCase()))));
                     cropState.setAge(0);
                     block.setBlockData(cropState);
@@ -177,7 +184,7 @@ public class Farming extends AbstractBlockSkill {
             final int exp = (int) (Math.random() * 10.0);
             entity.setExperience(exp);
             entity.setGlowing(true);
-            player.sendMessage(LocalMessageService.getInstance().convert(Objects.requireNonNull(Objects.requireNonNull(LocalMessageService.getInstance().getlang().getString("Skills.Farming.Exp"))
+            player.sendMessage(messageService.convert(Objects.requireNonNull(Objects.requireNonNull(messageService.getlang().getString("Skills.Farming.Exp"))
                     .replaceAll("%exp%", String.valueOf(exp)))));
             return;
         }
@@ -187,7 +194,7 @@ public class Farming extends AbstractBlockSkill {
             if (drop.getType().isAir()) return;
             block.getWorld().dropItemNaturally(block.getLocation(), drop);
         });
-        player.sendMessage(LocalMessageService.getInstance().convert(Objects.requireNonNull(LocalMessageService.getInstance().getlang().getString("Skills.Farming.DoubleCrop"))));
+        player.sendMessage(messageService.convert(Objects.requireNonNull(messageService.getlang().getString("Skills.Farming.DoubleCrop"))));
     }
 
 }

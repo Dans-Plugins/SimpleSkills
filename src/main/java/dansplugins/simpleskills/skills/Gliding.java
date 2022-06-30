@@ -1,10 +1,15 @@
 package dansplugins.simpleskills.skills;
 
 import com.cryptomorin.xseries.XMaterial;
-import dansplugins.simpleskills.AbstractMovementSkill;
-import dansplugins.simpleskills.data.PlayerRecord;
-import dansplugins.simpleskills.services.LocalMessageService;
+
+import dansplugins.simpleskills.SimpleSkills;
+import dansplugins.simpleskills.data.PersistentData;
+import dansplugins.simpleskills.data.objects.PlayerRecord;
+import dansplugins.simpleskills.services.ConfigService;
+import dansplugins.simpleskills.services.MessageService;
+import dansplugins.simpleskills.skills.abs.AbstractMovementSkill;
 import dansplugins.simpleskills.utils.ChanceCalculator;
+import dansplugins.simpleskills.utils.Logger;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
 import org.bukkit.Sound;
@@ -21,12 +26,14 @@ import java.util.Objects;
  * @since 12/01/2022 - 00:01
  */
 public class Gliding extends AbstractMovementSkill {
+    private final ChanceCalculator chanceCalculator;
 
     /**
      * The Gliding skill is levelled by gliding with an elytra.
      */
-    public Gliding() {
-        super("Gliding");
+    public Gliding(ConfigService configService, Logger logger, PersistentData persistentData, SimpleSkills simpleSkills, MessageService messageService, ChanceCalculator chanceCalculator) {
+        super(configService, logger, persistentData, simpleSkills, messageService, "Gliding");
+        this.chanceCalculator = chanceCalculator;
     }
 
     /**
@@ -70,7 +77,7 @@ public class Gliding extends AbstractMovementSkill {
     public void executeReward(@NotNull Player player, Object... skillData) {
         final PlayerRecord record = getRecord(player);
         if (record == null) return;
-        if (!ChanceCalculator.getInstance().roll(record, this, 0.10)) return;
+        if (!chanceCalculator.roll(record, this, 0.10)) return;
         player.playSound(player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_CHIME, 5, 2);
         final ItemStack stack = new ItemStack(Objects.requireNonNull(XMaterial.FIREWORK_ROCKET.parseItem()));
         final ItemMeta itemMeta = stack.getItemMeta();
@@ -81,7 +88,7 @@ public class Gliding extends AbstractMovementSkill {
         meta.setPower(3);
         stack.setItemMeta(meta);
         player.getInventory().addItem(stack);
-        player.sendMessage(LocalMessageService.getInstance().convert(Objects.requireNonNull(LocalMessageService.getInstance().getlang().getString("Skills.Gliding"))));
+        player.sendMessage(messageService.convert(Objects.requireNonNull(messageService.getlang().getString("Skills.Gliding"))));
     }
 
 }

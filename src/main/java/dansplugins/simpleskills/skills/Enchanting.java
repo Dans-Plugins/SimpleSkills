@@ -1,9 +1,13 @@
 package dansplugins.simpleskills.skills;
 
-import dansplugins.simpleskills.AbstractSkill;
-import dansplugins.simpleskills.data.PlayerRecord;
-import dansplugins.simpleskills.services.LocalMessageService;
+import dansplugins.simpleskills.SimpleSkills;
+import dansplugins.simpleskills.data.PersistentData;
+import dansplugins.simpleskills.data.objects.PlayerRecord;
+import dansplugins.simpleskills.services.ConfigService;
+import dansplugins.simpleskills.services.MessageService;
+import dansplugins.simpleskills.skills.abs.AbstractSkill;
 import dansplugins.simpleskills.utils.ChanceCalculator;
+import dansplugins.simpleskills.utils.Logger;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.Sound;
 import org.bukkit.enchantments.Enchantment;
@@ -20,12 +24,14 @@ import java.util.stream.Collectors;
  * @since 11/01/2022 - 16:06
  */
 public class Enchanting extends AbstractSkill {
+    private final ChanceCalculator chanceCalculator;
 
     /**
      * The Enchanting skill is levelled
      */
-    public Enchanting() {
-        super("Enchanting", EnchantItemEvent.class);
+    public Enchanting(ConfigService configService, Logger logger, PersistentData persistentData, SimpleSkills simpleSkills, MessageService messageService, ChanceCalculator chanceCalculator) {
+        super(configService, logger, persistentData, simpleSkills, messageService, "Enchanting", EnchantItemEvent.class);
+        this.chanceCalculator = chanceCalculator;
     }
 
     /**
@@ -74,7 +80,7 @@ public class Enchanting extends AbstractSkill {
             throw new IllegalArgumentException("Skill Data[0] is not EnchantEvent");
         final PlayerRecord record = getRecord(player);
         if (record == null) return;
-        if (!ChanceCalculator.getInstance().roll(record, this, 0.10)) return;
+        if (!chanceCalculator.roll(record, this, 0.10)) return;
         final EnchantItemEvent event = (EnchantItemEvent) skillData[0];
         final Random random = new Random();
         final List<Enchantment> enchants = new ArrayList<>(event.getEnchantsToAdd().keySet());
@@ -90,7 +96,7 @@ public class Enchanting extends AbstractSkill {
         level = event.getEnchantsToAdd().get(enchant);
         player.playSound(player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_CHIME, 5, 2);
         player.playSound(event.getEnchantBlock().getLocation(), Sound.ENTITY_ENDERMAN_AMBIENT, 5, 2);
-        player.sendMessage(LocalMessageService.getInstance().convert(Objects.requireNonNull(Objects.requireNonNull(LocalMessageService.getInstance().getlang().getString("Skills.Enchanting"))
+        player.sendMessage(messageService.convert(Objects.requireNonNull(Objects.requireNonNull(messageService.getlang().getString("Skills.Enchanting"))
                 .replaceAll("%enchant%", WordUtils.capitalizeFully(enchant.getKey().getKey().replaceAll("_", " ").toLowerCase()))
                 .replaceAll("%level%", getRomanNumber(level)))));
     }
