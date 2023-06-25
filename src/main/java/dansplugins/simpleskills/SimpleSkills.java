@@ -58,10 +58,10 @@ public class SimpleSkills extends PonderBukkitPlugin {
         configService.createconfig();
         storageService.load();
         messageService.createlang();
+        initializeSkills();
         registerEvents();
         initializeCommandService();
         checkFilesVersion();
-        initializeSkills();
     }
 
     /**
