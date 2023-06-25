@@ -6,6 +6,6 @@ package dansplugins.simpleskills.experience;
 public class ExperienceCalculator {
 
     public int getExperienceRequiredForLevelUp(int currentLevel, int baseExperienceRequirement, double experienceIncreaseFactor) {
-        return (int) (baseExperienceRequirement * Math.pow(experienceIncreaseFactor, currentLevel));
+        return (int) (baseExperienceRequirement * Math.pow(currentLevel, experienceIncreaseFactor));
     }
 }
