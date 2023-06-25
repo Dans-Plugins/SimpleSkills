@@ -1,7 +1,7 @@
 package dansplugins.simpleskills.commands;
 
 import dansplugins.simpleskills.SimpleSkills;
-import dansplugins.simpleskills.services.MessageService;
+import dansplugins.simpleskills.message.MessageService;
 import org.bukkit.command.CommandSender;
 import preponderous.ponder.minecraft.bukkit.abs.AbstractPluginCommand;
 

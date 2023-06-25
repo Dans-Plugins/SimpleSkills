@@ -1,8 +1,8 @@
 package dansplugins.simpleskills.commands;
 
-import dansplugins.simpleskills.data.PersistentData;
-import dansplugins.simpleskills.data.objects.PlayerRecord;
-import dansplugins.simpleskills.services.MessageService;
+import dansplugins.simpleskills.playerrecord.PlayerRecordRepository;
+import dansplugins.simpleskills.playerrecord.PlayerRecord;
+import dansplugins.simpleskills.message.MessageService;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import preponderous.ponder.minecraft.bukkit.abs.AbstractPluginCommand;
@@ -16,15 +16,15 @@ import java.util.UUID;
  * @author Daniel Stephenson
  */
 public class InfoCommand extends AbstractPluginCommand {
-    private final PersistentData persistentData;
+    private final PlayerRecordRepository playerRecordRepository;
     private final MessageService messageService;
 
-    public InfoCommand(PersistentData persistentData, MessageService messageService) {
+    public InfoCommand(PlayerRecordRepository playerRecordRepository, MessageService messageService) {
         super(
                 new ArrayList<>(Collections.singletonList("info")),
                 new ArrayList<>(Collections.singletonList("ss.info"))
         );
-        this.persistentData = persistentData;
+        this.playerRecordRepository = playerRecordRepository;
         this.messageService = messageService;
     }
 
@@ -35,7 +35,7 @@ public class InfoCommand extends AbstractPluginCommand {
             return false;
         }
         Player player = (Player) commandSender;
-        PlayerRecord playerRecord = persistentData.getPlayerRecord(player.getUniqueId());
+        PlayerRecord playerRecord = playerRecordRepository.getPlayerRecord(player.getUniqueId());
         if (playerRecord == null) {
             player.sendMessage(messageService.convert(messageService.getlang().getString("DontHaveRecord")));
             return false;
@@ -52,7 +52,7 @@ public class InfoCommand extends AbstractPluginCommand {
             commandSender.sendMessage(messageService.convert(messageService.getlang().getString("NotFound")));
             return false;
         }
-        PlayerRecord playerRecord = persistentData.getPlayerRecord(playerUUID);
+        PlayerRecord playerRecord = playerRecordRepository.getPlayerRecord(playerUUID);
         if (playerRecord == null) {
             commandSender.sendMessage(messageService.convert(messageService.getlang().getString("DoesntHaveRecord")));
             return false;

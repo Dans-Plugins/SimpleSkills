@@ -1,8 +1,9 @@
 package dansplugins.simpleskills.commands;
 
-import dansplugins.simpleskills.data.PersistentData;
-import dansplugins.simpleskills.services.MessageService;
-import dansplugins.simpleskills.skills.abs.AbstractSkill;
+import dansplugins.simpleskills.playerrecord.PlayerRecordRepository;
+import dansplugins.simpleskills.message.MessageService;
+import dansplugins.simpleskills.skill.SkillRepository;
+import dansplugins.simpleskills.skill.abs.AbstractSkill;
 
 import org.bukkit.command.CommandSender;
 import preponderous.ponder.minecraft.bukkit.abs.AbstractPluginCommand;
@@ -15,15 +16,15 @@ import java.util.Collections;
  */
 public class SkillCommand extends AbstractPluginCommand {
     private final MessageService messageService;
-    private final PersistentData persistentData;
+    private final SkillRepository skillRepository;
 
-    public SkillCommand(MessageService messageService, PersistentData persistentData) {
+    public SkillCommand(MessageService messageService, SkillRepository skillRepository) {
         super(
                 new ArrayList<>(Collections.singletonList("skill")),
                 new ArrayList<>(Collections.singletonList("ss.skill"))
         );
         this.messageService = messageService;
-        this.persistentData = persistentData;
+        this.skillRepository = skillRepository;
     }
 
     @Override
@@ -35,7 +36,7 @@ public class SkillCommand extends AbstractPluginCommand {
     @Override
     public boolean execute(CommandSender commandSender, String[] args) {
         String skillName = args[0];
-        AbstractSkill skill = persistentData.getSkill(skillName);
+        AbstractSkill skill = skillRepository.getSkill(skillName);
         if (skill == null) {
             commandSender.sendMessage(messageService
                     .convert(messageService.getlang().getString("SkillNotFound")));

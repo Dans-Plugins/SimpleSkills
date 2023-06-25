@@ -1,9 +1,10 @@
 package dansplugins.simpleskills.commands;
 
-import dansplugins.simpleskills.data.PersistentData;
-import dansplugins.simpleskills.data.objects.PlayerRecord;
-import dansplugins.simpleskills.services.MessageService;
-import dansplugins.simpleskills.skills.abs.AbstractSkill;
+import dansplugins.simpleskills.playerrecord.PlayerRecordRepository;
+import dansplugins.simpleskills.playerrecord.PlayerRecord;
+import dansplugins.simpleskills.message.MessageService;
+import dansplugins.simpleskills.skill.SkillRepository;
+import dansplugins.simpleskills.skill.abs.AbstractSkill;
 
 import org.bukkit.command.CommandSender;
 import preponderous.ponder.minecraft.bukkit.abs.AbstractPluginCommand;
@@ -15,21 +16,23 @@ import java.util.List;
 import java.util.Objects;
 
 public class TopCommand extends AbstractPluginCommand {
-    private final PersistentData persistentData;
+    private final PlayerRecordRepository playerRecordRepository;
     private final MessageService messageService;
+    private final SkillRepository skillRepository;
 
-    public TopCommand(PersistentData persistentData, MessageService messageService) {
+    public TopCommand(PlayerRecordRepository playerRecordRepository, MessageService messageService, SkillRepository skillRepository) {
         super(
                 new ArrayList<>(Collections.singletonList("top")),
                 new ArrayList<>(Collections.singletonList("ss.top"))
         );
-        this.persistentData = persistentData;
+        this.playerRecordRepository = playerRecordRepository;
         this.messageService = messageService;
+        this.skillRepository = skillRepository;
     }
 
     @Override
     public boolean execute(CommandSender commandSender) {
-        final PersistentData instance = persistentData;
+        final PlayerRecordRepository instance = playerRecordRepository;
         final List<PlayerRecord> topPlayers = instance.getTopPlayers();
         for (String message : messageService.getlang().getStringList("Top-Header")) {
             commandSender.sendMessage(messageService.convert(message
@@ -54,14 +57,14 @@ public class TopCommand extends AbstractPluginCommand {
     @Override
     public boolean execute(CommandSender commandSender, String[] args) {
         String skillName = String.join(" ", args);
-        AbstractSkill skill = persistentData.getSkill(skillName);
+        AbstractSkill skill = skillRepository.getSkill(skillName);
         if (skill == null) {
             commandSender.sendMessage(messageService
                     .convert(Objects.requireNonNull(messageService.getlang()
                             .getString("SkillNotFound"))));
             return false;
         }
-        final List<PlayerRecord> topPlayerRecords = persistentData.getTopPlayerRecords(skill.getId());
+        final List<PlayerRecord> topPlayerRecords = playerRecordRepository.getTopPlayerRecords(skill.getId());
         if (topPlayerRecords == null) {
             commandSender.sendMessage(messageService
                     .convert(messageService.getlang().getString("NoTop")
