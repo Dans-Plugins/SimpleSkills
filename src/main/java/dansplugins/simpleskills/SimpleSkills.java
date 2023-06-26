@@ -53,9 +53,9 @@ public class SimpleSkills extends PonderBukkitPlugin {
     public void onEnable() {
         this.ponder = new PonderMC(this);
         performNMSChecks();
-        setupMetrics();
         setTabCompleterForCoreCommands();
         configService.createconfig();
+        setupMetrics();
         storageService.load();
         messageService.createlang();
         initializeSkills();
