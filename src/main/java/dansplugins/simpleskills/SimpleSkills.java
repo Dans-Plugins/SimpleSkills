@@ -43,7 +43,7 @@ public class SimpleSkills extends PonderBukkitPlugin {
     private final PlayerRecordRepository playerRecordRepository = new PlayerRecordRepository();
     private final SkillRepository skillRepository = new SkillRepository();
     private final StorageService storageService = new StorageService(playerRecordRepository, skillRepository, messageService, configService, experienceCalculator, logger);
-    private final ChanceCalculator chanceCalculator = new ChanceCalculator(playerRecordRepository, configService, skillRepository);
+    private final ChanceCalculator chanceCalculator = new ChanceCalculator(playerRecordRepository, configService, skillRepository, messageService, experienceCalculator, logger);
 
 
     /**
@@ -169,7 +169,7 @@ public class SimpleSkills extends PonderBukkitPlugin {
     private void initializeCommandService() {
         ArrayList<AbstractPluginCommand> commands = new ArrayList<>(Arrays.asList(
                 new HelpCommand(messageService),
-                new InfoCommand(playerRecordRepository, messageService),
+                new InfoCommand(playerRecordRepository, messageService, skillRepository, configService, experienceCalculator, logger),
                 new StatsCommand(messageService, playerRecordRepository, skillRepository),
                 new ForceCommand(playerRecordRepository, skillRepository),
                 new SkillCommand(messageService, skillRepository),

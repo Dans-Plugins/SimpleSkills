@@ -1,5 +1,8 @@
 package dansplugins.simpleskills.chance;
 
+import dansplugins.simpleskills.experience.ExperienceCalculator;
+import dansplugins.simpleskills.logging.Logger;
+import dansplugins.simpleskills.message.MessageService;
 import dansplugins.simpleskills.playerrecord.PlayerRecordRepository;
 import dansplugins.simpleskills.playerrecord.PlayerRecord;
 import dansplugins.simpleskills.config.ConfigService;
@@ -16,18 +19,24 @@ public class ChanceCalculator {
     private final PlayerRecordRepository playerRecordRepository;
     private final ConfigService configService;
     private final SkillRepository skillRepository;
+    private final MessageService messageService;
+    private final ExperienceCalculator experienceCalculator;
+    private final Logger logger;
 
-    public ChanceCalculator(PlayerRecordRepository playerRecordRepository, ConfigService configService, SkillRepository skillRepository) {
+    public ChanceCalculator(PlayerRecordRepository playerRecordRepository, ConfigService configService, SkillRepository skillRepository, MessageService messageService, ExperienceCalculator experienceCalculator, Logger logger) {
         this.playerRecordRepository = playerRecordRepository;
         this.configService = configService;
         this.skillRepository = skillRepository;
+        this.messageService = messageService;
+        this.experienceCalculator = experienceCalculator;
+        this.logger = logger;
     }
 
     public boolean roll(UUID playerUUID, int skillID, double nerfFactor) {
         final PlayerRecord playerRecord = playerRecordRepository.getPlayerRecord(playerUUID);
         if (playerRecord == null) {
-            // TODO: create record
-            System.out.println("Player record not found.");
+            PlayerRecord newPlayerRecord = new PlayerRecord(skillRepository, messageService, configService, experienceCalculator, logger, playerUUID);
+            playerRecordRepository.addPlayerRecord(newPlayerRecord);
             return false;
         }
         final AbstractSkill skill = skillRepository.getSkill(skillID);
