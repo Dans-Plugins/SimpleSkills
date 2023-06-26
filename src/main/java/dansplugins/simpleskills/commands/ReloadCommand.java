@@ -1,7 +1,7 @@
 package dansplugins.simpleskills.commands;
 
-import dansplugins.simpleskills.services.ConfigService;
-import dansplugins.simpleskills.services.MessageService;
+import dansplugins.simpleskills.config.ConfigService;
+import dansplugins.simpleskills.message.MessageService;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import preponderous.ponder.minecraft.bukkit.abs.AbstractPluginCommand;
