@@ -53,7 +53,7 @@ public class SimpleSkills extends PonderBukkitPlugin {
     public void onEnable() {
         this.ponder = new PonderMC(this);
         performNMSChecks();
-        handleIntegrations();
+        setupMetrics();
         setTabCompleterForCoreCommands();
         configService.createconfig();
         storageService.load();
@@ -130,10 +130,23 @@ public class SimpleSkills extends PonderBukkitPlugin {
         }
     }
 
-    private void handleIntegrations() {
-        // bStats
+    private void setupMetrics() {
         int pluginId = 13470;
         Metrics metrics = new Metrics(this, pluginId);
+
+        double configVersion = configService.getconfig().getDouble("config-version");
+        int defaultMaxLevel = configService.getconfig().getInt("defaultMaxLevel");
+        int defaultBaseExperienceRequirement = configService.getconfig().getInt("defaultBaseExperienceRequirement");
+        double defaultExperienceIncreaseFactor = configService.getconfig().getDouble("defaultExperienceIncreaseFactor");
+        boolean levelUpAlert = configService.getconfig().getBoolean("levelUpAlert");
+        boolean benefitAlert = configService.getconfig().getBoolean("benefitAlert");
+
+        metrics.addCustomChart(new Metrics.SimplePie("config_version", () -> String.valueOf(configVersion)));
+        metrics.addCustomChart(new Metrics.SimplePie("default_max_level", () -> String.valueOf(defaultMaxLevel)));
+        metrics.addCustomChart(new Metrics.SimplePie("default_base_experience_requirement", () -> String.valueOf(defaultBaseExperienceRequirement)));
+        metrics.addCustomChart(new Metrics.SimplePie("default_experience_increase_factor", () -> String.valueOf(defaultExperienceIncreaseFactor)));
+        metrics.addCustomChart(new Metrics.SimplePie("level_up_alert", () -> String.valueOf(levelUpAlert)));
+        metrics.addCustomChart(new Metrics.SimplePie("benefit_alert", () -> String.valueOf(benefitAlert)));
     }
 
 
