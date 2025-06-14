@@ -121,10 +121,10 @@ public class SimpleSkills extends PonderBukkitPlugin {
     private void performNMSChecks() {
         final NMSAssistant nmsAssistant = new NMSAssistant();
         if (nmsAssistant.isVersionGreaterThan(12)) {
-            getLogger().log(Level.INFO, "Loading Data For " + nmsAssistant.getNMSVersion().toString());
+            getLogger().log(Level.INFO, "Loading data For " + nmsAssistant.getNMSVersion().toString());
         } else {
             getLogger().warning("The server version is not suitable to load the plugin");
-            getLogger().warning("Support version 1.13.x - 1.18.x");
+            getLogger().warning("This plugin is tested on a 1.21.4 server.");
             Bukkit.getServer().getPluginManager().disablePlugin(this);
         }
     }
