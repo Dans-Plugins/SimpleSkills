@@ -7,7 +7,7 @@ import dansplugins.simpleskills.config.ConfigService;
 import dansplugins.simpleskills.message.MessageService;
 import dansplugins.simpleskills.skill.abs.AbstractSkill;
 import dansplugins.simpleskills.chance.ChanceCalculator;
-import dansplugins.simpleskills.logging.Logger;
+import dansplugins.simpleskills.logging.Log;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -33,8 +33,8 @@ public class Crafting extends AbstractSkill {
     /**
      * The crafting skill is levelled through the usage of the crafting windows.
      */
-    public Crafting(ConfigService configService, Logger logger, PlayerRecordRepository playerRecordRepository, SimpleSkills simpleSkills, MessageService messageService, ChanceCalculator chanceCalculator) {
-        super(configService, logger, playerRecordRepository, simpleSkills, messageService, "Crafting", CraftItemEvent.class);
+    public Crafting(ConfigService configService, Log log, PlayerRecordRepository playerRecordRepository, SimpleSkills simpleSkills, MessageService messageService, ChanceCalculator chanceCalculator) {
+        super(configService, log, playerRecordRepository, simpleSkills, messageService, "Crafting", CraftItemEvent.class);
         this.chanceCalculator = chanceCalculator;
     }
 

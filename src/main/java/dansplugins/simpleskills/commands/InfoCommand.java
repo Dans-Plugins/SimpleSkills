@@ -2,7 +2,7 @@ package dansplugins.simpleskills.commands;
 
 import dansplugins.simpleskills.config.ConfigService;
 import dansplugins.simpleskills.experience.ExperienceCalculator;
-import dansplugins.simpleskills.logging.Logger;
+import dansplugins.simpleskills.logging.Log;
 import dansplugins.simpleskills.playerrecord.PlayerRecordRepository;
 import dansplugins.simpleskills.playerrecord.PlayerRecord;
 import dansplugins.simpleskills.message.MessageService;
@@ -25,9 +25,9 @@ public class InfoCommand extends AbstractPluginCommand {
     private final SkillRepository skillRepository;
     private final ConfigService configService;
     private final ExperienceCalculator experienceCalculator;
-    Logger logger;
+    Log log;
 
-    public InfoCommand(PlayerRecordRepository playerRecordRepository, MessageService messageService, SkillRepository skillRepository, ConfigService configService, ExperienceCalculator experienceCalculator, Logger logger) {
+    public InfoCommand(PlayerRecordRepository playerRecordRepository, MessageService messageService, SkillRepository skillRepository, ConfigService configService, ExperienceCalculator experienceCalculator, Log log) {
         super(
                 new ArrayList<>(Collections.singletonList("info")),
                 new ArrayList<>(Collections.singletonList("ss.info"))
@@ -49,7 +49,7 @@ public class InfoCommand extends AbstractPluginCommand {
         PlayerRecord playerRecord = playerRecordRepository.getPlayerRecord(player.getUniqueId());
         if (playerRecord == null) {
             UUID playerUUID = player.getUniqueId();
-            PlayerRecord newPlayerRecord = new PlayerRecord(skillRepository, messageService, configService, experienceCalculator, logger, playerUUID);
+            PlayerRecord newPlayerRecord = new PlayerRecord(skillRepository, messageService, configService, experienceCalculator, log, playerUUID);
             playerRecordRepository.addPlayerRecord(newPlayerRecord);
             return false;
         }
@@ -67,7 +67,7 @@ public class InfoCommand extends AbstractPluginCommand {
         }
         PlayerRecord playerRecord = playerRecordRepository.getPlayerRecord(playerUUID);
         if (playerRecord == null) {
-            PlayerRecord newPlayerRecord = new PlayerRecord(skillRepository, messageService, configService, experienceCalculator, logger, playerUUID);
+            PlayerRecord newPlayerRecord = new PlayerRecord(skillRepository, messageService, configService, experienceCalculator, log, playerUUID);
             playerRecordRepository.addPlayerRecord(newPlayerRecord);
             return false;
         }

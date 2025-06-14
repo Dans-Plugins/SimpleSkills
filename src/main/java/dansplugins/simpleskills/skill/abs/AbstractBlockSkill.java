@@ -4,7 +4,7 @@ import dansplugins.simpleskills.SimpleSkills;
 import dansplugins.simpleskills.playerrecord.PlayerRecordRepository;
 import dansplugins.simpleskills.config.ConfigService;
 import dansplugins.simpleskills.message.MessageService;
-import dansplugins.simpleskills.logging.Logger;
+import dansplugins.simpleskills.logging.Log;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -32,8 +32,8 @@ public abstract class AbstractBlockSkill extends AbstractSkill {
      *
      * @param name of the skill.
      */
-    public AbstractBlockSkill(ConfigService configService, Logger logger, PlayerRecordRepository playerRecordRepository, SimpleSkills simpleSkills, MessageService messageService, @NotNull String name) {
-        super(configService, logger, playerRecordRepository, simpleSkills, messageService, name, BlockBreakEvent.class, BlockPlaceEvent.class, PlayerInteractEvent.class);
+    public AbstractBlockSkill(ConfigService configService, Log log, PlayerRecordRepository playerRecordRepository, SimpleSkills simpleSkills, MessageService messageService, @NotNull String name) {
+        super(configService, log, playerRecordRepository, simpleSkills, messageService, name, BlockBreakEvent.class, BlockPlaceEvent.class, PlayerInteractEvent.class);
     }
 
     /**

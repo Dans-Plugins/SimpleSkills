@@ -9,7 +9,7 @@ import dansplugins.simpleskills.config.ConfigService;
 import dansplugins.simpleskills.message.MessageService;
 import dansplugins.simpleskills.skill.abs.AbstractBlockSkill;
 import dansplugins.simpleskills.chance.ChanceCalculator;
-import dansplugins.simpleskills.logging.Logger;
+import dansplugins.simpleskills.logging.Log;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
@@ -31,8 +31,8 @@ public class Pyromaniac extends AbstractBlockSkill {
     /**
      * The pyromaniac skill is levelled through fire :)
      */
-    public Pyromaniac(ConfigService configService, Logger logger, PlayerRecordRepository playerRecordRepository, SimpleSkills simpleSkills, MessageService messageService, ChanceCalculator chanceCalculator) {
-        super(configService, logger, playerRecordRepository, simpleSkills, messageService, "Pyromaniac");
+    public Pyromaniac(ConfigService configService, Log log, PlayerRecordRepository playerRecordRepository, SimpleSkills simpleSkills, MessageService messageService, ChanceCalculator chanceCalculator) {
+        super(configService, log, playerRecordRepository, simpleSkills, messageService, "Pyromaniac");
         this.chanceCalculator = chanceCalculator;
     }
 

@@ -7,7 +7,7 @@ import dansplugins.simpleskills.enums.Triggers;
 import dansplugins.simpleskills.config.ConfigService;
 
 import dansplugins.simpleskills.message.MessageService;
-import dansplugins.simpleskills.logging.Logger;
+import dansplugins.simpleskills.logging.Log;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -32,7 +32,7 @@ import java.util.*;
  */
 public abstract class AbstractSkill implements Listener {
     protected final ConfigService configService;
-    protected final Logger logger;
+    protected final Log log;
     protected final PlayerRecordRepository playerRecordRepository;
     protected final SimpleSkills simpleSkills;
     protected final MessageService messageService;
@@ -64,7 +64,7 @@ public abstract class AbstractSkill implements Listener {
      * </code>
      * </p>
      * @param configService
-     * @param logger
+     * @param log
      * @param playerRecordRepository
      * @param simpleSkills
      * @param messageService
@@ -72,9 +72,9 @@ public abstract class AbstractSkill implements Listener {
      * @param triggers or events linked to the skill.
      */
     @SafeVarargs
-    public AbstractSkill(ConfigService configService, Logger logger, PlayerRecordRepository playerRecordRepository, SimpleSkills simpleSkills, MessageService messageService, @NotNull String name, @NotNull Class<? extends Event>... triggers) {
+    public AbstractSkill(ConfigService configService, Log log, PlayerRecordRepository playerRecordRepository, SimpleSkills simpleSkills, MessageService messageService, @NotNull String name, @NotNull Class<? extends Event>... triggers) {
         this.configService = configService;
-        this.logger = logger;
+        this.log = log;
         this.playerRecordRepository = playerRecordRepository;
         this.simpleSkills = simpleSkills;
         this.messageService = messageService;
@@ -99,7 +99,7 @@ public abstract class AbstractSkill implements Listener {
      * </p>
      *
      * @param triggers to setup.
-     * @see #AbstractSkill(ConfigService, Logger, PlayerRecordRepository, SimpleSkills, MessageService, String, Class[])
+     * @see #AbstractSkill(ConfigService, Log, PlayerRecordRepository, SimpleSkills, MessageService, String, Class[])
      */
     private void setupTriggers(@NotNull Class<? extends Event>[] triggers) {
         for (@NotNull Class<? extends Event> trigger : triggers) {
@@ -191,7 +191,7 @@ public abstract class AbstractSkill implements Listener {
         }
         final PlayerRecord playerRecord = getRecord(player);
         if (playerRecord == null) {
-            logger.log("A player record wasn't found for " + player.getName() + ".");
+            log.info("A player record wasn't found for " + player.getName() + ".");
             return;
         }
         final int skillId = getId();

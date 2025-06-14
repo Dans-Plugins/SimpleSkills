@@ -1,9 +1,5 @@
 package dansplugins.simpleskills.playerrecord;
 
-import dansplugins.simpleskills.skill.abs.AbstractSkill;
-import dansplugins.simpleskills.logging.Logger;
-import dansplugins.simpleskills.skill.skills.*;
-
 import java.util.*;
 import java.util.stream.Collectors;
 
