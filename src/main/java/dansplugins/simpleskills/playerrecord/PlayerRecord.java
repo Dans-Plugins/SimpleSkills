@@ -204,7 +204,7 @@ public class PlayerRecord implements Savable, Cacheable {
         if (player != null) {
             player.sendMessage(messageService.convert(messageService.getlang().getString("LearnedSkill").replaceAll("%skill%", skill.getName())));
         }
-        log.debug(new UUIDChecker().findPlayerNameBasedOnUUID(playerUUID) + " learned the " + skill.getName() + " skill.");
+        log.info(new UUIDChecker().findPlayerNameBasedOnUUID(playerUUID) + " learned the " + skill.getName() + " skill.");
     }
 
     private void levelUp(int ID, int experienceRequiredForLevelUp) {

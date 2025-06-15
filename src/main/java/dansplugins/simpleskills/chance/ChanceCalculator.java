@@ -37,7 +37,7 @@ public class ChanceCalculator {
         if (playerRecord == null) {
             boolean success = playerRecordRepository.createPlayerRecord(playerUUID);
             if (!success) {
-                log.debug("Failed to create player record for UUID: " + playerUUID);
+                log.error("Failed to create player record for UUID: " + playerUUID);
                 return false;
             }
             playerRecord = playerRecordRepository.getPlayerRecord(playerUUID);

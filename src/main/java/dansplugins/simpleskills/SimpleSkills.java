@@ -52,9 +52,9 @@ public class SimpleSkills extends PonderBukkitPlugin {
     @Override
     public void onEnable() {
         this.ponder = new PonderMC(this);
+        configService.createConfig();
         performNMSChecks();
         setTabCompleterForCoreCommands();
-        configService.createConfig();
         setupMetrics();
         log.debug("Loading files.");
         storageService.load();
@@ -115,7 +115,7 @@ public class SimpleSkills extends PonderBukkitPlugin {
         try {
             final NMSAssistant nmsAssistant = new NMSAssistant();
             if (nmsAssistant.isVersionGreaterThan(12)) {
-                log.debug("Loading data For " + nmsAssistant.getNMSVersion().toString());
+                log.info("Loading data For " + nmsAssistant.getNMSVersion().toString());
             } else {
                 log.warning("The server version is not suitable to load the plugin");
                 log.warning("This plugin is tested on a 1.21.4 server.");

@@ -191,7 +191,7 @@ public abstract class AbstractSkill implements Listener {
         }
         final PlayerRecord playerRecord = getRecord(player);
         if (playerRecord == null) {
-            log.debug("A player record wasn't found for " + player.getName() + ".");
+            log.error("A player record wasn't found for " + player.getName() + " while attempting to increment experience.");
             return;
         }
         final int skillId = getId();
