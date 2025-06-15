@@ -137,7 +137,9 @@ public class SimpleSkills extends PonderBukkitPlugin implements Listener {
                 Bukkit.getServer().getPluginManager().disablePlugin(this);
             }
         } catch(NumberFormatException e) {
-            getLogger().log(Level.SEVERE, "Failed to determine NMS version. Some features may not work correctly.", e);
+            getLogger().warning("Failed to determine NMS version due to NumberFormatException. Some features may not work correctly.");
+        } catch (Exception e) {
+            getLogger().warning("Failed to determine NMS version due to an exception. Some features may not work correctly. Error: " + e.getMessage());
         }
     }
 
