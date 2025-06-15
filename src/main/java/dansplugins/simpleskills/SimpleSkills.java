@@ -18,6 +18,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.jetbrains.annotations.NotNull;
 import preponderous.ponder.minecraft.bukkit.PonderMC;
 import preponderous.ponder.minecraft.bukkit.abs.AbstractPluginCommand;
@@ -31,7 +33,7 @@ import java.util.logging.Level;
 /**
  * @author Daniel Stephenson
  */
-public class SimpleSkills extends PonderBukkitPlugin {
+public class SimpleSkills extends PonderBukkitPlugin implements Listener {
     private final String pluginVersion = "v" + getDescription().getVersion();
     private PonderMC ponder;
 
@@ -39,8 +41,8 @@ public class SimpleSkills extends PonderBukkitPlugin {
     private final MessageService messageService = new MessageService(this);
     private final ConfigService configService = new ConfigService(this);
     private final ExperienceCalculator experienceCalculator = new ExperienceCalculator();
-    private final PlayerRecordRepository playerRecordRepository = new PlayerRecordRepository(log);
     private final SkillRepository skillRepository = new SkillRepository();
+    private final PlayerRecordRepository playerRecordRepository = new PlayerRecordRepository(log, messageService, skillRepository, configService, experienceCalculator);
     private final StorageService storageService = new StorageService(playerRecordRepository, skillRepository, messageService, configService, experienceCalculator, log);
     private final ChanceCalculator chanceCalculator = new ChanceCalculator(playerRecordRepository, configService, skillRepository, messageService, experienceCalculator, log);
 
@@ -173,6 +175,8 @@ public class SimpleSkills extends PonderBukkitPlugin {
             getLogger().log(Level.INFO, "Registering events for skill: " + skill.getName());
             skill.register();
         }
+
+        Bukkit.getPluginManager().registerEvents(this, this);
     }
 
     private void initializeCommandService() {
@@ -211,6 +215,18 @@ public class SimpleSkills extends PonderBukkitPlugin {
         skillRepository.addSkill(new Quarrying(configService, log, playerRecordRepository, this, messageService, chanceCalculator));
         skillRepository.addSkill(new Riding(configService, log, playerRecordRepository, this, messageService, chanceCalculator));
         skillRepository.addSkill(new Strength(configService, log, playerRecordRepository, this, messageService, chanceCalculator));
+    }
+
+    @EventHandler
+    public void onPlayerJoin(@NotNull org.bukkit.event.player.PlayerJoinEvent event) {
+        if (playerRecordRepository.getPlayerRecord(event.getPlayer().getUniqueId()) == null) {
+            getLogger().log(Level.INFO, "No player record found for " + event.getPlayer().getName() + ". Creating a new one.");
+            boolean success = playerRecordRepository.createPlayerRecord(event.getPlayer().getUniqueId());
+            if (!success) {
+                event.getPlayer().sendMessage("Error creating player record. Please try again later.");
+                log.info("Error creating player record for " + event.getPlayer().getName() + ". Please check the logs for more details.");
+            }
+        }
     }
 
 }

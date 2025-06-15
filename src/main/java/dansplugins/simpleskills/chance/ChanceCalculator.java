@@ -33,11 +33,14 @@ public class ChanceCalculator {
     }
 
     public boolean roll(UUID playerUUID, int skillID, double nerfFactor) {
-        final PlayerRecord playerRecord = playerRecordRepository.getPlayerRecord(playerUUID);
+        PlayerRecord playerRecord = playerRecordRepository.getPlayerRecord(playerUUID);
         if (playerRecord == null) {
-            PlayerRecord newPlayerRecord = new PlayerRecord(skillRepository, messageService, configService, experienceCalculator, log, playerUUID);
-            playerRecordRepository.addPlayerRecord(newPlayerRecord);
-            return false;
+            boolean success = playerRecordRepository.createPlayerRecord(playerUUID);
+            if (!success) {
+                log.info("Failed to create player record for UUID: " + playerUUID);
+                return false;
+            }
+            playerRecord = playerRecordRepository.getPlayerRecord(playerUUID);
         }
         final AbstractSkill skill = skillRepository.getSkill(skillID);
         return roll(playerRecord, skill, nerfFactor);

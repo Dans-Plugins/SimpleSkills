@@ -49,10 +49,13 @@ public class InfoCommand extends AbstractPluginCommand {
         Player player = (Player) commandSender;
         PlayerRecord playerRecord = playerRecordRepository.getPlayerRecord(player.getUniqueId());
         if (playerRecord == null) {
-            UUID playerUUID = player.getUniqueId();
-            PlayerRecord newPlayerRecord = new PlayerRecord(skillRepository, messageService, configService, experienceCalculator, log, playerUUID);
-            playerRecordRepository.addPlayerRecord(newPlayerRecord);
-            return false;
+            log.info("No player record found for " + player.getName() + ". Creating a new one.");
+            boolean success = playerRecordRepository.createPlayerRecord(player.getUniqueId());
+            if (!success) {
+                commandSender.sendMessage("Error creating player record. Please try again later.");
+                return false;
+            }
+            playerRecord = playerRecordRepository.getPlayerRecord(player.getUniqueId());
         }
         playerRecord.sendInfo(commandSender);
         return true;
@@ -68,9 +71,12 @@ public class InfoCommand extends AbstractPluginCommand {
         }
         PlayerRecord playerRecord = playerRecordRepository.getPlayerRecord(playerUUID);
         if (playerRecord == null) {
-            PlayerRecord newPlayerRecord = new PlayerRecord(skillRepository, messageService, configService, experienceCalculator, log, playerUUID);
-            playerRecordRepository.addPlayerRecord(newPlayerRecord);
-            return false;
+            boolean success = playerRecordRepository.createPlayerRecord(playerUUID);
+            if (!success) {
+                commandSender.sendMessage("Error creating player record for " + playerName + ". Please try again later.");
+                return false;
+            }
+            playerRecord = playerRecordRepository.getPlayerRecord(playerUUID);
         }
         playerRecord.sendInfo(commandSender);
         return true;
