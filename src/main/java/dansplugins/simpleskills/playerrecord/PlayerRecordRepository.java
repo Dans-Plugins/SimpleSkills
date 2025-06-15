@@ -1,5 +1,7 @@
 package dansplugins.simpleskills.playerrecord;
 
+import dansplugins.simpleskills.logging.Log;
+
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -8,6 +10,11 @@ import java.util.stream.Collectors;
  */
 public class PlayerRecordRepository {
     private HashSet<PlayerRecord> playerRecords = new HashSet<>();
+    private final Log log;
+
+    public PlayerRecordRepository(Log log) {
+        this.log = log;
+    }
 
     public HashSet<PlayerRecord> getPlayerRecords() {
         return playerRecords;
@@ -22,14 +29,14 @@ public class PlayerRecordRepository {
     }
 
     public PlayerRecord getPlayerRecord(UUID playerUUID) {
-        System.out.println("Searching for player record with UUID: " + playerUUID);
+        log.info("Searching for player record with UUID: " + playerUUID);
         for (PlayerRecord record : playerRecords) {
             if (record.getPlayerUUID().equals(playerUUID)) {
-                System.out.println("Found player record for UUID: " + playerUUID);
+                log.info("Found player record for UUID: " + playerUUID);
                 return record;
             }
         }
-        System.out.println("No player record found for UUID: " + playerUUID);
+        log.info("No player record found for UUID: " + playerUUID);
         return null;
     }
 
