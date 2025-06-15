@@ -4,7 +4,7 @@ import dansplugins.simpleskills.SimpleSkills;
 import dansplugins.simpleskills.playerrecord.PlayerRecordRepository;
 import dansplugins.simpleskills.config.ConfigService;
 import dansplugins.simpleskills.message.MessageService;
-import dansplugins.simpleskills.logging.Logger;
+import dansplugins.simpleskills.logging.Log;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.Boat;
@@ -54,8 +54,8 @@ public abstract class AbstractMovementSkill extends AbstractSkill {
      * specific functionality for moving around the world and linking it to experience gain for Skills.
      * </p>
      */
-    public AbstractMovementSkill(ConfigService configService, Logger logger, PlayerRecordRepository playerRecordRepository, SimpleSkills simpleSkills, MessageService messageService, @NotNull String name) {
-        super(configService, logger, playerRecordRepository, simpleSkills, messageService, name, PlayerMoveEvent.class);
+    public AbstractMovementSkill(ConfigService configService, Log log, PlayerRecordRepository playerRecordRepository, SimpleSkills simpleSkills, MessageService messageService, @NotNull String name) {
+        super(configService, log, playerRecordRepository, simpleSkills, messageService, name, PlayerMoveEvent.class);
     }
 
     /**

@@ -3,7 +3,6 @@ package dansplugins.simpleskills;
 import dansplugins.simpleskills.bstats.Metrics;
 import dansplugins.simpleskills.commands.*;
 import dansplugins.simpleskills.commands.tab.TabCommand;
-import dansplugins.simpleskills.playerrecord.PlayerRecord;
 import dansplugins.simpleskills.playerrecord.PlayerRecordRepository;
 import dansplugins.simpleskills.config.ConfigService;
 import dansplugins.simpleskills.message.MessageService;
@@ -13,12 +12,14 @@ import dansplugins.simpleskills.skill.abs.AbstractSkill;
 import dansplugins.simpleskills.chance.ChanceCalculator;
 import dansplugins.simpleskills.experience.ExperienceCalculator;
 
-import dansplugins.simpleskills.logging.Logger;
+import dansplugins.simpleskills.logging.Log;
 import dansplugins.simpleskills.skill.skills.*;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.jetbrains.annotations.NotNull;
 import preponderous.ponder.minecraft.bukkit.PonderMC;
 import preponderous.ponder.minecraft.bukkit.abs.AbstractPluginCommand;
@@ -32,18 +33,18 @@ import java.util.logging.Level;
 /**
  * @author Daniel Stephenson
  */
-public class SimpleSkills extends PonderBukkitPlugin {
+public class SimpleSkills extends PonderBukkitPlugin implements Listener {
     private final String pluginVersion = "v" + getDescription().getVersion();
     private PonderMC ponder;
 
-    private final Logger logger = new Logger(this);
+    private final Log log = new Log(this);
     private final MessageService messageService = new MessageService(this);
     private final ConfigService configService = new ConfigService(this);
     private final ExperienceCalculator experienceCalculator = new ExperienceCalculator();
-    private final PlayerRecordRepository playerRecordRepository = new PlayerRecordRepository();
     private final SkillRepository skillRepository = new SkillRepository();
-    private final StorageService storageService = new StorageService(playerRecordRepository, skillRepository, messageService, configService, experienceCalculator, logger);
-    private final ChanceCalculator chanceCalculator = new ChanceCalculator(playerRecordRepository, configService, skillRepository, messageService, experienceCalculator, logger);
+    private final PlayerRecordRepository playerRecordRepository = new PlayerRecordRepository(log, messageService, skillRepository, configService, experienceCalculator);
+    private final StorageService storageService = new StorageService(playerRecordRepository, skillRepository, messageService, configService, experienceCalculator, log);
+    private final ChanceCalculator chanceCalculator = new ChanceCalculator(playerRecordRepository, configService, skillRepository, messageService, experienceCalculator, log);
 
 
     /**
@@ -56,21 +57,26 @@ public class SimpleSkills extends PonderBukkitPlugin {
         setTabCompleterForCoreCommands();
         configService.createconfig();
         setupMetrics();
+        getLogger().log(Level.INFO, "Loading files.");
         storageService.load();
+        getLogger().log(Level.INFO, "Creating language files.");
         messageService.createlang();
         initializeSkills();
-        registerEvents();
+        registerEventListeners();
         initializeCommandService();
         checkFilesVersion();
     }
 
     /**
-     * This runs when the sever stops.
+     * This runs when the server stops.
      */
     @Override
     public void onDisable() {
+        getLogger().log(Level.INFO, "Saving files.");
         storageService.save();
+        getLogger().log(Level.INFO, "Saving language files.");
         messageService.savelang();
+        getLogger().log(Level.INFO, "Saving config files.");
         configService.saveconfig();
     }
 
@@ -111,6 +117,7 @@ public class SimpleSkills extends PonderBukkitPlugin {
     }
 
     private void checkFilesVersion() {
+        getLogger().log(Level.INFO, "Checking config and message files for version compatibility.");
         if (messageService.getlang().getDouble("message-version") != 0.2) {
             getLogger().log( Level.SEVERE, "Outdated message.yml! Please backup & update message.yml file and restart server again!!");
         }
@@ -122,15 +129,16 @@ public class SimpleSkills extends PonderBukkitPlugin {
     private void performNMSChecks() {
         final NMSAssistant nmsAssistant = new NMSAssistant();
         if (nmsAssistant.isVersionGreaterThan(12)) {
-            getLogger().log(Level.INFO, "Loading Data For " + nmsAssistant.getNMSVersion().toString());
+            getLogger().log(Level.INFO, "Loading data For " + nmsAssistant.getNMSVersion().toString());
         } else {
             getLogger().warning("The server version is not suitable to load the plugin");
-            getLogger().warning("Support version 1.13.x - 1.18.x");
+            getLogger().warning("This plugin is tested on a 1.21.4 server.");
             Bukkit.getServer().getPluginManager().disablePlugin(this);
         }
     }
 
     private void setupMetrics() {
+        getLogger().log(Level.INFO, "Setting up bStats metrics for SimpleSkills.");
         int pluginId = 13470;
         Metrics metrics = new Metrics(this, pluginId);
 
@@ -151,6 +159,7 @@ public class SimpleSkills extends PonderBukkitPlugin {
 
 
     private void setTabCompleterForCoreCommands() {
+        getLogger().log(Level.INFO, "Setting up tab completers for core commands.");
         for (String key : getDescription().getCommands().keySet()) {
             PluginCommand command = getCommand(key);
             if (command == null) {
@@ -160,16 +169,21 @@ public class SimpleSkills extends PonderBukkitPlugin {
         }
     }
 
-    private void registerEvents() {
+    private void registerEventListeners() {
+        getLogger().log(Level.INFO, "Registering events...");
         for (AbstractSkill skill : skillRepository.getSkills()) {
+            getLogger().log(Level.INFO, "Registering events for skill: " + skill.getName());
             skill.register();
         }
+
+        Bukkit.getPluginManager().registerEvents(this, this);
     }
 
     private void initializeCommandService() {
+        getLogger().log(Level.INFO, "Initializing command service...");
         ArrayList<AbstractPluginCommand> commands = new ArrayList<>(Arrays.asList(
                 new HelpCommand(messageService),
-                new InfoCommand(playerRecordRepository, messageService, skillRepository, configService, experienceCalculator, logger),
+                new InfoCommand(playerRecordRepository, messageService, skillRepository, configService, experienceCalculator, log),
                 new StatsCommand(messageService, playerRecordRepository, skillRepository),
                 new ForceCommand(playerRecordRepository, skillRepository),
                 new SkillCommand(messageService, skillRepository),
@@ -180,26 +194,39 @@ public class SimpleSkills extends PonderBukkitPlugin {
     }
 
     private void initializeSkills() {
-        skillRepository.addSkill(new Athlete(configService, logger, playerRecordRepository, this, messageService, chanceCalculator));
-        skillRepository.addSkill(new Boating(configService, logger, playerRecordRepository, this, messageService, chanceCalculator));
-        skillRepository.addSkill(new Breeding(configService, logger, playerRecordRepository, this, messageService, chanceCalculator));
-        skillRepository.addSkill(new Cardio(configService, logger, playerRecordRepository, this, messageService, chanceCalculator));
-        skillRepository.addSkill(new Crafting(configService, logger, playerRecordRepository, this, messageService, chanceCalculator));
-        skillRepository.addSkill(new Digging(configService, logger, playerRecordRepository, this, messageService, chanceCalculator));
-        skillRepository.addSkill(new Dueling(configService, logger, playerRecordRepository, this, messageService, chanceCalculator));
-        skillRepository.addSkill(new Enchanting(configService, logger, playerRecordRepository, this, messageService, chanceCalculator));
-        skillRepository.addSkill(new Farming(configService, logger, playerRecordRepository, this, messageService, chanceCalculator));
-        skillRepository.addSkill(new Fishing(configService, logger, playerRecordRepository, this, messageService, chanceCalculator));
-        skillRepository.addSkill(new Floriculture(configService, logger, playerRecordRepository, this, messageService, chanceCalculator));
-        skillRepository.addSkill(new Gliding(configService, logger, playerRecordRepository, this, messageService, chanceCalculator));
-        skillRepository.addSkill(new Hardiness(configService, logger, playerRecordRepository, this, messageService, chanceCalculator));
-        skillRepository.addSkill(new Woodcutting(configService, logger, playerRecordRepository, this, messageService, chanceCalculator));
-        skillRepository.addSkill(new Mining(configService, logger, playerRecordRepository, this, messageService, chanceCalculator));
-        skillRepository.addSkill(new MonsterHunting(configService, logger, playerRecordRepository, this, messageService, chanceCalculator));
-        skillRepository.addSkill(new Pyromaniac(configService, logger, playerRecordRepository, this, messageService, chanceCalculator));
-        skillRepository.addSkill(new Quarrying(configService, logger, playerRecordRepository, this, messageService, chanceCalculator));
-        skillRepository.addSkill(new Riding(configService, logger, playerRecordRepository, this, messageService, chanceCalculator));
-        skillRepository.addSkill(new Strength(configService, logger, playerRecordRepository, this, messageService, chanceCalculator));
+        getLogger().log(Level.INFO, "Initializing skills...");
+        skillRepository.addSkill(new Athlete(configService, log, playerRecordRepository, this, messageService, chanceCalculator));
+        skillRepository.addSkill(new Boating(configService, log, playerRecordRepository, this, messageService, chanceCalculator));
+        skillRepository.addSkill(new Breeding(configService, log, playerRecordRepository, this, messageService, chanceCalculator));
+        skillRepository.addSkill(new Cardio(configService, log, playerRecordRepository, this, messageService, chanceCalculator));
+        skillRepository.addSkill(new Crafting(configService, log, playerRecordRepository, this, messageService, chanceCalculator));
+        skillRepository.addSkill(new Digging(configService, log, playerRecordRepository, this, messageService, chanceCalculator));
+        skillRepository.addSkill(new Dueling(configService, log, playerRecordRepository, this, messageService, chanceCalculator));
+        skillRepository.addSkill(new Enchanting(configService, log, playerRecordRepository, this, messageService, chanceCalculator));
+        skillRepository.addSkill(new Farming(configService, log, playerRecordRepository, this, messageService, chanceCalculator));
+        skillRepository.addSkill(new Fishing(configService, log, playerRecordRepository, this, messageService, chanceCalculator));
+        skillRepository.addSkill(new Floriculture(configService, log, playerRecordRepository, this, messageService, chanceCalculator));
+        skillRepository.addSkill(new Gliding(configService, log, playerRecordRepository, this, messageService, chanceCalculator));
+        skillRepository.addSkill(new Hardiness(configService, log, playerRecordRepository, this, messageService, chanceCalculator));
+        skillRepository.addSkill(new Woodcutting(configService, log, playerRecordRepository, this, messageService, chanceCalculator));
+        skillRepository.addSkill(new Mining(configService, log, playerRecordRepository, this, messageService, chanceCalculator));
+        skillRepository.addSkill(new MonsterHunting(configService, log, playerRecordRepository, this, messageService, chanceCalculator));
+        skillRepository.addSkill(new Pyromaniac(configService, log, playerRecordRepository, this, messageService, chanceCalculator));
+        skillRepository.addSkill(new Quarrying(configService, log, playerRecordRepository, this, messageService, chanceCalculator));
+        skillRepository.addSkill(new Riding(configService, log, playerRecordRepository, this, messageService, chanceCalculator));
+        skillRepository.addSkill(new Strength(configService, log, playerRecordRepository, this, messageService, chanceCalculator));
+    }
+
+    @EventHandler
+    public void onPlayerJoin(@NotNull org.bukkit.event.player.PlayerJoinEvent event) {
+        if (playerRecordRepository.getPlayerRecord(event.getPlayer().getUniqueId()) == null) {
+            getLogger().log(Level.INFO, "No player record found for " + event.getPlayer().getName() + ". Creating a new one.");
+            boolean success = playerRecordRepository.createPlayerRecord(event.getPlayer().getUniqueId());
+            if (!success) {
+                event.getPlayer().sendMessage("Error creating player record. Please try again later.");
+                log.info("Error creating player record for " + event.getPlayer().getName() + ". Please check the logs for more details.");
+            }
+        }
     }
 
 }

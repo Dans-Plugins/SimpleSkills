@@ -9,7 +9,7 @@ import dansplugins.simpleskills.message.MessageService;
 import dansplugins.simpleskills.skill.SkillRepository;
 import dansplugins.simpleskills.skill.abs.AbstractSkill;
 import dansplugins.simpleskills.experience.ExperienceCalculator;
-import dansplugins.simpleskills.logging.Logger;
+import dansplugins.simpleskills.logging.Log;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -28,27 +28,27 @@ public class PlayerRecord implements Savable, Cacheable {
     private final MessageService messageService;
     private final ConfigService configService;
     private final ExperienceCalculator experienceCalculator;
-    private final Logger logger;
+    private final Log log;
 
     private UUID playerUUID;
     private HashMap<Integer, Integer> skillLevels = new HashMap<>();
     private HashMap<Integer, Integer> experience = new HashMap<>();
 
-    public PlayerRecord(SkillRepository skillRepository, MessageService messageService, ConfigService configService, ExperienceCalculator experienceCalculator, Logger logger, UUID playerUUID) {
+    public PlayerRecord(SkillRepository skillRepository, MessageService messageService, ConfigService configService, ExperienceCalculator experienceCalculator, Log log, UUID playerUUID) {
         this.skillRepository = skillRepository;
         this.messageService = messageService;
         this.configService = configService;
         this.experienceCalculator = experienceCalculator;
-        this.logger = logger;
+        this.log = log;
         this.playerUUID = playerUUID;
     }
 
-    public PlayerRecord(Map<String, String> data, SkillRepository skillRepository, MessageService messageService, ConfigService configService, ExperienceCalculator experienceCalculator, Logger logger) {
+    public PlayerRecord(Map<String, String> data, SkillRepository skillRepository, MessageService messageService, ConfigService configService, ExperienceCalculator experienceCalculator, Log log) {
         this.skillRepository = skillRepository;
         this.messageService = messageService;
         this.configService = configService;
         this.experienceCalculator = experienceCalculator;
-        this.logger = logger;
+        this.log = log;
         this.load(data);
     }
 
@@ -204,7 +204,7 @@ public class PlayerRecord implements Savable, Cacheable {
         if (player != null) {
             player.sendMessage(messageService.convert(messageService.getlang().getString("LearnedSkill").replaceAll("%skill%", skill.getName())));
         }
-        logger.log(new UUIDChecker().findPlayerNameBasedOnUUID(playerUUID) + " learned the " + skill.getName() + " skill.");
+        log.info(new UUIDChecker().findPlayerNameBasedOnUUID(playerUUID) + " learned the " + skill.getName() + " skill.");
     }
 
     private void levelUp(int ID, int experienceRequiredForLevelUp) {

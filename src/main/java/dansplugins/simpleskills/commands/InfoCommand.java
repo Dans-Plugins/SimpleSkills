@@ -2,7 +2,7 @@ package dansplugins.simpleskills.commands;
 
 import dansplugins.simpleskills.config.ConfigService;
 import dansplugins.simpleskills.experience.ExperienceCalculator;
-import dansplugins.simpleskills.logging.Logger;
+import dansplugins.simpleskills.logging.Log;
 import dansplugins.simpleskills.playerrecord.PlayerRecordRepository;
 import dansplugins.simpleskills.playerrecord.PlayerRecord;
 import dansplugins.simpleskills.message.MessageService;
@@ -25,9 +25,9 @@ public class InfoCommand extends AbstractPluginCommand {
     private final SkillRepository skillRepository;
     private final ConfigService configService;
     private final ExperienceCalculator experienceCalculator;
-    Logger logger;
+    private final Log log;
 
-    public InfoCommand(PlayerRecordRepository playerRecordRepository, MessageService messageService, SkillRepository skillRepository, ConfigService configService, ExperienceCalculator experienceCalculator, Logger logger) {
+    public InfoCommand(PlayerRecordRepository playerRecordRepository, MessageService messageService, SkillRepository skillRepository, ConfigService configService, ExperienceCalculator experienceCalculator, Log log) {
         super(
                 new ArrayList<>(Collections.singletonList("info")),
                 new ArrayList<>(Collections.singletonList("ss.info"))
@@ -37,6 +37,7 @@ public class InfoCommand extends AbstractPluginCommand {
         this.skillRepository = skillRepository;
         this.configService = configService;
         this.experienceCalculator = experienceCalculator;
+        this.log = log;
     }
 
     @Override
@@ -48,10 +49,13 @@ public class InfoCommand extends AbstractPluginCommand {
         Player player = (Player) commandSender;
         PlayerRecord playerRecord = playerRecordRepository.getPlayerRecord(player.getUniqueId());
         if (playerRecord == null) {
-            UUID playerUUID = player.getUniqueId();
-            PlayerRecord newPlayerRecord = new PlayerRecord(skillRepository, messageService, configService, experienceCalculator, logger, playerUUID);
-            playerRecordRepository.addPlayerRecord(newPlayerRecord);
-            return false;
+            log.info("No player record found for " + player.getName() + ". Creating a new one.");
+            boolean success = playerRecordRepository.createPlayerRecord(player.getUniqueId());
+            if (!success) {
+                commandSender.sendMessage("Error creating player record. Please try again later.");
+                return false;
+            }
+            playerRecord = playerRecordRepository.getPlayerRecord(player.getUniqueId());
         }
         playerRecord.sendInfo(commandSender);
         return true;
@@ -67,9 +71,12 @@ public class InfoCommand extends AbstractPluginCommand {
         }
         PlayerRecord playerRecord = playerRecordRepository.getPlayerRecord(playerUUID);
         if (playerRecord == null) {
-            PlayerRecord newPlayerRecord = new PlayerRecord(skillRepository, messageService, configService, experienceCalculator, logger, playerUUID);
-            playerRecordRepository.addPlayerRecord(newPlayerRecord);
-            return false;
+            boolean success = playerRecordRepository.createPlayerRecord(playerUUID);
+            if (!success) {
+                commandSender.sendMessage("Error creating player record for " + playerName + ". Please try again later.");
+                return false;
+            }
+            playerRecord = playerRecordRepository.getPlayerRecord(playerUUID);
         }
         playerRecord.sendInfo(commandSender);
         return true;

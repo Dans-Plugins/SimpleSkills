@@ -1,8 +1,10 @@
 package dansplugins.simpleskills.playerrecord;
 
-import dansplugins.simpleskills.skill.abs.AbstractSkill;
-import dansplugins.simpleskills.logging.Logger;
-import dansplugins.simpleskills.skill.skills.*;
+import dansplugins.simpleskills.config.ConfigService;
+import dansplugins.simpleskills.experience.ExperienceCalculator;
+import dansplugins.simpleskills.logging.Log;
+import dansplugins.simpleskills.message.MessageService;
+import dansplugins.simpleskills.skill.SkillRepository;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -12,6 +14,23 @@ import java.util.stream.Collectors;
  */
 public class PlayerRecordRepository {
     private HashSet<PlayerRecord> playerRecords = new HashSet<>();
+    private final Log log;
+    private final MessageService messageService;
+    private final SkillRepository skillRepository;
+    private final ConfigService configService;
+    private final ExperienceCalculator experienceCalculator;
+
+    public PlayerRecordRepository(Log log,
+                                  MessageService messageService,
+                                  SkillRepository skillRepository,
+                                  ConfigService configService,
+                                  ExperienceCalculator experienceCalculator) {
+        this.log = log;
+        this.messageService = messageService;
+        this.skillRepository = skillRepository;
+        this.configService = configService;
+        this.experienceCalculator = experienceCalculator;
+    }
 
     public HashSet<PlayerRecord> getPlayerRecords() {
         return playerRecords;
@@ -21,16 +40,19 @@ public class PlayerRecordRepository {
         this.playerRecords = playerRecords;
     }
 
-    public boolean addPlayerRecord(PlayerRecord playerRecord) {
+    private boolean addPlayerRecord(PlayerRecord playerRecord) {
         return playerRecords.add(playerRecord);
     }
 
     public PlayerRecord getPlayerRecord(UUID playerUUID) {
+        log.info("Searching for player record with UUID: " + playerUUID);
         for (PlayerRecord record : playerRecords) {
             if (record.getPlayerUUID().equals(playerUUID)) {
+                log.info("Found player record for UUID: " + playerUUID);
                 return record;
             }
         }
+        log.info("No player record found for UUID: " + playerUUID);
         return null;
     }
 
@@ -64,4 +86,8 @@ public class PlayerRecordRepository {
                 .collect(Collectors.toList());
     }
 
+    public boolean createPlayerRecord(UUID uniqueId) {
+        PlayerRecord newPlayerRecord = new PlayerRecord(skillRepository, messageService, configService, experienceCalculator, log, uniqueId);
+        return addPlayerRecord(newPlayerRecord);
+    }
 }
