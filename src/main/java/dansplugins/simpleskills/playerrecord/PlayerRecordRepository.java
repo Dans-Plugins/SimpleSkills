@@ -45,14 +45,14 @@ public class PlayerRecordRepository {
     }
 
     public PlayerRecord getPlayerRecord(UUID playerUUID) {
-        log.info("Searching for player record with UUID: " + playerUUID);
+        log.debug("Searching for player record with UUID: " + playerUUID);
         for (PlayerRecord record : playerRecords) {
             if (record.getPlayerUUID().equals(playerUUID)) {
-                log.info("Found player record for UUID: " + playerUUID);
+                log.debug("Found player record for UUID: " + playerUUID);
                 return record;
             }
         }
-        log.info("No player record found for UUID: " + playerUUID);
+        log.debug("No player record found for UUID: " + playerUUID);
         return null;
     }
 

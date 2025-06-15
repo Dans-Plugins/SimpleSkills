@@ -1,12 +1,5 @@
 package dansplugins.simpleskills.config;
 
-/*
-    To add a new config option, the following methods must be altered:
-    - saveMissingConfigDefaultsIfNotPresent
-    - setConfigOption()
-    - sendConfigList()
- */
-
 import dansplugins.simpleskills.SimpleSkills;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -14,7 +7,6 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.logging.Level;
 
 /**
  * @author Daniel Stephenson
@@ -30,8 +22,8 @@ public class ConfigService {
         this.simpleSkills = simpleSkills;
     }
 
-    public void createconfig() {
-        simpleSkills.getLogger().log(Level.INFO, "Creating config.yml file...");
+    public void createConfig() {
+        simpleSkills.getLogger().info("Creating config.yml file..."); // note: must use simpleSkills.getLogger() to avoid circular dependency issues
         configFile = new File(simpleSkills.getDataFolder(), "config.yml");
 
         if (!configFile.exists()) simpleSkills.saveResource("config.yml", false);
@@ -40,20 +32,19 @@ public class ConfigService {
         try {
             config.load(configFile);
         } catch (IOException | InvalidConfigurationException e) {
-            e.printStackTrace();
+            simpleSkills.getLogger().severe("Failed to load config.yml file."); // note: must use simpleSkills.getLogger() to avoid circular dependency issues
         }
     }
 
-    public FileConfiguration getconfig() {
+    public FileConfiguration getConfig() {
         return config;
     }
 
-
-    public void reloadconfig() {
+    public void reloadConfig() {
         config = YamlConfiguration.loadConfiguration(configFile);
     }
 
-    public void saveconfig() {
+    public void saveConfig() {
         try {
             config.save(configFile);
         } catch (IOException ignored) {

@@ -49,7 +49,7 @@ public class InfoCommand extends AbstractPluginCommand {
         Player player = (Player) commandSender;
         PlayerRecord playerRecord = playerRecordRepository.getPlayerRecord(player.getUniqueId());
         if (playerRecord == null) {
-            log.info("No player record found for " + player.getName() + ". Creating a new one.");
+            log.debug("No player record found for " + player.getName() + ". Creating a new one.");
             boolean success = playerRecordRepository.createPlayerRecord(player.getUniqueId());
             if (!success) {
                 commandSender.sendMessage("Error creating player record. Please try again later.");
