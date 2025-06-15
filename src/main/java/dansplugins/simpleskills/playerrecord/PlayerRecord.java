@@ -126,7 +126,7 @@ public class PlayerRecord implements Savable, Cacheable {
         setExperience(ID, getExperience(ID) + 1);
         AbstractSkill skill = skillRepository.getSkill(ID);
         if (skill == null || (getSkillLevel(ID, true) >= configService
-                .getconfig().getInt("defaultMaxLevel"))) { // TODO fix max level
+                .getConfig().getInt("defaultMaxLevel"))) { // TODO fix max level
             return;
         }
         checkForLevelUp(ID);
@@ -216,7 +216,7 @@ public class PlayerRecord implements Savable, Cacheable {
         Player player = Bukkit.getPlayer(playerUUID);
         if (player != null) {
             AbstractSkill skill = skillRepository.getSkill(ID);
-            if (configService.getconfig().getBoolean("levelUpAlert")) {
+            if (configService.getConfig().getBoolean("levelUpAlert")) {
                 player.sendMessage(messageService
                         .convert(messageService.getlang().getString("LevelUp")
                                 .replaceAll("%skill%", skill.getName())

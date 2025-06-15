@@ -49,7 +49,7 @@ public class ChanceCalculator {
     public boolean roll(PlayerRecord playerRecord, AbstractSkill skill, double nerfFactor) {
         final Random random = new Random();
         double skillLevel = playerRecord.getSkillLevel(skill.getId(), true);
-        double maxLevel = configService.getconfig().getInt("defaultMaxLevel");
+        double maxLevel = configService.getConfig().getInt("defaultMaxLevel");
         double chance = skillLevel / maxLevel;
         double result = random.nextDouble() * maxLevel;
         double threshold = maxLevel * chance * nerfFactor;

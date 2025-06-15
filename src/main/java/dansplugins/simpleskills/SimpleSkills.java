@@ -27,7 +27,6 @@ import preponderous.ponder.minecraft.bukkit.nms.NMSAssistant;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.logging.Level;
 
 /**
  * @author Daniel Stephenson
@@ -55,11 +54,11 @@ public class SimpleSkills extends PonderBukkitPlugin {
         this.ponder = new PonderMC(this);
         performNMSChecks();
         setTabCompleterForCoreCommands();
-        configService.createconfig();
+        configService.createConfig();
         setupMetrics();
-        getLogger().log(Level.INFO, "Loading files.");
+        log.info("Loading files.");
         storageService.load();
-        getLogger().log(Level.INFO, "Creating language files.");
+        log.info("Creating language files.");
         messageService.createlang();
         initializeSkills();
         registerEventListeners();
@@ -72,12 +71,12 @@ public class SimpleSkills extends PonderBukkitPlugin {
      */
     @Override
     public void onDisable() {
-        getLogger().log(Level.INFO, "Saving files.");
+        log.info("Saving files.");
         storageService.save();
-        getLogger().log(Level.INFO, "Saving language files.");
+        log.info("Saving language files.");
         messageService.savelang();
-        getLogger().log(Level.INFO, "Saving config files.");
-        configService.saveconfig();
+        log.info("Saving config files.");
+        configService.saveConfig();
     }
 
     /**
@@ -103,16 +102,16 @@ public class SimpleSkills extends PonderBukkitPlugin {
     }
 
     public boolean isDebugEnabled() {
-        return configService.getconfig().getBoolean("debugMode");
+        return configService.getConfig().getBoolean("debugMode");
     }
 
     private void checkFilesVersion() {
-        getLogger().log(Level.INFO, "Checking config and message files for version compatibility.");
+        log.error("Checking config and message files for version compatibility.");
         if (messageService.getlang().getDouble("message-version") != 0.2) {
-            getLogger().log( Level.SEVERE, "Outdated message.yml! Please backup & update message.yml file and restart server again!!");
+            log.error("Outdated message.yml! Please backup & update message.yml file and restart server again!!");
         }
-        if (configService.getconfig().getDouble("config-version") != 0.1) {
-            getLogger().log( Level.SEVERE, "Outdated config.yml! Please backup & update config.yml file and restart server again!!");
+        if (configService.getConfig().getDouble("config-version") != 0.1) {
+            log.error("Outdated config.yml! Please backup & update config.yml file and restart server again!!");
         }
     }
 
@@ -120,30 +119,30 @@ public class SimpleSkills extends PonderBukkitPlugin {
         try {
             final NMSAssistant nmsAssistant = new NMSAssistant();
             if (nmsAssistant.isVersionGreaterThan(12)) {
-                getLogger().log(Level.INFO, "Loading data For " + nmsAssistant.getNMSVersion().toString());
+                log.info("Loading data For " + nmsAssistant.getNMSVersion().toString());
             } else {
-                getLogger().warning("The server version is not suitable to load the plugin");
-                getLogger().warning("This plugin is tested on a 1.21.4 server.");
+                log.warning("The server version is not suitable to load the plugin");
+                log.warning("This plugin is tested on a 1.21.4 server.");
                 Bukkit.getServer().getPluginManager().disablePlugin(this);
             }
         } catch(NumberFormatException e) {
-            getLogger().warning("Failed to determine NMS version due to NumberFormatException. Some features may not work correctly.");
+            log.warning("Failed to determine NMS version due to NumberFormatException. Some features may not work correctly.");
         } catch (Exception e) {
-            getLogger().warning("Failed to determine NMS version due to an exception. Some features may not work correctly. Error: " + e.getMessage());
+            log.warning("Failed to determine NMS version due to an exception. Some features may not work correctly. Error: " + e.getMessage());
         }
     }
 
     private void setupMetrics() {
-        getLogger().log(Level.INFO, "Setting up bStats metrics for SimpleSkills.");
+        log.info("Setting up bStats metrics for SimpleSkills.");
         int pluginId = 13470;
         Metrics metrics = new Metrics(this, pluginId);
 
-        double configVersion = configService.getconfig().getDouble("config-version");
-        int defaultMaxLevel = configService.getconfig().getInt("defaultMaxLevel");
-        int defaultBaseExperienceRequirement = configService.getconfig().getInt("defaultBaseExperienceRequirement");
-        double defaultExperienceIncreaseFactor = configService.getconfig().getDouble("defaultExperienceIncreaseFactor");
-        boolean levelUpAlert = configService.getconfig().getBoolean("levelUpAlert");
-        boolean benefitAlert = configService.getconfig().getBoolean("benefitAlert");
+        double configVersion = configService.getConfig().getDouble("config-version");
+        int defaultMaxLevel = configService.getConfig().getInt("defaultMaxLevel");
+        int defaultBaseExperienceRequirement = configService.getConfig().getInt("defaultBaseExperienceRequirement");
+        double defaultExperienceIncreaseFactor = configService.getConfig().getDouble("defaultExperienceIncreaseFactor");
+        boolean levelUpAlert = configService.getConfig().getBoolean("levelUpAlert");
+        boolean benefitAlert = configService.getConfig().getBoolean("benefitAlert");
 
         metrics.addCustomChart(new Metrics.SimplePie("config_version", () -> String.valueOf(configVersion)));
         metrics.addCustomChart(new Metrics.SimplePie("default_max_level", () -> String.valueOf(defaultMaxLevel)));
@@ -155,7 +154,7 @@ public class SimpleSkills extends PonderBukkitPlugin {
 
 
     private void setTabCompleterForCoreCommands() {
-        getLogger().log(Level.INFO, "Setting up tab completers for core commands.");
+        log.info("Setting up tab completers for core commands.");
         for (String key : getDescription().getCommands().keySet()) {
             PluginCommand command = getCommand(key);
             if (command == null) {
@@ -166,9 +165,9 @@ public class SimpleSkills extends PonderBukkitPlugin {
     }
 
     private void registerEventListeners() {
-        getLogger().log(Level.INFO, "Registering events...");
+        log.info("Registering events...");
         for (AbstractSkill skill : skillRepository.getSkills()) {
-            getLogger().log(Level.INFO, "Registering events for skill: " + skill.getName());
+            log.info("Registering events for skill: " + skill.getName());
             skill.register();
         }
 
@@ -176,7 +175,7 @@ public class SimpleSkills extends PonderBukkitPlugin {
     }
 
     private void initializeCommandService() {
-        getLogger().log(Level.INFO, "Initializing command service...");
+        log.info("Initializing command service...");
         ArrayList<AbstractPluginCommand> commands = new ArrayList<>(Arrays.asList(
                 new HelpCommand(messageService),
                 new InfoCommand(playerRecordRepository, messageService, skillRepository, configService, experienceCalculator, log),
@@ -190,7 +189,7 @@ public class SimpleSkills extends PonderBukkitPlugin {
     }
 
     private void initializeSkills() {
-        getLogger().log(Level.INFO, "Initializing skills...");
+        log.info("Initializing skills...");
         skillRepository.addSkill(new Athlete(configService, log, playerRecordRepository, this, messageService, chanceCalculator));
         skillRepository.addSkill(new Boating(configService, log, playerRecordRepository, this, messageService, chanceCalculator));
         skillRepository.addSkill(new Breeding(configService, log, playerRecordRepository, this, messageService, chanceCalculator));

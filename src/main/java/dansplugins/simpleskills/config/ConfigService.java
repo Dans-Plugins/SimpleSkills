@@ -8,6 +8,7 @@ package dansplugins.simpleskills.config;
  */
 
 import dansplugins.simpleskills.SimpleSkills;
+import dansplugins.simpleskills.logging.Log;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -25,13 +26,15 @@ public class ConfigService {
     private final boolean altered = false;
     private File configFile;
     private FileConfiguration config;
+    private final Log log;
 
-    public ConfigService(SimpleSkills simpleSkills) {
+    public ConfigService(SimpleSkills simpleSkills, Log log) {
         this.simpleSkills = simpleSkills;
+        this.log = log;
     }
 
-    public void createconfig() {
-        simpleSkills.getLogger().log(Level.INFO, "Creating config.yml file...");
+    public void createConfig() {
+        log.info("Creating config.yml file...");
         configFile = new File(simpleSkills.getDataFolder(), "config.yml");
 
         if (!configFile.exists()) simpleSkills.saveResource("config.yml", false);
@@ -40,20 +43,19 @@ public class ConfigService {
         try {
             config.load(configFile);
         } catch (IOException | InvalidConfigurationException e) {
-            e.printStackTrace();
+            log.error("Failed to load config.yml file.");
         }
     }
 
-    public FileConfiguration getconfig() {
+    public FileConfiguration getConfig() {
         return config;
     }
 
-
-    public void reloadconfig() {
+    public void reloadConfig() {
         config = YamlConfiguration.loadConfiguration(configFile);
     }
 
-    public void saveconfig() {
+    public void saveConfig() {
         try {
             config.save(configFile);
         } catch (IOException ignored) {

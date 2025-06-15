@@ -25,7 +25,7 @@ public class ReloadCommand extends AbstractPluginCommand {
     @Override
     public boolean execute(CommandSender commandSender) {
         messageService.reloadlang();
-        configService.reloadconfig();
+        configService.reloadConfig();
         commandSender.sendMessage(ChatColor.GREEN + "Reloaded");
         return true;
     }

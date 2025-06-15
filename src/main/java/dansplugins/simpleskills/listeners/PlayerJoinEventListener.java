@@ -20,11 +20,11 @@ public PlayerJoinEventListener(@NotNull PlayerRecordRepository playerRecordRepos
     @EventHandler
     public void onPlayerJoin(@NotNull org.bukkit.event.player.PlayerJoinEvent event) {
         if (playerRecordRepository.getPlayerRecord(event.getPlayer().getUniqueId()) == null) {
-            log.getLogger().log(Level.INFO, "No player record found for " + event.getPlayer().getName() + ". Creating a new one.");
+            log.info("No player record found for " + event.getPlayer().getName() + ". Creating a new one.");
             boolean success = playerRecordRepository.createPlayerRecord(event.getPlayer().getUniqueId());
             if (!success) {
-                event.getPlayer().sendMessage("Error creating player record. Please try again later.");
-                log.info("Error creating player record for " + event.getPlayer().getName() + ". Please check the logs for more details.");
+                log.error("Failed to create player record for " + event.getPlayer().getName() + ". Please check the database connection.");
+                event.getPlayer().sendMessage("Error creating SimpleSkills player record. Please try again later.");
             }
         }
     }

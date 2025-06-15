@@ -2,10 +2,6 @@ package dansplugins.simpleskills.logging;
 
 import dansplugins.simpleskills.SimpleSkills;
 
-import java.util.logging.Level;
-
-import static java.util.logging.Level.INFO;
-
 /**
  * @author Daniel Stephenson
  */
@@ -18,11 +14,23 @@ public class Log {
 
     public void info(String message) {
         if (simpleSkills.isDebugEnabled()) {
-            getLogger().info(message);
+            getPluginLoggerFromSpigot().info(message);
         }
     }
 
-    public java.util.logging.Logger getLogger() {
+    public void warning(String message) {
+        if (simpleSkills.isDebugEnabled()) {
+            getPluginLoggerFromSpigot().warning(message);
+        }
+    }
+
+    public void error(String message) {
+        if (simpleSkills.isDebugEnabled()) {
+            getPluginLoggerFromSpigot().severe(message);
+        }
+    }
+
+    private java.util.logging.Logger getPluginLoggerFromSpigot() {
         return simpleSkills.getLogger();
     }
 
