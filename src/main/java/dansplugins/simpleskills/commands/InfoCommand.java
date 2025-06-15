@@ -25,7 +25,7 @@ public class InfoCommand extends AbstractPluginCommand {
     private final SkillRepository skillRepository;
     private final ConfigService configService;
     private final ExperienceCalculator experienceCalculator;
-    Log log;
+    private final Log log;
 
     public InfoCommand(PlayerRecordRepository playerRecordRepository, MessageService messageService, SkillRepository skillRepository, ConfigService configService, ExperienceCalculator experienceCalculator, Log log) {
         super(
@@ -37,6 +37,7 @@ public class InfoCommand extends AbstractPluginCommand {
         this.skillRepository = skillRepository;
         this.configService = configService;
         this.experienceCalculator = experienceCalculator;
+        this.log = log;
     }
 
     @Override
