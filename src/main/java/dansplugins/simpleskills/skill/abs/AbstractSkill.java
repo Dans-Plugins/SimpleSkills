@@ -83,8 +83,8 @@ public abstract class AbstractSkill implements Listener {
         if (triggers.length == 0) throw new IllegalArgumentException("Skill cannot have zero triggers.");
         this.name = name;
         this.active = true;
-        this.expReq = this.configService.getconfig().getInt("defaultBaseExperienceRequirement", 10);
-        this.expFactor = this.configService.getconfig().getDouble("defaultDefaultExperienceIncreaseFactor", 1.2);
+        this.expReq = this.configService.getConfig().getInt("defaultBaseExperienceRequirement", 10);
+        this.expFactor = this.configService.getConfig().getDouble("defaultDefaultExperienceIncreaseFactor", 1.2);
         setupTriggers(triggers);
     }
 
@@ -191,7 +191,7 @@ public abstract class AbstractSkill implements Listener {
         }
         final PlayerRecord playerRecord = getRecord(player);
         if (playerRecord == null) {
-            log.info("A player record wasn't found for " + player.getName() + ".");
+            log.error("A player record wasn't found for " + player.getName() + " while attempting to increment experience.");
             return;
         }
         final int skillId = getId();
@@ -215,14 +215,14 @@ public abstract class AbstractSkill implements Listener {
      * </p>
      */
     public void register() {
-        log.info("Registering skill: " + getName());
+        log.debug("Registering skill: " + getName());
         final EventExecutor executor = (listener, event) -> handle(event);
         for (Triggers value : Triggers.values()) {
-            log.info("Registering trigger " + value.name());
+            log.debug("Registering trigger " + value.name());
             Bukkit.getPluginManager().registerEvent(
                     value.getTriggerClass(), this, EventPriority.MONITOR, executor, simpleSkills
             );
-            log.info("Registered trigger " + value.name() + " for skill " + getName());
+            log.debug("Registered trigger " + value.name() + " for skill " + getName());
         }
     }
 
