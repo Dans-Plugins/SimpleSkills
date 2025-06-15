@@ -7,7 +7,7 @@ import dansplugins.simpleskills.config.ConfigService;
 import dansplugins.simpleskills.message.MessageService;
 import dansplugins.simpleskills.skill.abs.AbstractMovementSkill;
 import dansplugins.simpleskills.chance.ChanceCalculator;
-import dansplugins.simpleskills.logging.Logger;
+import dansplugins.simpleskills.logging.Log;
 import org.bukkit.Sound;
 import org.bukkit.entity.Boat;
 import org.bukkit.entity.Player;
@@ -26,8 +26,8 @@ public class Boating extends AbstractMovementSkill {
      * The Boating skill is obtained by boating around in a ..... boat!!!!
      * @param chanceCalculator
      */
-    public Boating(ConfigService configService, Logger logger, PlayerRecordRepository playerRecordRepository, SimpleSkills simpleSkills, MessageService messageService, ChanceCalculator chanceCalculator) {
-        super(configService, logger, playerRecordRepository, simpleSkills, messageService, "Boating");
+    public Boating(ConfigService configService, Log log, PlayerRecordRepository playerRecordRepository, SimpleSkills simpleSkills, MessageService messageService, ChanceCalculator chanceCalculator) {
+        super(configService, log, playerRecordRepository, simpleSkills, messageService, "Boating");
         this.chanceCalculator = chanceCalculator;
     }
 

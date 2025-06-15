@@ -9,7 +9,7 @@ import dansplugins.simpleskills.config.ConfigService;
 import dansplugins.simpleskills.message.MessageService;
 import dansplugins.simpleskills.skill.abs.AbstractMovementSkill;
 import dansplugins.simpleskills.chance.ChanceCalculator;
-import dansplugins.simpleskills.logging.Logger;
+import dansplugins.simpleskills.logging.Log;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
 import org.bukkit.Sound;
@@ -31,8 +31,8 @@ public class Gliding extends AbstractMovementSkill {
     /**
      * The Gliding skill is levelled by gliding with an elytra.
      */
-    public Gliding(ConfigService configService, Logger logger, PlayerRecordRepository playerRecordRepository, SimpleSkills simpleSkills, MessageService messageService, ChanceCalculator chanceCalculator) {
-        super(configService, logger, playerRecordRepository, simpleSkills, messageService, "Gliding");
+    public Gliding(ConfigService configService, Log log, PlayerRecordRepository playerRecordRepository, SimpleSkills simpleSkills, MessageService messageService, ChanceCalculator chanceCalculator) {
+        super(configService, log, playerRecordRepository, simpleSkills, messageService, "Gliding");
         this.chanceCalculator = chanceCalculator;
     }
 

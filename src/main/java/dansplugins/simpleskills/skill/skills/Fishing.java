@@ -9,7 +9,7 @@ import dansplugins.simpleskills.config.ConfigService;
 import dansplugins.simpleskills.message.MessageService;
 import dansplugins.simpleskills.skill.abs.AbstractSkill;
 import dansplugins.simpleskills.chance.ChanceCalculator;
-import dansplugins.simpleskills.logging.Logger;
+import dansplugins.simpleskills.logging.Log;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.Sound;
 import org.bukkit.entity.Entity;
@@ -32,8 +32,8 @@ public class Fishing extends AbstractSkill {
     /**
      * The Fishing skill is levelled through fishing up fishies and goodies.
      */
-    public Fishing(ConfigService configService, Logger logger, PlayerRecordRepository playerRecordRepository, SimpleSkills simpleSkills, MessageService messageService, ChanceCalculator chanceCalculator) {
-        super(configService, logger, playerRecordRepository, simpleSkills, messageService, "Fishing", PlayerFishEvent.class);
+    public Fishing(ConfigService configService, Log log, PlayerRecordRepository playerRecordRepository, SimpleSkills simpleSkills, MessageService messageService, ChanceCalculator chanceCalculator) {
+        super(configService, log, playerRecordRepository, simpleSkills, messageService, "Fishing", PlayerFishEvent.class);
         this.chanceCalculator = chanceCalculator;
     }
 

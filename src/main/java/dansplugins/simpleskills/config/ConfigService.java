@@ -14,6 +14,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.logging.Level;
 
 /**
  * @author Daniel Stephenson
@@ -30,6 +31,7 @@ public class ConfigService {
     }
 
     public void createconfig() {
+        simpleSkills.getLogger().log(Level.INFO, "Creating config.yml file...");
         configFile = new File(simpleSkills.getDataFolder(), "config.yml");
 
         if (!configFile.exists()) simpleSkills.saveResource("config.yml", false);

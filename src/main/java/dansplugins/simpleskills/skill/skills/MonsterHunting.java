@@ -7,7 +7,7 @@ import dansplugins.simpleskills.config.ConfigService;
 import dansplugins.simpleskills.message.MessageService;
 import dansplugins.simpleskills.skill.abs.AbstractSkill;
 import dansplugins.simpleskills.chance.ChanceCalculator;
-import dansplugins.simpleskills.logging.Logger;
+import dansplugins.simpleskills.logging.Log;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.Color;
 import org.bukkit.Location;
@@ -35,8 +35,8 @@ public class MonsterHunting extends AbstractSkill {
     /**
      * The Monster Hunting skill is levelled by killing Monsters.
      */
-    public MonsterHunting(ConfigService configService, Logger logger, PlayerRecordRepository playerRecordRepository, SimpleSkills simpleSkills, MessageService messageService, ChanceCalculator chanceCalculator) {
-        super(configService, logger, playerRecordRepository, simpleSkills, messageService, "Monster Hunting", EntityDeathEvent.class);
+    public MonsterHunting(ConfigService configService, Log log, PlayerRecordRepository playerRecordRepository, SimpleSkills simpleSkills, MessageService messageService, ChanceCalculator chanceCalculator) {
+        super(configService, log, playerRecordRepository, simpleSkills, messageService, "Monster Hunting", EntityDeathEvent.class);
         this.chanceCalculator = chanceCalculator;
     }
 

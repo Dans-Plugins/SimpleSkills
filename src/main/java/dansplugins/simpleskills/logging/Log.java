@@ -4,20 +4,26 @@ import dansplugins.simpleskills.SimpleSkills;
 
 import java.util.logging.Level;
 
+import static java.util.logging.Level.INFO;
+
 /**
  * @author Daniel Stephenson
  */
-public class Logger {
+public class Log {
     private final SimpleSkills simpleSkills;
 
-    public Logger(SimpleSkills simpleSkills) {
+    public Log(SimpleSkills simpleSkills) {
         this.simpleSkills = simpleSkills;
     }
 
-    public void log(String message) {
+    public void info(String message) {
         if (simpleSkills.isDebugEnabled()) {
-            simpleSkills.getLogger().log(Level.INFO, message);
+            getLogger().info(message);
         }
+    }
+
+    public java.util.logging.Logger getLogger() {
+        return simpleSkills.getLogger();
     }
 
 }
