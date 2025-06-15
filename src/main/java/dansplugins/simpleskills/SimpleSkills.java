@@ -37,7 +37,7 @@ public class SimpleSkills extends PonderBukkitPlugin {
 
     private final Log log = new Log(this);
     private final MessageService messageService = new MessageService(this);
-    private final ConfigService configService = new ConfigService(this);
+    private final ConfigService configService = new ConfigService(this, log);
     private final ExperienceCalculator experienceCalculator = new ExperienceCalculator();
     private final SkillRepository skillRepository = new SkillRepository();
     private final PlayerRecordRepository playerRecordRepository = new PlayerRecordRepository(log, messageService, skillRepository, configService, experienceCalculator);
