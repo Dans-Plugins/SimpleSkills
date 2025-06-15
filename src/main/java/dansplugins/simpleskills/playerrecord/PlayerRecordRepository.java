@@ -22,11 +22,14 @@ public class PlayerRecordRepository {
     }
 
     public PlayerRecord getPlayerRecord(UUID playerUUID) {
+        System.out.println("Searching for player record with UUID: " + playerUUID);
         for (PlayerRecord record : playerRecords) {
             if (record.getPlayerUUID().equals(playerUUID)) {
+                System.out.println("Found player record for UUID: " + playerUUID);
                 return record;
             }
         }
+        System.out.println("No player record found for UUID: " + playerUUID);
         return null;
     }
 
