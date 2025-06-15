@@ -127,13 +127,17 @@ public class SimpleSkills extends PonderBukkitPlugin implements Listener {
     }
 
     private void performNMSChecks() {
-        final NMSAssistant nmsAssistant = new NMSAssistant();
-        if (nmsAssistant.isVersionGreaterThan(12)) {
-            getLogger().log(Level.INFO, "Loading data For " + nmsAssistant.getNMSVersion().toString());
-        } else {
-            getLogger().warning("The server version is not suitable to load the plugin");
-            getLogger().warning("This plugin is tested on a 1.21.4 server.");
-            Bukkit.getServer().getPluginManager().disablePlugin(this);
+        try {
+            final NMSAssistant nmsAssistant = new NMSAssistant();
+            if (nmsAssistant.isVersionGreaterThan(12)) {
+                getLogger().log(Level.INFO, "Loading data For " + nmsAssistant.getNMSVersion().toString());
+            } else {
+                getLogger().warning("The server version is not suitable to load the plugin");
+                getLogger().warning("This plugin is tested on a 1.21.4 server.");
+                Bukkit.getServer().getPluginManager().disablePlugin(this);
+            }
+        } catch(NumberFormatException e) {
+            getLogger().log(Level.SEVERE, "Failed to determine NMS version. Some features may not work correctly.", e);
         }
     }
 
