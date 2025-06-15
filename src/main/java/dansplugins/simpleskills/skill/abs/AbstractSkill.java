@@ -215,11 +215,14 @@ public abstract class AbstractSkill implements Listener {
      * </p>
      */
     public void register() {
+        System.out.println("Registering skill: " + getName());
         final EventExecutor executor = (listener, event) -> handle(event);
         for (Triggers value : Triggers.values()) {
+            System.out.println("Registering trigger " + value.name());
             Bukkit.getPluginManager().registerEvent(
                     value.getTriggerClass(), this, EventPriority.MONITOR, executor, simpleSkills
             );
+            System.out.println("Registered trigger " + value.name() + " for skill " + getName());
         }
     }
 
