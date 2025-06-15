@@ -191,7 +191,7 @@ public abstract class AbstractSkill implements Listener {
         }
         final PlayerRecord playerRecord = getRecord(player);
         if (playerRecord == null) {
-            log.info("A player record wasn't found for " + player.getName() + ".");
+            log.debug("A player record wasn't found for " + player.getName() + ".");
             return;
         }
         final int skillId = getId();
@@ -215,14 +215,14 @@ public abstract class AbstractSkill implements Listener {
      * </p>
      */
     public void register() {
-        log.info("Registering skill: " + getName());
+        log.debug("Registering skill: " + getName());
         final EventExecutor executor = (listener, event) -> handle(event);
         for (Triggers value : Triggers.values()) {
-            log.info("Registering trigger " + value.name());
+            log.debug("Registering trigger " + value.name());
             Bukkit.getPluginManager().registerEvent(
                     value.getTriggerClass(), this, EventPriority.MONITOR, executor, simpleSkills
             );
-            log.info("Registered trigger " + value.name() + " for skill " + getName());
+            log.debug("Registered trigger " + value.name() + " for skill " + getName());
         }
     }
 

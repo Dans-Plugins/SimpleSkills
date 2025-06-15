@@ -42,11 +42,11 @@ public abstract class AbstractBlockSkill extends AbstractSkill {
      * @param event to handle.
      */
     public void handle(@NotNull BlockBreakEvent event) {
-        log.info("Handling BlockBreakEvent for " + event.getBlock().getType());
+        log.debug("Handling BlockBreakEvent for " + event.getBlock().getType());
         if (!event.getPlayer().getGameMode().equals(GameMode.SURVIVAL)) return;
-        log.info("Player is in survival mode.");
+        log.debug("Player is in survival mode.");
         if (isItemRequired()) {
-            log.info("Item is required for this skill.");
+            log.debug("Item is required for this skill.");
             if (!isRequiredItem(event.getPlayer().getInventory().getItemInMainHand(),
                     event.getBlock(), event.getClass().getSimpleName().toLowerCase())) return;
         }
@@ -54,13 +54,13 @@ public abstract class AbstractBlockSkill extends AbstractSkill {
                 getBlockSkillType() != BlockSkillType.BREAK_OR_PLACE &&
                 getBlockSkillType() != BlockSkillType.LEFT_OR_BREAK_OR_PLACE &&
                 getBlockSkillType() != BlockSkillType.RIGHT_OR_BREAK_OR_PLACE) return;
-        log.info("Block skill type is valid for this event.");
+        log.debug("Block skill type is valid for this event.");
         if (!isValidMaterial(event.getBlock().getType())) return;
-        log.info("Block material is valid for this skill.");
+        log.debug("Block material is valid for this skill.");
         incrementExperience(event.getPlayer());
-        log.info("Incremented experience for player: " + event.getPlayer().getName());
+        log.debug("Incremented experience for player: " + event.getPlayer().getName());
         executeReward(event.getPlayer(), event.getBlock(), event);
-        log.info("Executed reward for player: " + event.getPlayer().getName());
+        log.debug("Executed reward for player: " + event.getPlayer().getName());
     }
 
     /**

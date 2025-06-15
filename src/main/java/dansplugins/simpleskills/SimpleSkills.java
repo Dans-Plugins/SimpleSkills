@@ -35,9 +35,9 @@ public class SimpleSkills extends PonderBukkitPlugin {
     private final String pluginVersion = "v" + getDescription().getVersion();
     private PonderMC ponder;
 
-    private final Log log = new Log(this);
+    private final ConfigService configService = new ConfigService(this);
+    private final Log log = new Log(this, configService);
     private final MessageService messageService = new MessageService(this);
-    private final ConfigService configService = new ConfigService(this, log);
     private final ExperienceCalculator experienceCalculator = new ExperienceCalculator();
     private final SkillRepository skillRepository = new SkillRepository();
     private final PlayerRecordRepository playerRecordRepository = new PlayerRecordRepository(log, messageService, skillRepository, configService, experienceCalculator);
@@ -56,9 +56,9 @@ public class SimpleSkills extends PonderBukkitPlugin {
         setTabCompleterForCoreCommands();
         configService.createConfig();
         setupMetrics();
-        log.info("Loading files.");
+        log.debug("Loading files.");
         storageService.load();
-        log.info("Creating language files.");
+        log.debug("Creating language files.");
         messageService.createlang();
         initializeSkills();
         registerEventListeners();
@@ -71,11 +71,11 @@ public class SimpleSkills extends PonderBukkitPlugin {
      */
     @Override
     public void onDisable() {
-        log.info("Saving files.");
+        log.debug("Saving files.");
         storageService.save();
-        log.info("Saving language files.");
+        log.debug("Saving language files.");
         messageService.savelang();
-        log.info("Saving config files.");
+        log.debug("Saving config files.");
         configService.saveConfig();
     }
 
@@ -101,10 +101,6 @@ public class SimpleSkills extends PonderBukkitPlugin {
         return pluginVersion;
     }
 
-    public boolean isDebugEnabled() {
-        return configService.getConfig().getBoolean("debugMode");
-    }
-
     private void checkFilesVersion() {
         log.error("Checking config and message files for version compatibility.");
         if (messageService.getlang().getDouble("message-version") != 0.2) {
@@ -119,7 +115,7 @@ public class SimpleSkills extends PonderBukkitPlugin {
         try {
             final NMSAssistant nmsAssistant = new NMSAssistant();
             if (nmsAssistant.isVersionGreaterThan(12)) {
-                log.info("Loading data For " + nmsAssistant.getNMSVersion().toString());
+                log.debug("Loading data For " + nmsAssistant.getNMSVersion().toString());
             } else {
                 log.warning("The server version is not suitable to load the plugin");
                 log.warning("This plugin is tested on a 1.21.4 server.");
@@ -133,7 +129,7 @@ public class SimpleSkills extends PonderBukkitPlugin {
     }
 
     private void setupMetrics() {
-        log.info("Setting up bStats metrics for SimpleSkills.");
+        log.debug("Setting up bStats metrics for SimpleSkills.");
         int pluginId = 13470;
         Metrics metrics = new Metrics(this, pluginId);
 
@@ -154,7 +150,7 @@ public class SimpleSkills extends PonderBukkitPlugin {
 
 
     private void setTabCompleterForCoreCommands() {
-        log.info("Setting up tab completers for core commands.");
+        log.debug("Setting up tab completers for core commands.");
         for (String key : getDescription().getCommands().keySet()) {
             PluginCommand command = getCommand(key);
             if (command == null) {
@@ -165,9 +161,9 @@ public class SimpleSkills extends PonderBukkitPlugin {
     }
 
     private void registerEventListeners() {
-        log.info("Registering events...");
+        log.debug("Registering events...");
         for (AbstractSkill skill : skillRepository.getSkills()) {
-            log.info("Registering events for skill: " + skill.getName());
+            log.debug("Registering events for skill: " + skill.getName());
             skill.register();
         }
 
@@ -175,7 +171,7 @@ public class SimpleSkills extends PonderBukkitPlugin {
     }
 
     private void initializeCommandService() {
-        log.info("Initializing command service...");
+        log.debug("Initializing command service...");
         ArrayList<AbstractPluginCommand> commands = new ArrayList<>(Arrays.asList(
                 new HelpCommand(messageService),
                 new InfoCommand(playerRecordRepository, messageService, skillRepository, configService, experienceCalculator, log),
@@ -189,7 +185,7 @@ public class SimpleSkills extends PonderBukkitPlugin {
     }
 
     private void initializeSkills() {
-        log.info("Initializing skills...");
+        log.debug("Initializing skills...");
         skillRepository.addSkill(new Athlete(configService, log, playerRecordRepository, this, messageService, chanceCalculator));
         skillRepository.addSkill(new Boating(configService, log, playerRecordRepository, this, messageService, chanceCalculator));
         skillRepository.addSkill(new Breeding(configService, log, playerRecordRepository, this, messageService, chanceCalculator));
