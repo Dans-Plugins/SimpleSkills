@@ -3,6 +3,7 @@ package dansplugins.simpleskills;
 import dansplugins.simpleskills.bstats.Metrics;
 import dansplugins.simpleskills.commands.*;
 import dansplugins.simpleskills.commands.tab.TabCommand;
+import dansplugins.simpleskills.listeners.PlayerJoinEventListener;
 import dansplugins.simpleskills.playerrecord.PlayerRecordRepository;
 import dansplugins.simpleskills.config.ConfigService;
 import dansplugins.simpleskills.message.MessageService;
@@ -18,8 +19,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.jetbrains.annotations.NotNull;
 import preponderous.ponder.minecraft.bukkit.PonderMC;
 import preponderous.ponder.minecraft.bukkit.abs.AbstractPluginCommand;
@@ -33,7 +32,7 @@ import java.util.logging.Level;
 /**
  * @author Daniel Stephenson
  */
-public class SimpleSkills extends PonderBukkitPlugin implements Listener {
+public class SimpleSkills extends PonderBukkitPlugin {
     private final String pluginVersion = "v" + getDescription().getVersion();
     private PonderMC ponder;
 
@@ -45,6 +44,7 @@ public class SimpleSkills extends PonderBukkitPlugin implements Listener {
     private final PlayerRecordRepository playerRecordRepository = new PlayerRecordRepository(log, messageService, skillRepository, configService, experienceCalculator);
     private final StorageService storageService = new StorageService(playerRecordRepository, skillRepository, messageService, configService, experienceCalculator, log);
     private final ChanceCalculator chanceCalculator = new ChanceCalculator(playerRecordRepository, configService, skillRepository, messageService, experienceCalculator, log);
+    private final PlayerJoinEventListener playerJoinEventListener = new PlayerJoinEventListener(playerRecordRepository, log);
 
 
     /**
@@ -98,20 +98,10 @@ public class SimpleSkills extends PonderBukkitPlugin implements Listener {
         return ponder.getCommandService().interpretAndExecuteCommand(sender, label, args);
     }
 
-    /**
-     * This can be used to get the version of the plugin.
-     *
-     * @return A string containing the version preceded by 'v'
-     */
     public String getVersion() {
         return pluginVersion;
     }
 
-    /**
-     * Checks if debug is enabled.
-     *
-     * @return Whether debug is enabled.
-     */
     public boolean isDebugEnabled() {
         return configService.getconfig().getBoolean("debugMode");
     }
@@ -182,7 +172,7 @@ public class SimpleSkills extends PonderBukkitPlugin implements Listener {
             skill.register();
         }
 
-        Bukkit.getPluginManager().registerEvents(this, this);
+        Bukkit.getPluginManager().registerEvents(playerJoinEventListener, this);
     }
 
     private void initializeCommandService() {
@@ -221,18 +211,6 @@ public class SimpleSkills extends PonderBukkitPlugin implements Listener {
         skillRepository.addSkill(new Quarrying(configService, log, playerRecordRepository, this, messageService, chanceCalculator));
         skillRepository.addSkill(new Riding(configService, log, playerRecordRepository, this, messageService, chanceCalculator));
         skillRepository.addSkill(new Strength(configService, log, playerRecordRepository, this, messageService, chanceCalculator));
-    }
-
-    @EventHandler
-    public void onPlayerJoin(@NotNull org.bukkit.event.player.PlayerJoinEvent event) {
-        if (playerRecordRepository.getPlayerRecord(event.getPlayer().getUniqueId()) == null) {
-            getLogger().log(Level.INFO, "No player record found for " + event.getPlayer().getName() + ". Creating a new one.");
-            boolean success = playerRecordRepository.createPlayerRecord(event.getPlayer().getUniqueId());
-            if (!success) {
-                event.getPlayer().sendMessage("Error creating player record. Please try again later.");
-                log.info("Error creating player record for " + event.getPlayer().getName() + ". Please check the logs for more details.");
-            }
-        }
     }
 
 }
