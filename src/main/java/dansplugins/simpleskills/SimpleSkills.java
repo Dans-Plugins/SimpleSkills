@@ -102,7 +102,7 @@ public class SimpleSkills extends PonderBukkitPlugin {
     }
 
     private void checkFilesVersion() {
-        log.error("Checking config and message files for version compatibility.");
+        log.debug("Checking config and message files for version compatibility.");
         if (messageService.getlang().getDouble("message-version") != 0.2) {
             log.error("Outdated message.yml! Please backup & update message.yml file and restart server again!!");
         }

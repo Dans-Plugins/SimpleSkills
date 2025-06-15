@@ -52,7 +52,7 @@ public class PlayerRecordRepository {
                 return record;
             }
         }
-        log.warning("No player record found for UUID: " + playerUUID);
+        log.debug("No player record found for UUID: " + playerUUID);
         return null;
     }
 
