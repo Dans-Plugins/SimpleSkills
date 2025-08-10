@@ -40,16 +40,13 @@ Please fill out a bug report [here](https://github.com/dmccoystephenson/SimpleSk
 | Callum            | Massively improved the plugin in many ways |
 | Deej              | Renamed a skill.                           |
 
-## License
-This project is licensed under the **Dan’s Plugins Community Non-Commercial License (DPC-NC)**,  
-based on the GNU General Public License, Version 3 (GPLv3), with additional terms restricting commercial use.  
-© 2025 Daniel McCoy Stephenson. All rights reserved.  
+## 📄 License
 
-You may use, modify, and share this software for **non-commercial purposes only**.  
-Commercial use is prohibited without explicit written permission from the copyright holder.  
+This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
 
-Full license text: [DPC-NC License](https://github.com/Dans-Plugins/dpc-nc-license)  
-SPDX Identifier: `DPC-NC`
+**Why MIT?**  
+The MIT License is short, permissive, and widely understood. It allows anyone to use, modify, distribute, and even commercially exploit the software with minimal restrictions, as long as they include the original license and copyright notice.  
+We chose MIT to **maximize adoption and flexibility**, making it easy for individuals and organizations to integrate this project into their own work without legal complexity.
 
 ## Project Status
 This project is in active development.
