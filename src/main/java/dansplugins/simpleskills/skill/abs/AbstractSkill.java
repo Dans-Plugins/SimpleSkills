@@ -82,7 +82,8 @@ public abstract class AbstractSkill implements Listener {
         if (name.isEmpty()) throw new IllegalArgumentException("Skill requires a name.");
         if (triggers.length == 0) throw new IllegalArgumentException("Skill cannot have zero triggers.");
         this.name = name;
-        this.active = true;
+        // Read activation state from config, default to true for backward compatibility
+        this.active = this.configService.getConfig().getBoolean("skills." + name + ".active", true);
         this.expReq = this.configService.getConfig().getInt("defaultBaseExperienceRequirement", 10);
         this.expFactor = this.configService.getConfig().getDouble("defaultDefaultExperienceIncreaseFactor", 1.2);
         setupTriggers(triggers);

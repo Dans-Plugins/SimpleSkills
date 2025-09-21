@@ -51,4 +51,14 @@ public class ConfigService {
         }
     }
 
+    /**
+     * Set skill activation state in config and save
+     * @param skillName name of the skill
+     * @param active activation state
+     */
+    public void setSkillActive(String skillName, boolean active) {
+        config.set("skills." + skillName + ".active", active);
+        saveConfig();
+    }
+
 }
