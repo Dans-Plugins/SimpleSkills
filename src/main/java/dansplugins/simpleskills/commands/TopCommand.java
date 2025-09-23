@@ -57,7 +57,7 @@ public class TopCommand extends AbstractPluginCommand {
     @Override
     public boolean execute(CommandSender commandSender, String[] args) {
         String skillName = String.join(" ", args);
-        AbstractSkill skill = skillRepository.getSkill(skillName);
+        AbstractSkill skill = skillRepository.getActiveSkill(skillName);
         if (skill == null) {
             commandSender.sendMessage(messageService
                     .convert(Objects.requireNonNull(messageService.getlang()

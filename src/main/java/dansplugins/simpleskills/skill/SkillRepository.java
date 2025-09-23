@@ -13,6 +13,20 @@ public class SkillRepository {
         return skills;
     }
 
+    /**
+     * Get all active skills
+     * @return HashSet of active skills
+     */
+    public HashSet<AbstractSkill> getActiveSkills() {
+        HashSet<AbstractSkill> activeSkills = new HashSet<>();
+        for (AbstractSkill skill : skills) {
+            if (skill.isActive()) {
+                activeSkills.add(skill);
+            }
+        }
+        return activeSkills;
+    }
+
     public AbstractSkill getSkill(int Id) {
         for (AbstractSkill skill : skills) {
             if (skill.getId() == Id) {
@@ -31,10 +45,21 @@ public class SkillRepository {
         return null;
     }
 
-    public boolean addSkill(AbstractSkill skill) {
-        if (!skill.isActive()) {
-            return false;
+    /**
+     * Get an active skill by name
+     * @param skillName name of the skill
+     * @return skill if found and active, null otherwise
+     */
+    public AbstractSkill getActiveSkill(String skillName) {
+        for (AbstractSkill skill : skills) {
+            if (skill.getName().equalsIgnoreCase(skillName) && skill.isActive()) {
+                return skill;
+            }
         }
+        return null;
+    }
+
+    public boolean addSkill(AbstractSkill skill) {
         return skills.add(skill);
     }
 

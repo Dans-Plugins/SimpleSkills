@@ -1,5 +1,6 @@
 package dansplugins.simpleskills.commands;
 
+import dansplugins.simpleskills.config.ConfigService;
 import dansplugins.simpleskills.playerrecord.PlayerRecordRepository;
 import dansplugins.simpleskills.skill.SkillRepository;
 import dansplugins.simpleskills.skill.abs.AbstractSkill;
@@ -18,14 +19,16 @@ import java.util.Collections;
 public class ForceCommand extends AbstractPluginCommand {
     private final PlayerRecordRepository playerRecordRepository;
     private final SkillRepository skillRepository;
+    private final ConfigService configService;
 
-    public ForceCommand(PlayerRecordRepository playerRecordRepository, SkillRepository skillRepository) {
+    public ForceCommand(PlayerRecordRepository playerRecordRepository, SkillRepository skillRepository, ConfigService configService) {
         super(
                 new ArrayList<>(Collections.singletonList("force")),
                 new ArrayList<>(Collections.singletonList("ss.force"))
         );
         this.playerRecordRepository = playerRecordRepository;
         this.skillRepository = skillRepository;
+        this.configService = configService;
     }
 
     @Override
@@ -87,6 +90,7 @@ public class ForceCommand extends AbstractPluginCommand {
             return false;
         }
         skill.setActive(true);
+        configService.setSkillActive(skill.getName(), true);
         commandSender.sendMessage(ChatColor.GREEN + "The '" + skill.getName() + "' is now active.");
         return true;
     }
@@ -106,7 +110,7 @@ public class ForceCommand extends AbstractPluginCommand {
             return false;
         }
         skill.setActive(false);
-        skillRepository.removeSkill(skill);
+        configService.setSkillActive(skill.getName(), false);
         commandSender.sendMessage(ChatColor.GREEN + "The '" + skill.getName() + "' is now inactive.");
         return true;
     }

@@ -43,10 +43,16 @@ public class ChanceCalculator {
             playerRecord = playerRecordRepository.getPlayerRecord(playerUUID);
         }
         final AbstractSkill skill = skillRepository.getSkill(skillID);
+        if (skill == null || !skill.isActive()) {
+            return false;
+        }
         return roll(playerRecord, skill, nerfFactor);
     }
 
     public boolean roll(PlayerRecord playerRecord, AbstractSkill skill, double nerfFactor) {
+        if (skill == null || !skill.isActive()) {
+            return false;
+        }
         final Random random = new Random();
         double skillLevel = playerRecord.getSkillLevel(skill.getId(), true);
         double maxLevel = configService.getConfig().getInt("defaultMaxLevel");

@@ -36,7 +36,7 @@ public class SkillCommand extends AbstractPluginCommand {
     @Override
     public boolean execute(CommandSender commandSender, String[] args) {
         String skillName = args[0];
-        AbstractSkill skill = skillRepository.getSkill(skillName);
+        AbstractSkill skill = skillRepository.getActiveSkill(skillName);
         if (skill == null) {
             commandSender.sendMessage(messageService
                     .convert(messageService.getlang().getString("SkillNotFound")));
