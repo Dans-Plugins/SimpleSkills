@@ -96,6 +96,7 @@ public class Crafting extends AbstractSkill {
             choices = new ArrayList<>(((ShapelessRecipe) created).getChoiceList());
         }
         Collections.shuffle(choices);
+        if (choices.isEmpty()) return; // No choices available, exit early
         final RecipeChoice recipeChoice = choices.get(0);
         List<Material> materialChoices;
         if (recipeChoice instanceof RecipeChoice.MaterialChoice) {
@@ -106,6 +107,7 @@ public class Crafting extends AbstractSkill {
                     .collect(Collectors.toList());
         }
         materialChoices = materialChoices.stream().filter(m -> !m.isAir()).collect(Collectors.toList());
+        if (materialChoices.isEmpty()) return; // No valid materials after filtering, exit early
         Collections.shuffle(materialChoices);
         final Material material = materialChoices.get(0);
         player.getInventory().addItem(new ItemStack(material, Math.random() > 0.5 ? 2 : 1));
