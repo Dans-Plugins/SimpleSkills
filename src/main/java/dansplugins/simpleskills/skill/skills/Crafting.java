@@ -91,25 +91,38 @@ public class Crafting extends AbstractSkill {
         player.playSound(player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_CHIME, 5, 2);
         final List<RecipeChoice> choices;
         if (created instanceof ShapedRecipe) {
-            choices = new ArrayList<>(((ShapedRecipe) created).getChoiceMap().values());
+            final Map<Character, RecipeChoice> choiceMap = ((ShapedRecipe) created).getChoiceMap();
+            if (choiceMap == null) return; // No choice map available
+            choices = new ArrayList<>(choiceMap.values());
         } else { // Shapeless
-            choices = new ArrayList<>(((ShapelessRecipe) created).getChoiceList());
+            final List<RecipeChoice> choiceList = ((ShapelessRecipe) created).getChoiceList();
+            if (choiceList == null) return; // No choice list available
+            choices = new ArrayList<>(choiceList);
         }
-        Collections.shuffle(choices);
+        // Filter out null choices
+        choices.removeIf(Objects::isNull);
         if (choices.isEmpty()) return; // No choices available, exit early
+        Collections.shuffle(choices);
         final RecipeChoice recipeChoice = choices.get(0);
+        if (recipeChoice == null) return; // Safety check for null choice
         List<Material> materialChoices;
         if (recipeChoice instanceof RecipeChoice.MaterialChoice) {
             materialChoices = ((RecipeChoice.MaterialChoice) recipeChoice).getChoices();
         } else {
-            materialChoices = ((RecipeChoice.ExactChoice) recipeChoice).getChoices().stream()
+            final List<ItemStack> exactChoices = ((RecipeChoice.ExactChoice) recipeChoice).getChoices();
+            if (exactChoices == null) return; // No exact choices available
+            materialChoices = exactChoices.stream()
+                    .filter(Objects::nonNull)
                     .map(ItemStack::getType)
+                    .filter(Objects::nonNull)
                     .collect(Collectors.toList());
         }
-        materialChoices = materialChoices.stream().filter(m -> !m.isAir()).collect(Collectors.toList());
+        if (materialChoices == null) return; // No material choices available
+        materialChoices = materialChoices.stream().filter(m -> m != null && !m.isAir()).collect(Collectors.toList());
         if (materialChoices.isEmpty()) return; // No valid materials after filtering, exit early
         Collections.shuffle(materialChoices);
         final Material material = materialChoices.get(0);
+        if (material == null) return; // Safety check for null material
         player.getInventory().addItem(new ItemStack(material, Math.random() > 0.5 ? 2 : 1));
         final String typeName = WordUtils.capitalizeFully(material.name().toLowerCase().replaceAll("_", " "));
         final boolean nRequired = "aeiou".contains(String.valueOf(typeName.toLowerCase().charAt(0)));
