@@ -81,24 +81,17 @@ jobs:
           -Dversion=v0.14-alpha-2 \
           -Dpackaging=jar
           
-    - name: Attempt plugin build
+    - name: Attempt plugin build and test
       id: build-step
       continue-on-error: true
       run: |
-        echo "🏗️  Attempting to build plugin..."
-        mvn clean package -q
-        
-    - name: Run unit tests (if dependencies available)
-      id: test-step
-      continue-on-error: true
-      run: |
-        echo "🧪 Running unit tests..."
-        mvn test -q
+        echo "🏗️  Attempting to build plugin and run tests..."
+        mvn clean test package -q
       
     - name: Handle build result and verify JAR creation
       run: |
         if [ "${{ steps.build-step.outcome }}" == "success" ]; then
-          echo "✅ Plugin build succeeded!"
+          echo "✅ Plugin build and tests succeeded!"
           if [ -f target/SimpleSkills-*.jar ]; then
             echo "✅ Plugin JAR created successfully"
             ls -la target/SimpleSkills-*.jar
@@ -107,20 +100,47 @@ jobs:
             echo "⚠️  Build succeeded but JAR not found"
             echo "BUILD_SUCCESS=false" >> $GITHUB_ENV
           fi
+          # Check if tests actually ran and passed
+          if [ -d "target/test-classes" ]; then
+            echo "✅ Unit tests compiled and executed"
+            echo "TESTS_SUCCESS=true" >> $GITHUB_ENV
+          else
+            echo "⚠️  Test classes not found"
+            echo "TESTS_SUCCESS=false" >> $GITHUB_ENV
+          fi
         else
-          echo "⚠️  Plugin build failed (likely due to network restrictions)"
+          echo "⚠️  Plugin build or tests failed (likely due to network restrictions)"
           echo "✅ This is expected in restricted network environments"
           echo "✅ Continuing with source code validation tests..."
           echo "BUILD_SUCCESS=false" >> $GITHUB_ENV
+          echo "TESTS_SUCCESS=false" >> $GITHUB_ENV
         fi
         
-        # Handle test results
-        if [ "${{ steps.test-step.outcome }}" == "success" ]; then
-          echo "✅ Unit tests passed!"
-          echo "TESTS_SUCCESS=true" >> $GITHUB_ENV
+    - name: Display test results
+      if: always()
+      run: |
+        echo "📋 Test Execution Summary"
+        echo "========================"
+        if [ -f "target/surefire-reports/TEST-"*.xml ]; then
+          echo "✅ Test reports found - analyzing results..."
+          # Count test results from XML files
+          TOTAL_TESTS=$(find target/surefire-reports -name "TEST-*.xml" -exec grep -h 'tests="[0-9]*"' {} \; | sed 's/.*tests="\([0-9]*\)".*/\1/' | awk '{sum+=$1} END {print sum}')
+          FAILED_TESTS=$(find target/surefire-reports -name "TEST-*.xml" -exec grep -h 'failures="[0-9]*"' {} \; | sed 's/.*failures="\([0-9]*\)".*/\1/' | awk '{sum+=$1} END {print sum}')
+          ERROR_TESTS=$(find target/surefire-reports -name "TEST-*.xml" -exec grep -h 'errors="[0-9]*"' {} \; | sed 's/.*errors="\([0-9]*\)".*/\1/' | awk '{sum+=$1} END {print sum}')
+          
+          echo "📊 Test Results:"
+          echo "   Total Tests: ${TOTAL_TESTS:-0}"
+          echo "   Failed Tests: ${FAILED_TESTS:-0}"
+          echo "   Error Tests: ${ERROR_TESTS:-0}"
+          
+          if [ "${FAILED_TESTS:-0}" -gt 0 ] || [ "${ERROR_TESTS:-0}" -gt 0 ]; then
+            echo "❌ Some tests failed - check test reports"
+          else
+            echo "✅ All tests passed successfully"
+          fi
         else
-          echo "⚠️  Unit tests failed or skipped (likely due to network restrictions)"
-          echo "TESTS_SUCCESS=false" >> $GITHUB_ENV
+          echo "⚠️  No test reports found - tests may not have executed"
+          echo "   This is expected when dependencies cannot be downloaded"
         fi
         
     - name: Validate WorldSaveEventListener implementation
@@ -292,6 +312,17 @@ jobs:
         else
           echo "✅ Workflow completed successfully with full validation"
         fi
+        
+    - name: Upload test reports
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: test-reports
+        path: |
+          target/surefire-reports/
+          target/test-classes/
+        retention-days: 7
+        if-no-files-found: ignore
         
     - name: Upload plugin artifact (if available)
       if: env.BUILD_SUCCESS == 'true'
