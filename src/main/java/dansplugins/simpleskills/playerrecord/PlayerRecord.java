@@ -78,6 +78,7 @@ public class PlayerRecord implements Savable, Cacheable {
 
     public void setSkillLevels(HashMap<Integer, Integer> skillLevels) {
         this.skillLevels = skillLevels;
+        saveDataIfNeeded();
     }
 
     public int getSkillLevel(int ID, boolean learnSkillIfUnknown) {
