@@ -58,6 +58,8 @@ public class SimpleSkills extends PonderBukkitPlugin {
         setupMetrics();
         log.debug("Loading files.");
         storageService.load();
+        // Inject storage service into player record repository for immediate saving
+        playerRecordRepository.setStorageService(storageService);
         log.debug("Creating language files.");
         messageService.createlang();
         initializeSkills();

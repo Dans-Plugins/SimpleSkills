@@ -5,6 +5,7 @@ import dansplugins.simpleskills.experience.ExperienceCalculator;
 import dansplugins.simpleskills.logging.Log;
 import dansplugins.simpleskills.message.MessageService;
 import dansplugins.simpleskills.skill.SkillRepository;
+import dansplugins.simpleskills.services.StorageService;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -19,6 +20,7 @@ public class PlayerRecordRepository {
     private final SkillRepository skillRepository;
     private final ConfigService configService;
     private final ExperienceCalculator experienceCalculator;
+    private StorageService storageService;
 
     public PlayerRecordRepository(Log log,
                                   MessageService messageService,
@@ -30,6 +32,10 @@ public class PlayerRecordRepository {
         this.skillRepository = skillRepository;
         this.configService = configService;
         this.experienceCalculator = experienceCalculator;
+    }
+
+    public void setStorageService(StorageService storageService) {
+        this.storageService = storageService;
     }
 
     public HashSet<PlayerRecord> getPlayerRecords() {
@@ -87,7 +93,7 @@ public class PlayerRecordRepository {
     }
 
     public boolean createPlayerRecord(UUID uniqueId) {
-        PlayerRecord newPlayerRecord = new PlayerRecord(skillRepository, messageService, configService, experienceCalculator, log, uniqueId);
+        PlayerRecord newPlayerRecord = new PlayerRecord(skillRepository, messageService, configService, experienceCalculator, log, storageService, uniqueId);
         return addPlayerRecord(newPlayerRecord);
     }
 }

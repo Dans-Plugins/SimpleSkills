@@ -10,6 +10,7 @@ import dansplugins.simpleskills.skill.SkillRepository;
 import dansplugins.simpleskills.skill.abs.AbstractSkill;
 import dansplugins.simpleskills.experience.ExperienceCalculator;
 import dansplugins.simpleskills.logging.Log;
+import dansplugins.simpleskills.services.StorageService;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -29,26 +30,33 @@ public class PlayerRecord implements Savable, Cacheable {
     private final ConfigService configService;
     private final ExperienceCalculator experienceCalculator;
     private final Log log;
+    private final StorageService storageService;
 
     private UUID playerUUID;
     private HashMap<Integer, Integer> skillLevels = new HashMap<>();
     private HashMap<Integer, Integer> experience = new HashMap<>();
+    
+    // Throttling mechanism to prevent excessive saves
+    private long lastSaveTime = 0;
+    private static final long SAVE_COOLDOWN_MS = 5000; // Save at most once every 5 seconds per player
 
-    public PlayerRecord(SkillRepository skillRepository, MessageService messageService, ConfigService configService, ExperienceCalculator experienceCalculator, Log log, UUID playerUUID) {
+    public PlayerRecord(SkillRepository skillRepository, MessageService messageService, ConfigService configService, ExperienceCalculator experienceCalculator, Log log, StorageService storageService, UUID playerUUID) {
         this.skillRepository = skillRepository;
         this.messageService = messageService;
         this.configService = configService;
         this.experienceCalculator = experienceCalculator;
         this.log = log;
+        this.storageService = storageService;
         this.playerUUID = playerUUID;
     }
 
-    public PlayerRecord(Map<String, String> data, SkillRepository skillRepository, MessageService messageService, ConfigService configService, ExperienceCalculator experienceCalculator, Log log) {
+    public PlayerRecord(Map<String, String> data, SkillRepository skillRepository, MessageService messageService, ConfigService configService, ExperienceCalculator experienceCalculator, Log log, StorageService storageService) {
         this.skillRepository = skillRepository;
         this.messageService = messageService;
         this.configService = configService;
         this.experienceCalculator = experienceCalculator;
         this.log = log;
+        this.storageService = storageService;
         this.load(data);
     }
 
@@ -92,6 +100,7 @@ public class PlayerRecord implements Savable, Cacheable {
         } else {
             skillLevels.put(ID, value);
         }
+        saveDataIfNeeded();
     }
 
     public void incrementSkillLevel(int ID) {
@@ -104,6 +113,7 @@ public class PlayerRecord implements Savable, Cacheable {
 
     public void setExperience(HashMap<Integer, Integer> experience) {
         this.experience = experience;
+        saveDataIfNeeded();
     }
 
     public int getExperience(int ID) {
@@ -120,6 +130,7 @@ public class PlayerRecord implements Savable, Cacheable {
         } else {
             experience.put(ID, value);
         }
+        saveDataIfNeeded();
     }
 
     public void incrementExperience(int ID) {
@@ -130,6 +141,30 @@ public class PlayerRecord implements Savable, Cacheable {
             return;
         }
         checkForLevelUp(ID);
+    }
+
+    /**
+     * Saves player data immediately if enough time has passed since the last save
+     * to prevent data loss during server crashes while avoiding excessive I/O
+     */
+    private void saveDataIfNeeded() {
+        if (storageService == null) {
+            return; // No storage service available (should not happen in normal operation)
+        }
+        
+        long currentTime = System.currentTimeMillis();
+        if (currentTime - lastSaveTime >= SAVE_COOLDOWN_MS) {
+            lastSaveTime = currentTime;
+            // Run save asynchronously to avoid blocking the main thread
+            Bukkit.getScheduler().runTaskAsynchronously(Bukkit.getPluginManager().getPlugin("SimpleSkills"), () -> {
+                try {
+                    storageService.save();
+                    log.debug("Auto-saved player data for " + new UUIDChecker().findPlayerNameBasedOnUUID(playerUUID));
+                } catch (Exception e) {
+                    log.error("Failed to auto-save player data: " + e.getMessage());
+                }
+            });
+        }
     }
 
     // ---
@@ -205,6 +240,8 @@ public class PlayerRecord implements Savable, Cacheable {
             player.sendMessage(messageService.convert(messageService.getlang().getString("LearnedSkill").replaceAll("%skill%", skill.getName())));
         }
         log.info(new UUIDChecker().findPlayerNameBasedOnUUID(playerUUID) + " learned the " + skill.getName() + " skill.");
+        
+        // Data was already saved by setSkillLevel and setExperience calls above
     }
 
     private void levelUp(int ID, int experienceRequiredForLevelUp) {
@@ -225,6 +262,8 @@ public class PlayerRecord implements Savable, Cacheable {
             }
 
         }
+        
+        // Data was already saved by incrementSkillLevel and setExperience calls above
     }
 
     @Override()

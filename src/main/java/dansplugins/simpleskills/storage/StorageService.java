@@ -58,7 +58,7 @@ public class StorageService {
         ArrayList<HashMap<String, String>> data = jsonWriterReader.loadDataFromFilename(FILE_PATH + PLAYER_RECORDS_FILE_NAME);
         HashSet<PlayerRecord> playerRecords = new HashSet<>();
         for (Map<String, String> playerRecordData : data) {
-            PlayerRecord playerRecord = new PlayerRecord(playerRecordData, skillRepository, messageService, configService, experienceCalculator, log);
+            PlayerRecord playerRecord = new PlayerRecord(playerRecordData, skillRepository, messageService, configService, experienceCalculator, log, this);
             playerRecords.add(playerRecord);
         }
         playerRecordRepository.setPlayerRecords(playerRecords);
