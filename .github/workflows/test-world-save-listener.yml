@@ -226,24 +226,46 @@ jobs:
         echo "=============================================="
         echo ""
         if [ "$BUILD_SUCCESS" == "true" ]; then
-          echo "🎉 FULL VALIDATION COMPLETE"
+          echo "🎉 FULL VALIDATION COMPLETE - BUILD SUCCEEDED"
           echo "  ✅ Source code structure validated"
           echo "  ✅ Plugin built successfully"
           echo "  ✅ JAR contents verified"
           echo "  ✅ WorldSaveEventListener properly compiled"
+          echo ""
+          echo "🎯 Status: READY FOR PRODUCTION DEPLOYMENT"
+          echo "   Plugin JAR is available for download and deployment."
         else
-          echo "✅ SOURCE CODE VALIDATION COMPLETE"
+          echo "⚠️  PARTIAL VALIDATION COMPLETE - BUILD FAILED"
           echo "  ✅ WorldSaveEventListener class structure correct"
           echo "  ✅ Implements Bukkit Listener interface"
           echo "  ✅ Handles WorldSaveEvent with @EventHandler"
           echo "  ✅ Calls storageService.save() on world save"
           echo "  ✅ Properly integrated in SimpleSkills main class"
-          echo "  ⚠️  Build skipped due to network restrictions (expected)"
+          echo "  ❌ Build failed due to network restrictions"
+          echo ""
+          echo "⚠️  Status: CODE READY, BUILD REQUIRES NETWORK ACCESS"
+          echo "   Implementation is correct but requires external dependencies."
+          echo "   In environments with network access, this will build successfully."
         fi
         echo ""
-        echo "🎯 Implementation Status: READY FOR PRODUCTION"
-        echo "   Plugin data will be saved during server autosaves,"
+        echo "💡 WorldSaveEventListener will save plugin data during server autosaves,"
         echo "   preventing data loss during unexpected crashes."
+        
+    - name: Set workflow status based on build result
+      run: |
+        if [ "$BUILD_SUCCESS" != "true" ]; then
+          echo "❌ Workflow completed with build failure"
+          echo "   The WorldSaveEventListener implementation is correct,"
+          echo "   but the plugin could not be built due to network restrictions."
+          echo ""
+          echo "   To resolve this:"
+          echo "   1. Ensure network access to hub.spigotmc.org and jitpack.io"
+          echo "   2. Or configure Actions setup steps to pre-download dependencies"
+          echo "   3. Or add domains to repository allowlist (admin only)"
+          exit 1
+        else
+          echo "✅ Workflow completed successfully with full validation"
+        fi
         
     - name: Upload plugin artifact (if available)
       if: env.BUILD_SUCCESS == 'true'
@@ -256,10 +278,21 @@ jobs:
   test-docker-integration:
     runs-on: ubuntu-latest
     needs: test-build-and-validate
+    if: always()  # Run even if build job fails, but be aware of its status
     
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
+      
+    - name: Check build job status
+      run: |
+        if [ "${{ needs.test-build-and-validate.result }}" == "failure" ]; then
+          echo "⚠️  Main build job failed - Docker validation will be config-only"
+          echo "BUILD_JOB_FAILED=true" >> $GITHUB_ENV
+        else
+          echo "✅ Main build job succeeded - Full Docker validation possible"
+          echo "BUILD_JOB_FAILED=false" >> $GITHUB_ENV
+        fi
       
     - name: Validate Docker configuration (network-independent)
       run: |
@@ -408,13 +441,21 @@ jobs:
         echo "  ✅ Docker Compose exposes Minecraft port 25565"
         echo "  ✅ Post-create script handles plugin installation"
         echo "  ✅ Environment variables properly configured"
-        echo "  ✅ Container will run WorldSaveEventListener when built"
+        echo "  ✅ Container configuration is syntactically correct"
         echo ""
-        echo "⚠️  Note: Actual container build requires network access to:"
+        if [ "$BUILD_JOB_FAILED" == "true" ]; then
+          echo "❌ DOCKER VALIDATION INCOMPLETE - BUILD JOB FAILED"
+          echo "   Docker configuration is correct, but main build failed."
+          echo "   Container cannot be fully tested without a built plugin JAR."
+        else
+          echo "✅ DOCKER VALIDATION COMPLETE"
+          echo "   Docker configuration validated and build job succeeded."
+        fi
+        echo ""
+        echo "⚠️  Note: Container build still requires network access to:"
         echo "   - hub.spigotmc.org (for BuildTools.jar)"
         echo "   - Maven repositories (for dependencies)"
+        echo ""
         echo "   In production environments with network access,"
         echo "   this container will successfully build and run the"
         echo "   SimpleSkills plugin with WorldSaveEventListener active."
-        echo ""
-        echo "🎯 Docker configuration is ready for production use!"
