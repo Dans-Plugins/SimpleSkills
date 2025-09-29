@@ -4,6 +4,7 @@ import dansplugins.simpleskills.bstats.Metrics;
 import dansplugins.simpleskills.commands.*;
 import dansplugins.simpleskills.commands.tab.TabCommand;
 import dansplugins.simpleskills.listeners.PlayerJoinEventListener;
+import dansplugins.simpleskills.listeners.WorldSaveEventListener;
 import dansplugins.simpleskills.playerrecord.PlayerRecordRepository;
 import dansplugins.simpleskills.config.ConfigService;
 import dansplugins.simpleskills.message.MessageService;
@@ -44,6 +45,7 @@ public class SimpleSkills extends PonderBukkitPlugin {
     private final StorageService storageService = new StorageService(playerRecordRepository, skillRepository, messageService, configService, experienceCalculator, log);
     private final ChanceCalculator chanceCalculator = new ChanceCalculator(playerRecordRepository, configService, skillRepository, messageService, experienceCalculator, log);
     private final PlayerJoinEventListener playerJoinEventListener = new PlayerJoinEventListener(playerRecordRepository, log);
+    private final WorldSaveEventListener worldSaveEventListener = new WorldSaveEventListener(storageService, log);
 
 
     /**
@@ -168,6 +170,7 @@ public class SimpleSkills extends PonderBukkitPlugin {
         }
 
         Bukkit.getPluginManager().registerEvents(playerJoinEventListener, this);
+        Bukkit.getPluginManager().registerEvents(worldSaveEventListener, this);
     }
 
     private void initializeCommandService() {
