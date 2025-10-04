@@ -23,14 +23,8 @@ jobs:
     - name: Install Ponder dependency
       run: mvn install:install-file -Dfile=dependencies/ponder-v0.14-alpha-2.jar -DgroupId=preponderous -DartifactId=ponder -Dversion=v0.14-alpha-2 -Dpackaging=jar
     
+    - name: Compile code
+      run: mvn compile
+    
     - name: Run tests
       run: mvn test
-    
-    - name: Generate test report
-      if: always()
-      uses: dorny/test-reporter@v1
-      with:
-        name: Maven Tests
-        path: target/surefire-reports/*.xml
-        reporter: java-junit
-        fail-on-error: true
