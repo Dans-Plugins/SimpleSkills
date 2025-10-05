@@ -11,12 +11,11 @@ import dansplugins.simpleskills.skill.abs.AbstractSkill;
 import dansplugins.simpleskills.experience.ExperienceCalculator;
 import dansplugins.simpleskills.logging.Log;
 import dansplugins.simpleskills.services.StorageService;
+import dansplugins.simpleskills.utils.Cacheable;
+import dansplugins.simpleskills.utils.Savable;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import preponderous.ponder.minecraft.bukkit.tools.UUIDChecker;
-import preponderous.ponder.misc.abs.Cacheable;
-import preponderous.ponder.misc.abs.Savable;
 
 import java.lang.reflect.Type;
 import java.util.*;

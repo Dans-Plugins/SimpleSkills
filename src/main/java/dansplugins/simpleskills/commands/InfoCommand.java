@@ -7,10 +7,9 @@ import dansplugins.simpleskills.playerrecord.PlayerRecordRepository;
 import dansplugins.simpleskills.playerrecord.PlayerRecord;
 import dansplugins.simpleskills.message.MessageService;
 import dansplugins.simpleskills.skill.SkillRepository;
+import dansplugins.simpleskills.utils.UUIDValidator;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import preponderous.ponder.minecraft.bukkit.abs.AbstractPluginCommand;
-import preponderous.ponder.minecraft.bukkit.tools.UUIDChecker;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -64,7 +63,7 @@ public class InfoCommand extends AbstractPluginCommand {
     @Override
     public boolean execute(CommandSender commandSender, String[] args) {
         String playerName = args[0];
-        UUID playerUUID = new UUIDChecker().findUUIDBasedOnPlayerName(playerName);
+        UUID playerUUID = UUIDValidator.getUUIDFromPlayerName(playerName);
         if (playerUUID == null) {
             commandSender.sendMessage(messageService.convert(messageService.getlang().getString("NotFound")));
             return false;

@@ -10,10 +10,6 @@ Always reference these instructions first and fallback to search or bash command
 - Install Java 8+ (project targets Java 8 but works with modern versions)
 - Install Maven 3.6+
 - Install Docker and Docker Compose for testing
-- **CRITICAL**: Install the Ponder dependency first before any builds:
-  ```bash
-  mvn install:install-file -Dfile=dependencies/ponder-v0.14-alpha-2.jar -DgroupId=preponderous -DartifactId=ponder -Dversion=v0.14-alpha-2 -Dpackaging=jar
-  ```
 
 ### Build Process
 - **NETWORK DEPENDENCY**: Builds require internet access to download Spigot API and XSeries dependencies
@@ -24,19 +20,14 @@ Always reference these instructions first and fallback to search or bash command
   - Error messages will show: "Could not transfer metadata" and "No address associated with hostname"
 
 ### Standard Development Commands
-1. **Install Ponder dependency** (required first):
-   ```bash
-   mvn install:install-file -Dfile=dependencies/ponder-v0.14-alpha-2.jar -DgroupId=preponderous -DartifactId=ponder -Dversion=v0.14-alpha-2 -Dpackaging=jar
-   ```
-
-2. **Build the plugin** (requires network access):
+1. **Build the plugin** (requires network access):
    ```bash
    mvn clean package
    ```
    - Takes 30-60 seconds with network access. NEVER CANCEL. Set timeout to 180+ seconds.
    - Creates `target/SimpleSkills-2.2.1-SNAPSHOT.jar`
 
-3. **Quick compile script**:
+2. **Quick compile script**:
    ```bash
    chmod +x compile.sh  # Make executable first
    ./compile.sh
@@ -127,18 +118,17 @@ After starting the Docker test server, **ALWAYS** validate these scenarios:
 ## Dependencies and External Libraries
 
 ### Required Dependencies
-1. **Ponder Framework** (`preponderous:ponder:v0.14-alpha-2`)
-   - Custom framework for Bukkit plugins
-   - **MUST** be manually installed to local Maven repository
-   - Located in `dependencies/ponder-v0.14-alpha-2.jar`
-
-2. **Spigot API** (`org.spigotmc:spigot-api:1.18.1-R0.1-SNAPSHOT`)
+1. **Spigot API** (`org.spigotmc:spigot-api:1.18.1-R0.1-SNAPSHOT`)
    - Minecraft server API for plugin development
    - Downloaded from Spigot repository (requires network access)
 
-3. **XSeries** (`com.github.cryptomorin:XSeries:8.6.1`)
+2. **XSeries** (`com.github.cryptomorin:XSeries:8.6.1`)
    - Cross-version Minecraft compatibility library
    - Downloaded from JitPack repository
+
+3. **Gson** (included with Spigot)
+   - JSON serialization/deserialization library
+   - Used for data persistence
 
 ## Common Development Tasks
 

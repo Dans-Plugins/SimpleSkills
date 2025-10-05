@@ -5,10 +5,9 @@ import dansplugins.simpleskills.playerrecord.PlayerRecord;
 import dansplugins.simpleskills.message.MessageService;
 import dansplugins.simpleskills.skill.SkillRepository;
 import dansplugins.simpleskills.skill.abs.AbstractSkill;
+import dansplugins.simpleskills.utils.UUIDValidator;
 
 import org.bukkit.command.CommandSender;
-import preponderous.ponder.minecraft.bukkit.abs.AbstractPluginCommand;
-import preponderous.ponder.minecraft.bukkit.tools.UUIDChecker;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -41,8 +40,7 @@ public class TopCommand extends AbstractPluginCommand {
         }
         if (topPlayers == null) return false;
         for (PlayerRecord topPlayer : topPlayers) {
-            String playerName = new UUIDChecker()
-                    .findPlayerNameBasedOnUUID(topPlayer.getPlayerUUID());
+            String playerName = UUIDValidator.getPlayerNameFromUUID(topPlayer.getPlayerUUID());
             for (String message : messageService.getlang().getStringList("Top-Body")) {
                 commandSender.sendMessage(messageService.convert(message
                                 .replaceAll("%player%", playerName)
@@ -78,7 +76,7 @@ public class TopCommand extends AbstractPluginCommand {
             ));
         }
         for (PlayerRecord playerRecord : topPlayerRecords) {
-            String playerName = new UUIDChecker().findPlayerNameBasedOnUUID(playerRecord.getPlayerUUID());
+            String playerName = UUIDValidator.getPlayerNameFromUUID(playerRecord.getPlayerUUID());
             for (String message : messageService.getlang().getStringList("Top-Body")) {
                 commandSender.sendMessage(messageService.convert(message
                         .replaceAll("%player%", playerName)

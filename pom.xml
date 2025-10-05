@@ -106,11 +106,6 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>preponderous</groupId>
-            <artifactId>ponder</artifactId>
-            <version>v0.14-alpha-2</version>
-        </dependency>
-        <dependency>
             <groupId>com.github.cryptomorin</groupId>
             <artifactId>XSeries</artifactId>
             <version>8.6.1</version>

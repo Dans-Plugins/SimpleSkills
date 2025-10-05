@@ -37,16 +37,13 @@ Please fill out a bug report [here](https://github.com/dmccoystephenson/SimpleSk
 To build the project locally, you'll need:
 
 1. **Java 8+** and **Maven 3.6+**
-2. **Ponder dependency** (must be manually installed)
-   - Install the Ponder JAR from the `dependencies/` folder:
-     ```bash
-     mvn install:install-file -Dfile=dependencies/ponder-v0.14-alpha-2.jar -DgroupId=preponderous -DartifactId=ponder -Dversion=v0.14-alpha-2 -Dpackaging=jar
-     ```
 
-3. **Build the project:**
+2. **Build the project:**
    ```bash
    mvn clean package
    ```
+
+All dependencies are automatically downloaded during the build process.
 
 ## Authors and acknowledgement
 | Name              | Main Contributions                         |

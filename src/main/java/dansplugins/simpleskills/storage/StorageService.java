@@ -7,7 +7,7 @@ import dansplugins.simpleskills.experience.ExperienceCalculator;
 import dansplugins.simpleskills.logging.Log;
 import dansplugins.simpleskills.message.MessageService;
 import dansplugins.simpleskills.skill.SkillRepository;
-import preponderous.ponder.misc.JsonWriterReader;
+import dansplugins.simpleskills.utils.JsonStorage;
 
 import java.util.*;
 
@@ -24,7 +24,7 @@ public class StorageService {
 
     private final static String FILE_PATH = "./plugins/SimpleSkills/";
     private final static String PLAYER_RECORDS_FILE_NAME = "playerRecords.json";
-    private final JsonWriterReader jsonWriterReader = new JsonWriterReader();
+    private final JsonStorage jsonStorage = new JsonStorage();
 
     public StorageService(PlayerRecordRepository playerRecordRepository, SkillRepository skillRepository, MessageService messageService, ConfigService configService, ExperienceCalculator experienceCalculator, Log log) {
         this.playerRecordRepository = playerRecordRepository;
@@ -33,7 +33,7 @@ public class StorageService {
         this.configService = configService;
         this.experienceCalculator = experienceCalculator;
         this.log = log;
-        jsonWriterReader.initialize(FILE_PATH);
+        jsonStorage.initialize(FILE_PATH);
     }
 
     public void save() {
@@ -49,13 +49,13 @@ public class StorageService {
         for (PlayerRecord playerRecord : playerRecordRepository.getPlayerRecords()) {
             playerRecords.add(playerRecord.save());
         }
-        jsonWriterReader.writeOutFiles(playerRecords, PLAYER_RECORDS_FILE_NAME);
+        jsonStorage.writeOutFiles(playerRecords, PLAYER_RECORDS_FILE_NAME);
     }
 
 
     private void loadPlayerRecords() {
         playerRecordRepository.getPlayerRecords().clear();
-        ArrayList<HashMap<String, String>> data = jsonWriterReader.loadDataFromFilename(FILE_PATH + PLAYER_RECORDS_FILE_NAME);
+        ArrayList<HashMap<String, String>> data = jsonStorage.loadDataFromFilename(FILE_PATH + PLAYER_RECORDS_FILE_NAME);
         HashSet<PlayerRecord> playerRecords = new HashSet<>();
         for (Map<String, String> playerRecordData : data) {
             PlayerRecord playerRecord = new PlayerRecord(playerRecordData, skillRepository, messageService, configService, experienceCalculator, log, this);

@@ -15,15 +15,13 @@ import dansplugins.simpleskills.experience.ExperienceCalculator;
 
 import dansplugins.simpleskills.logging.Log;
 import dansplugins.simpleskills.skill.skills.*;
+import dansplugins.simpleskills.utils.VersionChecker;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
-import preponderous.ponder.minecraft.bukkit.PonderMC;
-import preponderous.ponder.minecraft.bukkit.abs.AbstractPluginCommand;
-import preponderous.ponder.minecraft.bukkit.abs.PonderBukkitPlugin;
-import preponderous.ponder.minecraft.bukkit.nms.NMSAssistant;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,9 +29,9 @@ import java.util.Arrays;
 /**
  * @author Daniel Stephenson
  */
-public class SimpleSkills extends PonderBukkitPlugin {
+public class SimpleSkills extends JavaPlugin {
     private final String pluginVersion = "v" + getDescription().getVersion();
-    private PonderMC ponder;
+    private CommandService commandService;
 
     private final ConfigService configService = new ConfigService(this);
     private final Log log = new Log(this, configService);
@@ -51,7 +49,7 @@ public class SimpleSkills extends PonderBukkitPlugin {
      */
     @Override
     public void onEnable() {
-        this.ponder = new PonderMC(this);
+        this.commandService = new CommandService();
         configService.createConfig();
         performNMSChecks();
         setTabCompleterForCoreCommands();
@@ -96,7 +94,7 @@ public class SimpleSkills extends PonderBukkitPlugin {
             return defaultCommand.execute(sender);
         }
 
-        return ponder.getCommandService().interpretAndExecuteCommand(sender, label, args);
+        return commandService.interpretAndExecuteCommand(sender, label, args);
     }
 
     public String getVersion() {
@@ -115,9 +113,20 @@ public class SimpleSkills extends PonderBukkitPlugin {
 
     private void performNMSChecks() {
         try {
-            final NMSAssistant nmsAssistant = new NMSAssistant();
-            if (nmsAssistant.isVersionGreaterThan(12)) {
-                log.info("Loading data for NMS " + nmsAssistant.getNMSVersion().toString());
+            final VersionChecker versionChecker = new VersionChecker();
+            if (versionChecker.isVersionGreaterThan(12)) {
+                log.info("Loading data for NMS " + versionChecker.getNMSVersion());
+            } else {
+                log.warning("The server version is not suitable to load the plugin");
+                log.warning("This plugin is tested on a 1.21.4 server.");
+                Bukkit.getServer().getPluginManager().disablePlugin(this);
+            }
+        } catch(NumberFormatException e) {
+            log.warning("Failed to determine NMS version due to NumberFormatException. Some features may not work correctly.");
+        } catch (Exception e) {
+            log.warning("Failed to determine NMS version due to an exception. Some features may not work correctly. Error: " + e.getMessage());
+        }
+    }
             } else {
                 log.warning("The server version is not suitable to load the plugin");
                 log.warning("This plugin is tested on a 1.21.4 server.");
@@ -174,7 +183,7 @@ public class SimpleSkills extends PonderBukkitPlugin {
 
     private void initializeCommandService() {
         log.debug("Initializing command service...");
-        ArrayList<AbstractPluginCommand> commands = new ArrayList<>(Arrays.asList(
+        ArrayList<dansplugins.simpleskills.commands.PluginCommand> commands = new ArrayList<>(Arrays.asList(
                 new HelpCommand(messageService),
                 new InfoCommand(playerRecordRepository, messageService, skillRepository, configService, experienceCalculator, log),
                 new StatsCommand(messageService, playerRecordRepository, skillRepository),
@@ -183,7 +192,7 @@ public class SimpleSkills extends PonderBukkitPlugin {
                 new TopCommand(playerRecordRepository, messageService, skillRepository),
                 new ReloadCommand(messageService, configService)
         ));
-        ponder.getCommandService().initialize(commands, "That command wasn't found.");
+        commandService.initialize(commands, "That command wasn't found.");
     }
 
     private void initializeSkills() {
