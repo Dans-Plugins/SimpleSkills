@@ -20,23 +20,8 @@ jobs:
         distribution: 'temurin'
         cache: maven
     
-    - name: Install Ponder dependency
-      run: mvn install:install-file -Dfile=dependencies/ponder-bukkit-2.0.0.jar -DgroupId=preponderous -DartifactId=ponder-bukkit -Dversion=2.0.0 -Dpackaging=jar
+    - name: Compile project
+      run: mvn clean compile -B
     
-    - name: Validate project structure
-      run: mvn validate
-      
-    - name: Note about tests
-      run: |
-        echo "✓ Project structure validated"
-        echo "✓ Ponder dependency installed"
-        echo ""
-        echo "Note: Full compilation and testing requires network access to:"
-        echo "  - hub.spigotmc.org (Spigot API dependency)"
-        echo "  - jitpack.io (XSeries dependency)"
-        echo ""
-        echo "These are currently blocked by firewall restrictions."
-        echo "To enable full CI testing, add these URLs to the repository's"
-        echo "Copilot coding agent allowlist in repository settings."
-        echo ""
-        echo "Tests can be run locally with: mvn test"
+    - name: Run tests
+      run: mvn test -B

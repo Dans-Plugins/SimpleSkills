@@ -10,33 +10,26 @@ Always reference these instructions first and fallback to search or bash command
 - Install Java 8+ (project targets Java 8 but works with modern versions)
 - Install Maven 3.6+
 - Install Docker and Docker Compose for testing
-- **CRITICAL**: Install the Ponder dependency first before any builds:
-  ```bash
-  mvn install:install-file -Dfile=dependencies/ponder-bukkit-2.0.0.jar -DgroupId=preponderous -DartifactId=ponder-bukkit -Dversion=2.0.0 -Dpackaging=jar
-  ```
+- **NOTE**: Ponder dependency is automatically downloaded from JitPack during Maven build
 
 ### Build Process
-- **NETWORK DEPENDENCY**: Builds require internet access to download Spigot API and XSeries dependencies
+- **NETWORK DEPENDENCY**: Builds require internet access to download dependencies from JitPack, Spigot, and XSeries repositories
 - **IF BUILD FAILS** due to network restrictions (common in sandboxed environments):
   - Document that `mvn clean package` fails due to firewall/network limitations accessing hub.spigotmc.org and jitpack.io
   - The build normally takes 30-60 seconds with network access. NEVER CANCEL builds - set timeout to 3+ minutes.
-  - Dependencies needed: `org.spigotmc:spigot-api:1.18.1-R0.1-SNAPSHOT`, `com.github.cryptomorin:XSeries:8.6.1`
+  - Dependencies needed: `org.spigotmc:spigot-api:1.18.1-R0.1-SNAPSHOT`, `com.github.cryptomorin:XSeries:8.6.1`, `com.github.Preponderous-Software.Ponder:ponder-bukkit:2.0.0`
   - Error messages will show: "Could not transfer metadata" and "No address associated with hostname"
 
 ### Standard Development Commands
-1. **Install Ponder dependency** (required first):
-   ```bash
-   mvn install:install-file -Dfile=dependencies/ponder-bukkit-2.0.0.jar -DgroupId=preponderous -DartifactId=ponder-bukkit -Dversion=2.0.0 -Dpackaging=jar
-   ```
-
-2. **Build the plugin** (requires network access):
+1. **Build the plugin** (requires network access):
    ```bash
    mvn clean package
    ```
    - Takes 30-60 seconds with network access. NEVER CANCEL. Set timeout to 180+ seconds.
    - Creates `target/SimpleSkills-2.2.1-SNAPSHOT.jar`
+   - All dependencies (including Ponder) are automatically downloaded from Maven repositories
 
-3. **Quick compile script**:
+2. **Quick compile script**:
    ```bash
    chmod +x compile.sh  # Make executable first
    ./compile.sh
@@ -127,10 +120,10 @@ After starting the Docker test server, **ALWAYS** validate these scenarios:
 ## Dependencies and External Libraries
 
 ### Required Dependencies
-1. **Ponder Framework** (`preponderous:ponder-bukkit:2.0.0`)
+1. **Ponder Framework** (`com.github.Preponderous-Software.Ponder:ponder-bukkit:2.0.0`)
    - Custom framework for Bukkit plugins
-   - **MUST** be manually installed to local Maven repository
-   - Located in `dependencies/ponder-bukkit-2.0.0.jar`
+   - **Automatically downloaded from JitPack** during Maven build
+   - No manual installation required
 
 2. **Spigot API** (`org.spigotmc:spigot-api:1.18.1-R0.1-SNAPSHOT`)
    - Minecraft server API for plugin development
@@ -138,7 +131,7 @@ After starting the Docker test server, **ALWAYS** validate these scenarios:
 
 3. **XSeries** (`com.github.cryptomorin:XSeries:8.6.1`)
    - Cross-version Minecraft compatibility library
-   - Downloaded from central/JitPack repositories
+   - Downloaded from JitPack repository
 
 ## Common Development Tasks
 
@@ -173,7 +166,7 @@ After starting the Docker test server, **ALWAYS** validate these scenarios:
 - **Docker subsequent builds**: 2-5 minutes  
 - **Server startup in Docker**: 30-60 seconds
 
-**CRITICAL**: Always set appropriate timeouts (3+ minutes for builds, 45+ minutes for Docker first run) and include explicit "NEVER CANCEL" warnings for long-running operations.
+NOTE: Always set appropriate timeouts (3+ minutes for builds, 45+ minutes for Docker first run) and include explicit "NEVER CANCEL" warnings for long-running operations.
 
 ## Troubleshooting Common Issues
 
