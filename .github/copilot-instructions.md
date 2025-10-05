@@ -12,7 +12,7 @@ Always reference these instructions first and fallback to search or bash command
 - Install Docker and Docker Compose for testing
 - **CRITICAL**: Install the Ponder dependency first before any builds:
   ```bash
-  mvn install:install-file -Dfile=dependencies/ponder-v0.14-alpha-2.jar -DgroupId=preponderous -DartifactId=ponder -Dversion=v0.14-alpha-2 -Dpackaging=jar
+  mvn install:install-file -Dfile=dependencies/ponder-bukkit-2.0.0.jar -DgroupId=preponderous -DartifactId=ponder-bukkit -Dversion=2.0.0 -Dpackaging=jar
   ```
 
 ### Build Process
@@ -26,7 +26,7 @@ Always reference these instructions first and fallback to search or bash command
 ### Standard Development Commands
 1. **Install Ponder dependency** (required first):
    ```bash
-   mvn install:install-file -Dfile=dependencies/ponder-v0.14-alpha-2.jar -DgroupId=preponderous -DartifactId=ponder -Dversion=v0.14-alpha-2 -Dpackaging=jar
+   mvn install:install-file -Dfile=dependencies/ponder-bukkit-2.0.0.jar -DgroupId=preponderous -DartifactId=ponder-bukkit -Dversion=2.0.0 -Dpackaging=jar
    ```
 
 2. **Build the plugin** (requires network access):
@@ -127,10 +127,10 @@ After starting the Docker test server, **ALWAYS** validate these scenarios:
 ## Dependencies and External Libraries
 
 ### Required Dependencies
-1. **Ponder Framework** (`preponderous:ponder:v0.14-alpha-2`)
+1. **Ponder Framework** (`preponderous:ponder-bukkit:2.0.0`)
    - Custom framework for Bukkit plugins
    - **MUST** be manually installed to local Maven repository
-   - Located in `dependencies/ponder-v0.14-alpha-2.jar`
+   - Located in `dependencies/ponder-bukkit-2.0.0.jar`
 
 2. **Spigot API** (`org.spigotmc:spigot-api:1.18.1-R0.1-SNAPSHOT`)
    - Minecraft server API for plugin development

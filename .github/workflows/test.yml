@@ -21,7 +21,7 @@ jobs:
         cache: maven
     
     - name: Install Ponder dependency
-      run: mvn install:install-file -Dfile=dependencies/ponder-v0.14-alpha-2.jar -DgroupId=preponderous -DartifactId=ponder -Dversion=v0.14-alpha-2 -Dpackaging=jar
+      run: mvn install:install-file -Dfile=dependencies/ponder-bukkit-2.0.0.jar -DgroupId=preponderous -DartifactId=ponder-bukkit -Dversion=2.0.0 -Dpackaging=jar
     
     - name: Validate project structure
       run: mvn validate
