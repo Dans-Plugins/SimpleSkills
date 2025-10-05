@@ -101,6 +101,10 @@
             <id>jitpack.io</id>
             <url>https://jitpack.io</url>
         </repository>
+        <repository>
+            <id>github-dans-plugins</id>
+            <url>https://maven.pkg.github.com/Dans-Plugins/Ponder</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -111,7 +115,7 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.github.Preponderous-Software.Ponder</groupId>
+            <groupId>com.dansplugins</groupId>
             <artifactId>ponder-bukkit</artifactId>
             <version>2.0.0</version>
         </dependency>

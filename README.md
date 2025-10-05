@@ -32,6 +32,27 @@ Please fill out a bug report [here](https://github.com/dmccoystephenson/SimpleSk
 ## Contributing
 - [Notes for Developers](https://github.com/dmccoystephenson/SimpleSkills/wiki/Developer-Notes) (coming soon)
 
+### Development Setup
+
+To build the project locally, you'll need:
+
+1. **Java 8+** and **Maven 3.6+**
+2. **GitHub Personal Access Token** (for accessing Ponder dependency from GitHub Packages)
+   - Create a token at https://github.com/settings/tokens
+   - Grant the `read:packages` scope
+   - Set environment variables:
+     ```bash
+     export GITHUB_ACTOR=your-github-username
+     export GITHUB_TOKEN=your-personal-access-token
+     ```
+
+3. **Build the project:**
+   ```bash
+   mvn clean package
+   ```
+
+The Ponder framework dependency is automatically downloaded from GitHub Packages during the build process.
+
 ## Authors and acknowledgement
 | Name              | Main Contributions                         |
 |-------------------|--------------------------------------------|

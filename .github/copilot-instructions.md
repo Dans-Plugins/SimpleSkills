@@ -10,18 +10,26 @@ Always reference these instructions first and fallback to search or bash command
 - Install Java 8+ (project targets Java 8 but works with modern versions)
 - Install Maven 3.6+
 - Install Docker and Docker Compose for testing
-- **NOTE**: Ponder dependency is automatically downloaded from JitPack during Maven build
+- **GitHub Token Required**: Ponder dependency is now hosted on GitHub Packages and requires authentication
+  - Create a Personal Access Token (PAT) with `read:packages` scope: https://github.com/settings/tokens
+  - Set environment variables:
+    ```bash
+    export GITHUB_ACTOR=your-github-username
+    export GITHUB_TOKEN=your-personal-access-token
+    ```
+  - Or copy `settings.xml.sample` to `~/.m2/settings.xml` and configure credentials
 
 ### Build Process
-- **NETWORK DEPENDENCY**: Builds require internet access to download dependencies from JitPack, Spigot, and XSeries repositories
+- **NETWORK DEPENDENCY**: Builds require internet access to download dependencies from GitHub Packages, Spigot, and JitPack repositories
+- **AUTHENTICATION REQUIRED**: GitHub Packages requires authentication via GitHub token
 - **IF BUILD FAILS** due to network restrictions (common in sandboxed environments):
-  - Document that `mvn clean package` fails due to firewall/network limitations accessing hub.spigotmc.org and jitpack.io
+  - Document that `mvn clean package` fails due to firewall/network limitations accessing hub.spigotmc.org, jitpack.io, or maven.pkg.github.com
   - The build normally takes 30-60 seconds with network access. NEVER CANCEL builds - set timeout to 3+ minutes.
-  - Dependencies needed: `org.spigotmc:spigot-api:1.18.1-R0.1-SNAPSHOT`, `com.github.cryptomorin:XSeries:8.6.1`, `com.github.Preponderous-Software.Ponder:ponder-bukkit:2.0.0`
-  - Error messages will show: "Could not transfer metadata" and "No address associated with hostname"
+  - Dependencies needed: `org.spigotmc:spigot-api:1.18.1-R0.1-SNAPSHOT`, `com.github.cryptomorin:XSeries:8.6.1`, `com.dansplugins:ponder-bukkit:2.0.0`
+  - Error messages will show: "Could not transfer metadata" and "No address associated with hostname" or "401 Unauthorized"
 
 ### Standard Development Commands
-1. **Build the plugin** (requires network access):
+1. **Build the plugin** (requires network access and GitHub authentication):
    ```bash
    mvn clean package
    ```
@@ -35,7 +43,7 @@ Always reference these instructions first and fallback to search or bash command
    ./compile.sh
    ```
    - Equivalent to `mvn clean package` 
-   - **Also fails with network restrictions** - same errors as Maven
+   - **Also requires GitHub authentication** - same requirements as Maven
 
 ## Testing and Validation
 
@@ -120,10 +128,11 @@ After starting the Docker test server, **ALWAYS** validate these scenarios:
 ## Dependencies and External Libraries
 
 ### Required Dependencies
-1. **Ponder Framework** (`com.github.Preponderous-Software.Ponder:ponder-bukkit:2.0.0`)
+1. **Ponder Framework** (`com.dansplugins:ponder-bukkit:2.0.0`)
    - Custom framework for Bukkit plugins
-   - **Automatically downloaded from JitPack** during Maven build
-   - No manual installation required
+   - **Automatically downloaded from GitHub Packages** during Maven build
+   - Requires GitHub authentication (Personal Access Token with `read:packages` scope)
+   - No manual JAR installation required
 
 2. **Spigot API** (`org.spigotmc:spigot-api:1.18.1-R0.1-SNAPSHOT`)
    - Minecraft server API for plugin development
