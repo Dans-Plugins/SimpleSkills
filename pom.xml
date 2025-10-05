@@ -78,11 +78,6 @@
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.22.2</version>
-            </plugin>
         </plugins>
         <resources>
             <resource>
@@ -101,10 +96,6 @@
             <id>jitpack.io</id>
             <url>https://jitpack.io</url>
         </repository>
-        <repository>
-            <id>github-dans-plugins</id>
-            <url>https://maven.pkg.github.com/Dans-Plugins/Ponder</url>
-        </repository>
     </repositories>
 
     <dependencies>
@@ -115,40 +106,15 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.dansplugins</groupId>
-            <artifactId>ponder-bukkit</artifactId>
-            <version>2.0.0</version>
+            <groupId>preponderous</groupId>
+            <artifactId>ponder</artifactId>
+            <version>v0.14-alpha-2</version>
         </dependency>
         <dependency>
             <groupId>com.github.cryptomorin</groupId>
             <artifactId>XSeries</artifactId>
             <version>8.6.1</version>
             <scope>compile</scope>
-        </dependency>
-        <!-- Test dependencies -->
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-api</artifactId>
-            <version>5.9.3</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-engine</artifactId>
-            <version>5.9.3</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-core</artifactId>
-            <version>4.11.0</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-inline</artifactId>
-            <version>4.11.0</version>
-            <scope>test</scope>
         </dependency>
     </dependencies>
 </project>
