@@ -7,7 +7,7 @@ on:
     branches: [ main, develop ]
 
 jobs:
-  validate:
+  build:
     runs-on: ubuntu-latest
     
     steps:
@@ -18,18 +18,21 @@ jobs:
       with:
         java-version: '8'
         distribution: 'temurin'
+        cache: 'maven'
     
-    - name: Validate project structure
-      run: mvn validate -B
+    - name: Compile project
+      run: mvn clean compile -B
       
-    - name: Build status
+    - name: Run tests
+      run: mvn test -B
+      
+    - name: Package plugin
+      run: mvn package -DskipTests -B
+      
+    - name: Build summary
       run: |
-        echo "✓ Project structure validated successfully"
+        echo "✓ Compilation successful"
+        echo "✓ Tests passed"
+        echo "✓ Plugin packaged"
         echo ""
-        echo "Note: Full compilation and testing require:"
-        echo "  1. Manual installation of Ponder dependency (see dependencies/ folder)"
-        echo "  2. Network access to hub.spigotmc.org and jitpack.io"
-        echo ""
-        echo "To build locally:"
-        echo "  mvn install:install-file -Dfile=dependencies/ponder-v0.14-alpha-2.jar -DgroupId=preponderous -DartifactId=ponder -Dversion=v0.14-alpha-2 -Dpackaging=jar"
-        echo "  mvn clean package"
+        ls -lh target/*.jar
