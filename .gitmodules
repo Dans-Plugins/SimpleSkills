@@ -1,0 +1,3 @@
+[submodule "dependencies/Ponder"]
+	path = dependencies/Ponder
+	url = https://github.com/Preponderous-Software/Ponder.git
