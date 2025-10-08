@@ -27,6 +27,8 @@ import preponderous.ponder.minecraft.bukkit.nms.NMSAssistant;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * @author Daniel Stephenson
@@ -44,6 +46,7 @@ public class SimpleSkills extends PonderBukkitPlugin {
     private final StorageService storageService = new StorageService(playerRecordRepository, skillRepository, messageService, configService, experienceCalculator, log);
     private final ChanceCalculator chanceCalculator = new ChanceCalculator(playerRecordRepository, configService, skillRepository, messageService, experienceCalculator, log);
     private final PlayerJoinEventListener playerJoinEventListener = new PlayerJoinEventListener(playerRecordRepository, log);
+    private Timer autosaveTimer;
 
 
     /**
@@ -64,6 +67,7 @@ public class SimpleSkills extends PonderBukkitPlugin {
         registerEventListeners();
         initializeCommandService();
         checkFilesVersion();
+        startAutosave();
     }
 
     /**
@@ -71,6 +75,7 @@ public class SimpleSkills extends PonderBukkitPlugin {
      */
     @Override
     public void onDisable() {
+        stopAutosave();
         log.debug("Saving files.");
         storageService.save();
         log.debug("Saving language files.");
@@ -206,6 +211,38 @@ public class SimpleSkills extends PonderBukkitPlugin {
         skillRepository.addSkill(new Quarrying(configService, log, playerRecordRepository, this, messageService, chanceCalculator));
         skillRepository.addSkill(new Riding(configService, log, playerRecordRepository, this, messageService, chanceCalculator));
         skillRepository.addSkill(new Strength(configService, log, playerRecordRepository, this, messageService, chanceCalculator));
+    }
+
+    /**
+     * Starts the autosave scheduler which saves data every 5 minutes.
+     */
+    private void startAutosave() {
+        log.debug("Starting autosave task.");
+        autosaveTimer = new Timer(true);
+        autosaveTimer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                if (!isEnabled()) {
+                    autosaveTimer.cancel();
+                    return;
+                }
+                Bukkit.getScheduler().runTask(SimpleSkills.this, () -> {
+                    log.debug("Autosaving files.");
+                    storageService.save();
+                });
+            }
+        }, 1000 * 60 * 5, 1000 * 60 * 5);
+    }
+
+    /**
+     * Stops the autosave scheduler.
+     */
+    private void stopAutosave() {
+        if (autosaveTimer != null) {
+            log.debug("Stopping autosave task.");
+            autosaveTimer.cancel();
+            autosaveTimer = null;
+        }
     }
 
 }
