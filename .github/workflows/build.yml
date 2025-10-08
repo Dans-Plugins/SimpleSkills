@@ -26,6 +26,7 @@ jobs:
     - name: Build and install Ponder to local Maven repository
       run: |
         cd dependencies/Ponder
+        git checkout v1.0
         chmod +x gradlew
         ./gradlew build publishToMavenLocal -x test
 
