@@ -116,6 +116,12 @@ public class Mining extends AbstractBlockSkill {
         if (!(blockData instanceof Block)) throw new IllegalArgumentException("SkillData[0] is not Block");
         final PlayerRecord record = getRecord(player);
         if (record == null) return;
+        
+        // Check if the benefit is enabled for this player
+        if (!record.isBenefitEnabled(this.getId())) {
+            return;
+        }
+        
         final Block block = (Block) blockData;
         if (chanceCalculator.roll(record, this, 0.10)) {
             final Iterator<Recipe> recipeIterator = Bukkit.recipeIterator();

@@ -179,7 +179,8 @@ public class SimpleSkills extends PonderBukkitPlugin {
                 new ForceCommand(playerRecordRepository, skillRepository),
                 new SkillCommand(messageService, skillRepository),
                 new TopCommand(playerRecordRepository, messageService, skillRepository),
-                new ReloadCommand(messageService, configService)
+                new ReloadCommand(messageService, configService),
+                new ToggleCommand(messageService, playerRecordRepository, skillRepository)
         ));
         ponder.getCommandService().initialize(commands, "That command wasn't found.");
     }
