@@ -64,6 +64,7 @@ public class SimpleSkills extends PonderBukkitPlugin {
         registerEventListeners();
         initializeCommandService();
         checkFilesVersion();
+        scheduleAutoSave();
     }
 
     /**
@@ -206,6 +207,16 @@ public class SimpleSkills extends PonderBukkitPlugin {
         skillRepository.addSkill(new Quarrying(configService, log, playerRecordRepository, this, messageService, chanceCalculator));
         skillRepository.addSkill(new Riding(configService, log, playerRecordRepository, this, messageService, chanceCalculator));
         skillRepository.addSkill(new Strength(configService, log, playerRecordRepository, this, messageService, chanceCalculator));
+    }
+
+    private void scheduleAutoSave() {
+        log.debug("Scheduling autosave task to run every 5 minutes.");
+        // Schedule autosave to run every 5 minutes (6000 ticks = 300 seconds)
+        // Delay of 6000 ticks before first run to give the server time to fully start
+        Bukkit.getScheduler().runTaskTimerAsynchronously(this, () -> {
+            log.debug("Running scheduled autosave.");
+            storageService.save();
+        }, 6000L, 6000L);
     }
 
 }
