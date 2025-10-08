@@ -96,6 +96,10 @@
             <id>jitpack.io</id>
             <url>https://jitpack.io</url>
         </repository>
+        <repository>
+            <id>dansplugins.com</id>
+            <url>https://repo.dansplugins.com/repository/maven-public/</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -106,8 +110,13 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.github.Preponderous-Software</groupId>
-            <artifactId>Ponder</artifactId>
+            <groupId>com.dansplugins</groupId>
+            <artifactId>ponder-bukkit</artifactId>
+            <version>2.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.dansplugins</groupId>
+            <artifactId>ponder-cache</artifactId>
             <version>2.0.0</version>
         </dependency>
         <dependency>
