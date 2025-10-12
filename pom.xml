@@ -16,6 +16,19 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+    <distributionManagement>
+        <repository>
+            <id>dpc-maven-repo-releases</id>
+            <name>DPC Maven Repository - Releases</name>
+            <url>https://maven.dansplugins.com/repository/maven-releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>dpc-maven-repo-snapshots</id>
+            <name>DPC Maven Repository - Snapshots</name>
+            <url>https://maven.dansplugins.com/repository/maven-snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
+
     <build>
         <finalName>${project.name}-${project.version}</finalName>
         <plugins>
