@@ -144,11 +144,12 @@ public class Quarrying extends AbstractBlockSkill {
             // Drop experience orb instead of special items
             final ExperienceOrb entity = (ExperienceOrb) block.getWorld()
                     .spawnEntity(block.getLocation(), EntityType.EXPERIENCE_ORB);
-            final int exp = (int) (Math.random() * 5.0) + 1; // 1-5 experience points
+            final int exp = new Random().nextInt(5) + 1; // 1-5 experience points
             entity.setExperience(exp);
             entity.setGlowing(true);
-            player.sendMessage(messageService.convert(Objects.requireNonNull(Objects.requireNonNull(messageService.getlang().getString("Skills.Quarrying.Exp"))
-                    .replaceAll("%exp%", String.valueOf(exp)))));
+            final String expMessage = messageService.getlang().getString("Skills.Quarrying.Exp");
+            player.sendMessage(messageService.convert(Objects.requireNonNull(expMessage)
+                    .replaceAll("%exp%", String.valueOf(exp))));
         }
     }
 
