@@ -1,7 +1,5 @@
 package dansplugins.simpleskills.skill.skills;
 
-import com.cryptomorin.xseries.XMaterial;
-
 import dansplugins.simpleskills.SimpleSkills;
 import dansplugins.simpleskills.playerrecord.PlayerRecordRepository;
 import dansplugins.simpleskills.playerrecord.PlayerRecord;
@@ -14,6 +12,8 @@ import org.apache.commons.lang.WordUtils;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.ExperienceOrb;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -141,46 +141,14 @@ public class Quarrying extends AbstractBlockSkill {
                                 .name().replaceAll("_", " ").toLowerCase())))));
                 return;
             }
-            final List<Material> rewardTypes = getRewardTypes(block.getType());
-            final Material reward = rewardTypes.get(new Random().nextInt(rewardTypes.size()));
-            block.getWorld().dropItemNaturally(block.getLocation(), new ItemStack(reward));
-            if (reward == XMaterial.GLASS_BOTTLE.parseMaterial())
-                player.sendMessage(messageService.convert(Objects.requireNonNull(messageService.getlang().getString("Skills.Quarrying.Water"))));
-            else
-                player.sendMessage(messageService.convert(Objects.requireNonNull(messageService.getlang().getString("Skills.Quarrying.Luck"))));
-        }
-    }
-
-    @NotNull
-    private List<Material> getRewardTypes(@NotNull Material material) {
-        switch (material.name()) {
-            case "STONE":
-                return Collections.singletonList(XMaterial.STONE.parseMaterial());
-            case "TERRACOTTA":
-                return Arrays.asList(XMaterial.WHITE_TERRACOTTA.parseMaterial(), XMaterial.ORANGE_TERRACOTTA.parseMaterial(), XMaterial.MAGENTA_TERRACOTTA.parseMaterial(),
-                        XMaterial.LIGHT_BLUE_TERRACOTTA.parseMaterial(), XMaterial.YELLOW_TERRACOTTA.parseMaterial(), XMaterial.LIME_TERRACOTTA.parseMaterial(),
-                        XMaterial.PINK_TERRACOTTA.parseMaterial(), XMaterial.GRAY_TERRACOTTA.parseMaterial(), XMaterial.LIGHT_GRAY_TERRACOTTA.parseMaterial(),
-                        XMaterial.CYAN_TERRACOTTA.parseMaterial(), XMaterial.PURPLE_TERRACOTTA.parseMaterial(), XMaterial.BLUE_TERRACOTTA.parseMaterial(),
-                        XMaterial.BROWN_TERRACOTTA.parseMaterial(), XMaterial.GREEN_TERRACOTTA.parseMaterial(), XMaterial.RED_TERRACOTTA.parseMaterial(),
-                        XMaterial.BLACK_TERRACOTTA.parseMaterial());
-            case "GRANITE":
-                return Collections.singletonList(XMaterial.POLISHED_GRANITE.parseMaterial());
-            case "ANDESITE":
-                return Collections.singletonList(XMaterial.POLISHED_ANDESITE.parseMaterial());
-            case "DIORITE":
-                return Collections.singletonList(XMaterial.POLISHED_DIORITE.parseMaterial());
-            case "DEEPSLATE":
-                return Collections.singletonList(XMaterial.DEEPSLATE.parseMaterial());
-            case "SANDSTONE":
-                return Collections.singletonList(XMaterial.SANDSTONE.parseMaterial());
-            case "RED_SANDSTONE":
-                return Collections.singletonList(XMaterial.GLASS_BOTTLE.parseMaterial());
-            case "END_STONE":
-                return Collections.singletonList(XMaterial.ENDER_PEARL.parseMaterial());
-            case "NETHERRACK":
-                return Collections.singletonList(XMaterial.NETHER_BRICK.parseMaterial());
-            default:
-                throw new IllegalArgumentException("Material " + material + " is not valid.");
+            // Drop experience orb instead of special items
+            final ExperienceOrb entity = (ExperienceOrb) block.getWorld()
+                    .spawnEntity(block.getLocation(), EntityType.EXPERIENCE_ORB);
+            final int exp = (int) (Math.random() * 5.0) + 1; // 1-5 experience points
+            entity.setExperience(exp);
+            entity.setGlowing(true);
+            player.sendMessage(messageService.convert(Objects.requireNonNull(Objects.requireNonNull(messageService.getlang().getString("Skills.Quarrying.Exp"))
+                    .replaceAll("%exp%", String.valueOf(exp)))));
         }
     }
 

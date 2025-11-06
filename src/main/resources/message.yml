@@ -64,8 +64,7 @@ Skills:
     Drop: "&bYou got double drops for that &a%item%&b!"
   Quarrying:
     DoubleDrop: "&bYou got double drops for that &a%item%&b!"
-    Water: "&bMake sure you get water for your thirst!"
-    Luck: "&bYou got extra lucky and found something &6special&b!"
+    Exp: "&bYou found &a%exp%&b experience while quarrying!"
   Riding: "&bYour companion has received a &aSpeed Boost&b!"
   Strength: "&bAfter attacking %attacked% &b you have a &cbloodlust&b, you must continue to &aattack&b to satisfy your urges!"
   WoodCutting: "&bYou got double drops for that &a%item%&b!"
