@@ -1,5 +1,7 @@
 package dansplugins.simpleskills.skill.skills;
 
+import com.cryptomorin.xseries.XMaterial;
+
 import dansplugins.simpleskills.SimpleSkills;
 import dansplugins.simpleskills.playerrecord.PlayerRecordRepository;
 import dansplugins.simpleskills.playerrecord.PlayerRecord;
@@ -130,7 +132,12 @@ public class Quarrying extends AbstractBlockSkill {
         final Block block = (Block) blockData;
         if (chanceCalculator.roll(record, this, 0.10)) {
             player.playSound(player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_CHIME, 5, 2);
-            if (chanceCalculator.roll(record, this, 0.50)) {
+            // Randomly choose between three possible benefits: double drops, special items, or experience
+            final Random random = new Random();
+            final int benefitType = random.nextInt(3); // 0, 1, or 2
+            
+            if (benefitType == 0) {
+                // Double drops
                 final Collection<ItemStack> drops = block.getDrops(player.getInventory().getItemInMainHand());
                 drops.forEach(drop -> {
                     if (drop.getType().isAir()) return;
@@ -139,17 +146,59 @@ public class Quarrying extends AbstractBlockSkill {
                 player.sendMessage(messageService.convert(Objects.requireNonNull(Objects.requireNonNull(messageService.getlang().getString("Skills.Quarrying.DoubleDrop"))
                         .replaceAll("%item%", WordUtils.capitalizeFully(block.getType()
                                 .name().replaceAll("_", " ").toLowerCase())))));
-                return;
+            } else if (benefitType == 1) {
+                // Special item drops
+                final List<Material> rewardTypes = getRewardTypes(block.getType());
+                final Material reward = rewardTypes.get(random.nextInt(rewardTypes.size()));
+                block.getWorld().dropItemNaturally(block.getLocation(), new ItemStack(reward));
+                if (reward == XMaterial.GLASS_BOTTLE.parseMaterial())
+                    player.sendMessage(messageService.convert(Objects.requireNonNull(messageService.getlang().getString("Skills.Quarrying.Water"))));
+                else
+                    player.sendMessage(messageService.convert(Objects.requireNonNull(messageService.getlang().getString("Skills.Quarrying.Luck"))));
+            } else {
+                // Experience orbs
+                final ExperienceOrb entity = (ExperienceOrb) block.getWorld()
+                        .spawnEntity(block.getLocation(), EntityType.EXPERIENCE_ORB);
+                final int exp = random.nextInt(5) + 1; // 1-5 experience points
+                entity.setExperience(exp);
+                entity.setGlowing(true);
+                final String expMessage = messageService.getlang().getString("Skills.Quarrying.Exp");
+                player.sendMessage(messageService.convert(Objects.requireNonNull(expMessage)
+                        .replaceAll("%exp%", String.valueOf(exp))));
             }
-            // Drop experience orb instead of special items
-            final ExperienceOrb entity = (ExperienceOrb) block.getWorld()
-                    .spawnEntity(block.getLocation(), EntityType.EXPERIENCE_ORB);
-            final int exp = new Random().nextInt(5) + 1; // 1-5 experience points
-            entity.setExperience(exp);
-            entity.setGlowing(true);
-            final String expMessage = messageService.getlang().getString("Skills.Quarrying.Exp");
-            player.sendMessage(messageService.convert(Objects.requireNonNull(expMessage)
-                    .replaceAll("%exp%", String.valueOf(exp))));
+        }
+    }
+
+    @NotNull
+    private List<Material> getRewardTypes(@NotNull Material material) {
+        switch (material.name()) {
+            case "STONE":
+                return Collections.singletonList(XMaterial.STONE.parseMaterial());
+            case "TERRACOTTA":
+                return Arrays.asList(XMaterial.WHITE_TERRACOTTA.parseMaterial(), XMaterial.ORANGE_TERRACOTTA.parseMaterial(), XMaterial.MAGENTA_TERRACOTTA.parseMaterial(),
+                        XMaterial.LIGHT_BLUE_TERRACOTTA.parseMaterial(), XMaterial.YELLOW_TERRACOTTA.parseMaterial(), XMaterial.LIME_TERRACOTTA.parseMaterial(),
+                        XMaterial.PINK_TERRACOTTA.parseMaterial(), XMaterial.GRAY_TERRACOTTA.parseMaterial(), XMaterial.LIGHT_GRAY_TERRACOTTA.parseMaterial(),
+                        XMaterial.CYAN_TERRACOTTA.parseMaterial(), XMaterial.PURPLE_TERRACOTTA.parseMaterial(), XMaterial.BLUE_TERRACOTTA.parseMaterial(),
+                        XMaterial.BROWN_TERRACOTTA.parseMaterial(), XMaterial.GREEN_TERRACOTTA.parseMaterial(), XMaterial.RED_TERRACOTTA.parseMaterial(),
+                        XMaterial.BLACK_TERRACOTTA.parseMaterial());
+            case "GRANITE":
+                return Collections.singletonList(XMaterial.POLISHED_GRANITE.parseMaterial());
+            case "ANDESITE":
+                return Collections.singletonList(XMaterial.POLISHED_ANDESITE.parseMaterial());
+            case "DIORITE":
+                return Collections.singletonList(XMaterial.POLISHED_DIORITE.parseMaterial());
+            case "DEEPSLATE":
+                return Collections.singletonList(XMaterial.DEEPSLATE.parseMaterial());
+            case "SANDSTONE":
+                return Collections.singletonList(XMaterial.SANDSTONE.parseMaterial());
+            case "RED_SANDSTONE":
+                return Collections.singletonList(XMaterial.GLASS_BOTTLE.parseMaterial());
+            case "END_STONE":
+                return Collections.singletonList(XMaterial.ENDER_PEARL.parseMaterial());
+            case "NETHERRACK":
+                return Collections.singletonList(XMaterial.NETHER_BRICK.parseMaterial());
+            default:
+                throw new IllegalArgumentException("Material " + material + " is not valid.");
         }
     }
 
