@@ -12,12 +12,15 @@ import org.apache.commons.lang.WordUtils;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.ExperienceOrb;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 import java.util.Objects;
+import java.util.Random;
 
 /**
  * @author Callum Johnson
@@ -76,14 +79,31 @@ public class Woodcutting extends AbstractBlockSkill {
         final Block block = (Block) blockData;
         if (chanceCalculator.roll(record, this, 0.10)) {
             player.playSound(player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_CHIME, 5, 2);
-            final Collection<ItemStack> drops = block.getDrops(player.getInventory().getItemInMainHand());
-            drops.forEach(drop -> {
-                if (drop.getType().isAir()) return;
-                block.getWorld().dropItemNaturally(block.getLocation(), drop);
-            });
-            player.sendMessage(messageService.convert(Objects.requireNonNull(Objects.requireNonNull(messageService.getlang().getString("Skills.WoodCutting"))
-                    .replaceAll("%item%", WordUtils.capitalizeFully(block.getType()
-                            .name().replaceAll("_", " ").toLowerCase())))));
+            // Randomly choose between two possible benefits: double drops or experience
+            final Random random = new Random();
+            final boolean giveExperience = random.nextBoolean();
+            
+            if (!giveExperience) {
+                // Double drops
+                final Collection<ItemStack> drops = block.getDrops(player.getInventory().getItemInMainHand());
+                drops.forEach(drop -> {
+                    if (drop.getType().isAir()) return;
+                    block.getWorld().dropItemNaturally(block.getLocation(), drop);
+                });
+                player.sendMessage(messageService.convert(Objects.requireNonNull(Objects.requireNonNull(messageService.getlang().getString("Skills.WoodCutting.DoubleDrop"))
+                        .replaceAll("%item%", WordUtils.capitalizeFully(block.getType()
+                                .name().replaceAll("_", " ").toLowerCase())))));
+            } else {
+                // Experience orbs
+                final ExperienceOrb entity = (ExperienceOrb) block.getWorld()
+                        .spawnEntity(block.getLocation(), EntityType.EXPERIENCE_ORB);
+                final int exp = random.nextInt(5) + 1; // 1-5 experience points
+                entity.setExperience(exp);
+                entity.setGlowing(true);
+                final String expMessage = messageService.getlang().getString("Skills.WoodCutting.Exp");
+                player.sendMessage(messageService.convert(Objects.requireNonNull(expMessage)
+                        .replaceAll("%exp%", String.valueOf(exp))));
+            }
         }
     }
 
