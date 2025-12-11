@@ -14,6 +14,8 @@ import org.apache.commons.lang.WordUtils;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.ExperienceOrb;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -136,7 +138,12 @@ public class Digging extends AbstractBlockSkill {
         final Block block = (Block) blockData;
         if (chanceCalculator.roll(record, this, 0.10)) {
             player.playSound(player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_CHIME, 5, 2);
-            if (chanceCalculator.roll(record, this, 0.50)) {
+            // Randomly choose between three possible benefits: double drops, special items, or experience
+            final Random random = new Random();
+            final int benefitType = random.nextInt(3); // 0, 1, or 2
+            
+            if (benefitType == 0) {
+                // Double drops
                 final Collection<ItemStack> drops = block.getDrops(player.getInventory().getItemInMainHand());
                 drops.forEach(drop -> {
                     if (drop.getType().isAir()) return;
@@ -144,12 +151,23 @@ public class Digging extends AbstractBlockSkill {
                 });
                 player.sendMessage(messageService.convert(Objects.requireNonNull(messageService.getlang().getString("Skills.Digging.DoubleDrop"))
                         .replaceAll("%type%", WordUtils.capitalizeFully(block.getType().name().replaceAll("_", " ").toLowerCase()))));
-                return;
+            } else if (benefitType == 1) {
+                // Special item drops
+                final List<Material> rewardTypes = getRewardTypes(block.getType());
+                final Material reward = rewardTypes.get(random.nextInt(rewardTypes.size()));
+                block.getWorld().dropItemNaturally(block.getLocation(), new ItemStack(reward));
+                player.sendMessage(messageService.convert(Objects.requireNonNull(messageService.getlang().getString("Skills.Digging.Special"))));
+            } else {
+                // Experience orbs
+                final ExperienceOrb entity = (ExperienceOrb) block.getWorld()
+                        .spawnEntity(block.getLocation(), EntityType.EXPERIENCE_ORB);
+                final int exp = random.nextInt(5) + 1; // 1-5 experience points
+                entity.setExperience(exp);
+                entity.setGlowing(true);
+                final String expMessage = messageService.getlang().getString("Skills.Digging.Exp");
+                player.sendMessage(messageService.convert(Objects.requireNonNull(expMessage)
+                        .replaceAll("%exp%", String.valueOf(exp))));
             }
-            final List<Material> rewardTypes = getRewardTypes(block.getType());
-            final Material reward = rewardTypes.get(new Random().nextInt(rewardTypes.size()));
-            block.getWorld().dropItemNaturally(block.getLocation(), new ItemStack(reward));
-            player.sendMessage(messageService.convert(Objects.requireNonNull(messageService.getlang().getString("Skills.Digging.Special"))));
         }
     }
 
