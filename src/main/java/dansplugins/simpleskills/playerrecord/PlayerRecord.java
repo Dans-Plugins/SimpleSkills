@@ -33,6 +33,7 @@ public class PlayerRecord implements Savable, Cacheable {
     private UUID playerUUID;
     private HashMap<Integer, Integer> skillLevels = new HashMap<>();
     private HashMap<Integer, Integer> experience = new HashMap<>();
+    private HashMap<Integer, Boolean> disabledBenefits = new HashMap<>();
 
     public PlayerRecord(SkillRepository skillRepository, MessageService messageService, ConfigService configService, ExperienceCalculator experienceCalculator, Log log, UUID playerUUID) {
         this.skillRepository = skillRepository;
@@ -130,6 +131,19 @@ public class PlayerRecord implements Savable, Cacheable {
             return;
         }
         checkForLevelUp(ID);
+    }
+
+    public boolean isBenefitEnabled(int skillID) {
+        return !disabledBenefits.getOrDefault(skillID, false);
+    }
+
+    public void setBenefitEnabled(int skillID, boolean enabled) {
+        disabledBenefits.put(skillID, !enabled);
+    }
+
+    public void toggleBenefit(int skillID) {
+        boolean currentlyEnabled = isBenefitEnabled(skillID);
+        setBenefitEnabled(skillID, !currentlyEnabled);
     }
 
     // ---
@@ -235,6 +249,7 @@ public class PlayerRecord implements Savable, Cacheable {
         saveMap.put("playerUUID", gson.toJson(playerUUID));
         saveMap.put("skillLevels", gson.toJson(skillLevels));
         saveMap.put("experience", gson.toJson(experience));
+        saveMap.put("disabledBenefits", gson.toJson(disabledBenefits));
 
         return saveMap;
     }
@@ -245,10 +260,17 @@ public class PlayerRecord implements Savable, Cacheable {
 
         Type integerToIntegerMapType = new TypeToken<HashMap<Integer, Integer>>() {
         }.getType();
+        Type integerToBooleanMapType = new TypeToken<HashMap<Integer, Boolean>>() {
+        }.getType();
 
         playerUUID = UUID.fromString(gson.fromJson(data.get("playerUUID"), String.class));
         skillLevels = gson.fromJson(data.get("skillLevels"), integerToIntegerMapType);
         experience = gson.fromJson(data.get("experience"), integerToIntegerMapType);
+        if (data.containsKey("disabledBenefits")) {
+            disabledBenefits = gson.fromJson(data.get("disabledBenefits"), integerToBooleanMapType);
+        } else {
+            disabledBenefits = new HashMap<>();
+        }
     }
 
 }
