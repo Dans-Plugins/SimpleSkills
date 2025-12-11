@@ -19,11 +19,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
-import preponderous.ponder.minecraft.bukkit.PonderMC;
-import preponderous.ponder.minecraft.bukkit.abs.AbstractPluginCommand;
-import preponderous.ponder.minecraft.bukkit.abs.PonderBukkitPlugin;
-import preponderous.ponder.minecraft.bukkit.nms.NMSAssistant;
+import preponderous.ponder.minecraft.abs.AbstractPluginCommand;
+import preponderous.ponder.minecraft.nms.NMSAssistant;
+import preponderous.ponder.minecraft.spigot.PonderMC;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,7 +31,7 @@ import java.util.Arrays;
 /**
  * @author Daniel Stephenson
  */
-public class SimpleSkills extends PonderBukkitPlugin {
+public class SimpleSkills extends JavaPlugin {
     private final String pluginVersion = "v" + getDescription().getVersion();
     private PonderMC ponder;
 
