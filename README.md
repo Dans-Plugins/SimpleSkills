@@ -40,8 +40,13 @@ Please fill out a bug report [here](https://github.com/dmccoystephenson/SimpleSk
 | Callum            | Massively improved the plugin in many ways |
 | Deej              | Renamed a skill.                           |
 
-## License
-GPL3
+## 📄 License
+
+This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
+
+**Why MIT?**  
+The MIT License is short, permissive, and widely understood. It allows anyone to use, modify, distribute, and even commercially exploit the software with minimal restrictions, as long as they include the original license and copyright notice.  
+We chose MIT to **maximize adoption and flexibility**, making it easy for individuals and organizations to integrate this project into their own work without legal complexity.
 
 ## Project Status
 This project is in active development.
