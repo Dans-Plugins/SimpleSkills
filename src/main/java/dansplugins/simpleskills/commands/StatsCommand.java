@@ -34,7 +34,7 @@ public class StatsCommand extends AbstractPluginCommand {
 
         for (String sc : messageService.getlang().getStringList("Stats"))
             commandSender.sendMessage(messageService.convert(sc)
-                    .replaceAll("%nos%", String.valueOf(skillRepository.getSkills().size()))
+                    .replaceAll("%nos%", String.valueOf(skillRepository.getActiveSkills().size()))
                     .replaceAll("%nopr%", String.valueOf(playerRecordRepository.getPlayerRecords().size()))
                     .replaceAll("%uns%", String.valueOf(getNumUnknownSkills())));
         return true;
@@ -46,12 +46,12 @@ public class StatsCommand extends AbstractPluginCommand {
     }
 
     public int getNumUnknownSkills() {
-        return skillRepository.getSkills().size() - getNumKnownSkills();
+        return skillRepository.getActiveSkills().size() - getNumKnownSkills();
     }
 
     public int getNumKnownSkills() {
         int knownSkills = 0;
-        for (AbstractSkill skill : skillRepository.getSkills()) {
+        for (AbstractSkill skill : skillRepository.getActiveSkills()) {
             for (PlayerRecord record : playerRecordRepository.getPlayerRecords()) {
                 if (record.isKnown(skill)) {
                     knownSkills++;

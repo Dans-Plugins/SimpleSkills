@@ -163,7 +163,7 @@ public class SimpleSkills extends JavaPlugin {
 
     private void registerEventListeners() {
         log.debug("Registering events...");
-        for (AbstractSkill skill : skillRepository.getSkills()) {
+        for (AbstractSkill skill : skillRepository.getActiveSkills()) {
             log.debug("Registering events for skill: " + skill.getName());
             skill.register();
         }
@@ -177,7 +177,7 @@ public class SimpleSkills extends JavaPlugin {
                 new HelpCommand(messageService),
                 new InfoCommand(playerRecordRepository, messageService, skillRepository, configService, experienceCalculator, log),
                 new StatsCommand(messageService, playerRecordRepository, skillRepository),
-                new ForceCommand(playerRecordRepository, skillRepository),
+                new ForceCommand(playerRecordRepository, skillRepository, configService),
                 new SkillCommand(messageService, skillRepository),
                 new TopCommand(playerRecordRepository, messageService, skillRepository),
                 new ReloadCommand(messageService, configService)

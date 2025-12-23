@@ -5,3 +5,46 @@ defaultBaseExperienceRequirement: 10
 defaultExperienceIncreaseFactor: 1.2
 levelUpAlert: true
 benefitAlert: true
+skills:
+  # Skill activation states - all skills default to active: true
+  # Change to active: false to deactivate a skill
+  Athlete:
+    active: true
+  Boating:
+    active: true
+  Breeding:
+    active: true
+  Cardio:
+    active: true
+  Crafting:
+    active: true
+  Digging:
+    active: true
+  Dueling:
+    active: true
+  Enchanting:
+    active: true
+  Farming:
+    active: true
+  Fishing:
+    active: true
+  Floriculture:
+    active: true
+  Gliding:
+    active: true
+  Hardiness:
+    active: true
+  Mining:
+    active: true
+  MonsterHunting:
+    active: true
+  Pyromaniac:
+    active: true
+  Quarrying:
+    active: true
+  Riding:
+    active: true
+  Strength:
+    active: true
+  Woodcutting:
+    active: true
