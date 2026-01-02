@@ -136,7 +136,7 @@ public class PlayerRecord implements Savable, Cacheable {
             Player player = Bukkit.getPlayer(playerUUID);
             if (player != null) {
                 String expMessage = messageService.getlang().getString("ExperienceGain");
-                if (expMessage != null) {
+                if (expMessage != null && skill.getName() != null) {
                     player.sendActionBar(messageService.convert(expMessage.replaceAll("%skill%", skill.getName())));
                 }
             }
@@ -220,10 +220,13 @@ public class PlayerRecord implements Savable, Cacheable {
             
             // Send title notification if enabled
             if (configService.getConfig().getBoolean("titleNotifications", true)) {
-                String title = messageService.convert(messageService.getlang().getString("LearnedSkillTitle"));
-                String subtitle = messageService.convert(messageService.getlang().getString("LearnedSkillSubtitle")
-                        .replaceAll("%skill%", skill.getName()));
-                player.sendTitle(title, subtitle, 10, 70, 20);
+                String title = messageService.getlang().getString("LearnedSkillTitle");
+                String subtitle = messageService.getlang().getString("LearnedSkillSubtitle");
+                if (title != null && subtitle != null && skill.getName() != null) {
+                    title = messageService.convert(title);
+                    subtitle = messageService.convert(subtitle.replaceAll("%skill%", skill.getName()));
+                    player.sendTitle(title, subtitle, 10, 70, 20);
+                }
             }
             
             // Play sound if enabled
@@ -258,11 +261,15 @@ public class PlayerRecord implements Savable, Cacheable {
                 
                 // Send title notification if enabled
                 if (configService.getConfig().getBoolean("titleNotifications", true)) {
-                    String title = messageService.convert(messageService.getlang().getString("LevelUpTitle"));
-                    String subtitle = messageService.convert(messageService.getlang().getString("LevelUpSubtitle")
-                            .replaceAll("%skill%", skill.getName())
-                            .replaceAll("%level%", String.valueOf(getSkillLevel(ID, true))));
-                    player.sendTitle(title, subtitle, 10, 70, 20);
+                    String title = messageService.getlang().getString("LevelUpTitle");
+                    String subtitle = messageService.getlang().getString("LevelUpSubtitle");
+                    if (title != null && subtitle != null && skill.getName() != null) {
+                        title = messageService.convert(title);
+                        subtitle = messageService.convert(subtitle
+                                .replaceAll("%skill%", skill.getName())
+                                .replaceAll("%level%", String.valueOf(getSkillLevel(ID, true))));
+                        player.sendTitle(title, subtitle, 10, 70, 20);
+                    }
                 }
                 
                 // Play sound if enabled
