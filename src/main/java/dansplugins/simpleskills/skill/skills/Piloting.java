@@ -24,7 +24,7 @@ public class Piloting extends AbstractMovementSkill {
     private final ChanceCalculator chanceCalculator;
 
     /**
-     * The Piloting skill is levelled through piloting flying entities.
+     * Constructor for the Piloting skill.
      */
     public Piloting(ConfigService configService, Log log, PlayerRecordRepository playerRecordRepository, SimpleSkills simpleSkills, MessageService messageService, ChanceCalculator chanceCalculator) {
         super(configService, log, playerRecordRepository, simpleSkills, messageService, "Piloting");
