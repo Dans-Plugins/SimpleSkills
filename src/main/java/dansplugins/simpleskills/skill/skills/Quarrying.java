@@ -151,7 +151,8 @@ public class Quarrying extends AbstractBlockSkill {
                 final List<Material> rewardTypes = getRewardTypes(block.getType());
                 final Material reward = rewardTypes.get(random.nextInt(rewardTypes.size()));
                 block.getWorld().dropItemNaturally(block.getLocation(), new ItemStack(reward));
-                if (reward == XMaterial.GLASS_BOTTLE.parseMaterial())
+                final Material glassBottle = XMaterial.GLASS_BOTTLE.parseMaterial();
+                if (glassBottle != null && reward == glassBottle)
                     player.sendMessage(messageService.convert(Objects.requireNonNull(messageService.getlang().getString("Skills.Quarrying.Water"))));
                 else
                     player.sendMessage(messageService.convert(Objects.requireNonNull(messageService.getlang().getString("Skills.Quarrying.Luck"))));
@@ -173,30 +174,30 @@ public class Quarrying extends AbstractBlockSkill {
     private List<Material> getRewardTypes(@NotNull Material material) {
         switch (material.name()) {
             case "STONE":
-                return Collections.singletonList(XMaterial.STONE.parseMaterial());
+                return Collections.singletonList(Objects.requireNonNull(XMaterial.STONE.parseMaterial()));
             case "TERRACOTTA":
-                return Arrays.asList(XMaterial.WHITE_TERRACOTTA.parseMaterial(), XMaterial.ORANGE_TERRACOTTA.parseMaterial(), XMaterial.MAGENTA_TERRACOTTA.parseMaterial(),
-                        XMaterial.LIGHT_BLUE_TERRACOTTA.parseMaterial(), XMaterial.YELLOW_TERRACOTTA.parseMaterial(), XMaterial.LIME_TERRACOTTA.parseMaterial(),
-                        XMaterial.PINK_TERRACOTTA.parseMaterial(), XMaterial.GRAY_TERRACOTTA.parseMaterial(), XMaterial.LIGHT_GRAY_TERRACOTTA.parseMaterial(),
-                        XMaterial.CYAN_TERRACOTTA.parseMaterial(), XMaterial.PURPLE_TERRACOTTA.parseMaterial(), XMaterial.BLUE_TERRACOTTA.parseMaterial(),
-                        XMaterial.BROWN_TERRACOTTA.parseMaterial(), XMaterial.GREEN_TERRACOTTA.parseMaterial(), XMaterial.RED_TERRACOTTA.parseMaterial(),
-                        XMaterial.BLACK_TERRACOTTA.parseMaterial());
+                return Arrays.asList(Objects.requireNonNull(XMaterial.WHITE_TERRACOTTA.parseMaterial()), Objects.requireNonNull(XMaterial.ORANGE_TERRACOTTA.parseMaterial()), Objects.requireNonNull(XMaterial.MAGENTA_TERRACOTTA.parseMaterial()),
+                        Objects.requireNonNull(XMaterial.LIGHT_BLUE_TERRACOTTA.parseMaterial()), Objects.requireNonNull(XMaterial.YELLOW_TERRACOTTA.parseMaterial()), Objects.requireNonNull(XMaterial.LIME_TERRACOTTA.parseMaterial()),
+                        Objects.requireNonNull(XMaterial.PINK_TERRACOTTA.parseMaterial()), Objects.requireNonNull(XMaterial.GRAY_TERRACOTTA.parseMaterial()), Objects.requireNonNull(XMaterial.LIGHT_GRAY_TERRACOTTA.parseMaterial()),
+                        Objects.requireNonNull(XMaterial.CYAN_TERRACOTTA.parseMaterial()), Objects.requireNonNull(XMaterial.PURPLE_TERRACOTTA.parseMaterial()), Objects.requireNonNull(XMaterial.BLUE_TERRACOTTA.parseMaterial()),
+                        Objects.requireNonNull(XMaterial.BROWN_TERRACOTTA.parseMaterial()), Objects.requireNonNull(XMaterial.GREEN_TERRACOTTA.parseMaterial()), Objects.requireNonNull(XMaterial.RED_TERRACOTTA.parseMaterial()),
+                        Objects.requireNonNull(XMaterial.BLACK_TERRACOTTA.parseMaterial()));
             case "GRANITE":
-                return Collections.singletonList(XMaterial.POLISHED_GRANITE.parseMaterial());
+                return Collections.singletonList(Objects.requireNonNull(XMaterial.POLISHED_GRANITE.parseMaterial()));
             case "ANDESITE":
-                return Collections.singletonList(XMaterial.POLISHED_ANDESITE.parseMaterial());
+                return Collections.singletonList(Objects.requireNonNull(XMaterial.POLISHED_ANDESITE.parseMaterial()));
             case "DIORITE":
-                return Collections.singletonList(XMaterial.POLISHED_DIORITE.parseMaterial());
+                return Collections.singletonList(Objects.requireNonNull(XMaterial.POLISHED_DIORITE.parseMaterial()));
             case "DEEPSLATE":
-                return Collections.singletonList(XMaterial.DEEPSLATE.parseMaterial());
+                return Collections.singletonList(Objects.requireNonNull(XMaterial.DEEPSLATE.parseMaterial()));
             case "SANDSTONE":
-                return Collections.singletonList(XMaterial.SANDSTONE.parseMaterial());
+                return Collections.singletonList(Objects.requireNonNull(XMaterial.SANDSTONE.parseMaterial()));
             case "RED_SANDSTONE":
-                return Collections.singletonList(XMaterial.GLASS_BOTTLE.parseMaterial());
+                return Collections.singletonList(Objects.requireNonNull(XMaterial.GLASS_BOTTLE.parseMaterial()));
             case "END_STONE":
-                return Collections.singletonList(XMaterial.ENDER_PEARL.parseMaterial());
+                return Collections.singletonList(Objects.requireNonNull(XMaterial.ENDER_PEARL.parseMaterial()));
             case "NETHERRACK":
-                return Collections.singletonList(XMaterial.NETHER_BRICK.parseMaterial());
+                return Collections.singletonList(Objects.requireNonNull(XMaterial.NETHER_BRICK.parseMaterial()));
             default:
                 throw new IllegalArgumentException("Material " + material + " is not valid.");
         }
