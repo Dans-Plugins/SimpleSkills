@@ -206,6 +206,7 @@ public class SimpleSkills extends JavaPlugin {
         skillRepository.addSkill(new Pyromaniac(configService, log, playerRecordRepository, this, messageService, chanceCalculator));
         skillRepository.addSkill(new Quarrying(configService, log, playerRecordRepository, this, messageService, chanceCalculator));
         skillRepository.addSkill(new Riding(configService, log, playerRecordRepository, this, messageService, chanceCalculator));
+        skillRepository.addSkill(new Piloting(configService, log, playerRecordRepository, this, messageService, chanceCalculator));
         skillRepository.addSkill(new Strength(configService, log, playerRecordRepository, this, messageService, chanceCalculator));
     }
 
