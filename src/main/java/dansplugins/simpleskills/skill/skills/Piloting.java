@@ -24,7 +24,8 @@ public class Piloting extends AbstractMovementSkill {
     private final ChanceCalculator chanceCalculator;
 
     /**
-     * Constructor for the Piloting skill.
+     * The Piloting skill is obtained by piloting flying entities like ghasts.
+     * @param chanceCalculator the calculator used for determining skill rewards
      */
     public Piloting(ConfigService configService, Log log, PlayerRecordRepository playerRecordRepository, SimpleSkills simpleSkills, MessageService messageService, ChanceCalculator chanceCalculator) {
         super(configService, log, playerRecordRepository, simpleSkills, messageService, "Piloting");
