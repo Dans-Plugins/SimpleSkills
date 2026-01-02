@@ -32,7 +32,13 @@ SendInfo-Header:
 SendInfo-Body:
   - "&b%skill% - LVL: %level% - EXP: %min%/%max%"
 LearnedSkill: "&aYou've learned the %skill% skill. Type /ss info to view your skills."
+LearnedSkillTitle: "&6&lNew Skill!"
+LearnedSkillSubtitle: "&a%skill%"
 LevelUp: "&aYou've leveled up your %skill% skill to %level%"
+LevelUpTitle: "&6&lLevel Up!"
+LevelUpSubtitle: "&a%skill% &7- &bLevel %level%"
+LevelUpTip: "&7Type &e/ss help &7for more info"
+ExperienceGain: "&a+1 %skill% XP"
 Skill-Info:
   - "&b=== %skillname% ==="
   - "&bActive: %active%"
