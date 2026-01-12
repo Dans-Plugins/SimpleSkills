@@ -11,6 +11,8 @@ import dansplugins.simpleskills.logging.Log;
 import org.bukkit.Sound;
 import org.bukkit.entity.Boat;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
@@ -74,8 +76,8 @@ public class Boating extends AbstractMovementSkill {
         if (record == null) return;
         if (!chanceCalculator.roll(record, this, 0.10)) return;
         if (!(player.getVehicle() instanceof Boat)) return;
-        final Boat boat = (Boat) player.getVehicle();
-        boat.setVelocity(boat.getVelocity().multiply(4));
+        if (player.hasPotionEffect(PotionEffectType.SPEED)) player.removePotionEffect(PotionEffectType.SPEED);
+        player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 600, 1, true, false));
         player.sendMessage(messageService.convert(Objects.requireNonNull(messageService.getlang().getString("Skills.Boating"))));
         player.playSound(player.getLocation(), Sound.ENTITY_BOAT_PADDLE_WATER, 5, 2);
     }
