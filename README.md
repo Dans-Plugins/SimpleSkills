@@ -18,6 +18,20 @@ The general design philosophy for this project is to create a systematic, easy t
 - [List of Commands](https://github.com/dmccoystephenson/SimpleSkills/wiki/Commands)
 - [FAQ](https://github.com/dmccoystephenson/SimpleSkills/wiki/FAQ) (coming soon)
 
+### Notification Features
+SimpleSkills now includes enhanced visual and audio notifications for skill progression:
+- **Title Notifications**: Large, eye-catching title popups when you level up or learn new skills
+- **Action Bar Notifications**: Subtle experience gain notifications above your hotbar
+- **Sound Effects**: Satisfying audio feedback when reaching new levels
+- **Helpful Tips**: Reminders to use `/ss help` when leveling up
+
+All notification types can be configured in `config.yml`:
+```yaml
+titleNotifications: true        # Enable/disable title popups
+actionBarNotifications: true    # Enable/disable action bar XP notifications  
+soundNotifications: true        # Enable/disable level-up sounds
+```
+
 ## Support
 You can find the support discord server [here](https://discord.gg/xXtuAQ2).
 

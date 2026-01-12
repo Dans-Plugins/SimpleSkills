@@ -5,3 +5,10 @@ defaultBaseExperienceRequirement: 10
 defaultExperienceIncreaseFactor: 1.2
 levelUpAlert: true
 benefitAlert: true
+# Notification settings
+# titleNotifications: Show title popup on level up (true/false)
+# actionBarNotifications: Show action bar for experience gains (true/false)
+# soundNotifications: Play sound on level up (true/false)
+titleNotifications: true
+actionBarNotifications: true
+soundNotifications: true
