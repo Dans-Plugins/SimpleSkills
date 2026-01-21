@@ -9,6 +9,7 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.Boat;
 import org.bukkit.entity.Creature;
+import org.bukkit.entity.Flying;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.jetbrains.annotations.NotNull;
@@ -46,6 +47,11 @@ public abstract class AbstractMovementSkill extends AbstractSkill {
      * Map to save the distance travelled whilst boating.
      */
     private final HashMap<UUID, Double> boat = new HashMap<>();
+
+    /**
+     * Map to save the distance travelled whilst piloting.
+     */
+    private final HashMap<UUID, Double> pilot = new HashMap<>();
 
     /**
      * The overhead Movement Skill abstraction class.
@@ -135,6 +141,19 @@ public abstract class AbstractMovementSkill extends AbstractSkill {
             }
             incrementExperience(event.getPlayer());
             executeReward(player, event);
+        } else if (getSkillType() == MovementSkillType.PILOTING && player.isInsideVehicle()
+                && player.getVehicle() instanceof Flying) {
+            if (!pilot.containsKey(id)) {
+                pilot.put(id, from.distanceSquared(to));
+                return;
+            } else {
+                if (pilot.getOrDefault(id, 0.0) <= 8.0) {
+                    pilot.put(id, pilot.getOrDefault(id, 0.0) + from.distanceSquared(to));
+                    return;
+                } else pilot.remove(id);
+            }
+            incrementExperience(event.getPlayer());
+            executeReward(player, event);
         }
     }
 
@@ -189,7 +208,12 @@ public abstract class AbstractMovementSkill extends AbstractSkill {
         /**
          * Swimming but this time... in a boat.
          */
-        BOATING
+        BOATING,
+
+        /**
+         * Piloting a Flying Entity
+         */
+        PILOTING
 
     }
 
