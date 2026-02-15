@@ -5,3 +5,4 @@ defaultBaseExperienceRequirement: 10
 defaultExperienceIncreaseFactor: 1.2
 levelUpAlert: true
 benefitAlert: true
+boatSpeedBenefitEnabled: true
