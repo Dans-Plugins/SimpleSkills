@@ -5,7 +5,7 @@ defaultBaseExperienceRequirement: 10
 defaultExperienceIncreaseFactor: 1.2
 levelUpAlert: true
 benefitAlert: true
-boatSpeedBenefitEnabled: true
+boatingBenefitEnabled: true
 athleteBenefitEnabled: true
 cardioBenefitEnabled: true
 glidingBenefitEnabled: true

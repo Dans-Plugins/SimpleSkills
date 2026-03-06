@@ -76,7 +76,7 @@ public class Hardiness extends AbstractSkill {
     public void executeReward(@NotNull Player player, Object... skillData) {
         final PlayerRecord record = getRecord(player);
         if (record == null) return;
-        if (!configService.getConfig().getBoolean("hardinessBenefitEnabled", true)) return;
+        if (!isBenefitEnabled()) return;
         if (skillData.length != 2) throw new IllegalArgumentException("Skill Data is not of length '2'");
         final Object causeData = skillData[0];
         final Object eventData = skillData[1];

@@ -85,7 +85,7 @@ public class MonsterHunting extends AbstractSkill {
     public void executeReward(@NotNull Player player, Object... skillData) {
         final PlayerRecord record = getRecord(player);
         if (record == null) return;
-        if (!configService.getConfig().getBoolean("monsterHuntingBenefitEnabled", true)) return;
+        if (!isBenefitEnabled()) return;
         if (skillData.length != 1) throw new IllegalArgumentException("Skill Data is not of length '1'");
         final Object entityData = skillData[0];
         if (!(entityData instanceof Monster)) throw new IllegalArgumentException("Skill Data[0] is not Monster.");

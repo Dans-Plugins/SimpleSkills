@@ -78,7 +78,7 @@ public class Dueling extends AbstractSkill {
         if (skillData.length != 1) throw new IllegalArgumentException("Skill Data is not of length [0].");
         final PlayerRecord record = getRecord(player);
         if (record == null) return;
-        if (!configService.getConfig().getBoolean("duelingBenefitEnabled", true)) return;
+        if (!isBenefitEnabled()) return;
         if (!chanceCalculator.roll(record, this, 0.10)) return;
         if (player.hasPotionEffect(PotionEffectType.ABSORPTION)) player.removePotionEffect(PotionEffectType.ABSORPTION);
         player.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 500, 5, true, false));

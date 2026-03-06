@@ -73,7 +73,7 @@ public class Cardio extends AbstractMovementSkill {
     public void executeReward(@NotNull Player player, Object... skillData) {
         final PlayerRecord record = getRecord(player);
         if (record == null) return;
-        if (!configService.getConfig().getBoolean("cardioBenefitEnabled", true)) return;
+        if (!isBenefitEnabled()) return;
         if (!chanceCalculator.roll(record, this, 0.10)) return;
         if (player.hasPotionEffect(PotionEffectType.SPEED)) player.removePotionEffect(PotionEffectType.SPEED);
         player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 600, 1, true, false));

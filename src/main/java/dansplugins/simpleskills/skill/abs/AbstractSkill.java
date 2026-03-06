@@ -203,6 +203,39 @@ public abstract class AbstractSkill implements Listener {
         return playerRecordRepository.getPlayerRecord(player.getUniqueId());
     }
 
+    /**
+     * Method to check if benefits are enabled for this skill.
+     * <p>
+     * This method checks the configuration for a skill-specific benefit toggle.
+     * The config key follows the pattern: {@code <skillName>BenefitEnabled}
+     * where skillName is the camelCase version of the skill name (e.g., "boating", "monsterHunting").
+     * </p>
+     * <p>
+     * If the config key is not found, it defaults to {@code true} to maintain backward compatibility
+     * and ensure new skills work without manual config updates.
+     * </p>
+     *
+     * @return {@code true} if benefits are enabled for this skill, {@code false} otherwise.
+     */
+    protected boolean isBenefitEnabled() {
+        // Convert skill name to camelCase config key (e.g., "Boating" -> "boating", "Monster Hunting" -> "monsterHunting")
+        String skillName = name.replaceAll("_", " ");
+        String[] words = skillName.split("\\s+");
+        StringBuilder configKey = new StringBuilder();
+        for (int i = 0; i < words.length; i++) {
+            String word = words[i].toLowerCase();
+            if (i == 0) {
+                configKey.append(word);
+            } else {
+                configKey.append(Character.toUpperCase(word.charAt(0)))
+                         .append(word.substring(1));
+            }
+        }
+        configKey.append("BenefitEnabled");
+        
+        return configService.getConfig().getBoolean(configKey.toString(), true);
+    }
+
     public double obtainRandomChance() {
         return Math.random() * 100;
     }

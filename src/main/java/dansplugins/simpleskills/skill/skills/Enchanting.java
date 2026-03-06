@@ -80,7 +80,7 @@ public class Enchanting extends AbstractSkill {
             throw new IllegalArgumentException("Skill Data[0] is not EnchantEvent");
         final PlayerRecord record = getRecord(player);
         if (record == null) return;
-        if (!configService.getConfig().getBoolean("enchantingBenefitEnabled", true)) return;
+        if (!isBenefitEnabled()) return;
         if (!chanceCalculator.roll(record, this, 0.10)) return;
         final EnchantItemEvent event = (EnchantItemEvent) skillData[0];
         final Random random = new Random();

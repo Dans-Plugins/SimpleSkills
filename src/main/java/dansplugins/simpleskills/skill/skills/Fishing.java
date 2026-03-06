@@ -86,7 +86,7 @@ public class Fishing extends AbstractSkill {
         final Entity entity = (Entity) fishedData;
         final PlayerRecord record = getRecord(player);
         if (record == null) return;
-        if (!configService.getConfig().getBoolean("fishingBenefitEnabled", true)) return;
+        if (!isBenefitEnabled()) return;
         if (!chanceCalculator.roll(record, this, 0.10)) return;
         String entityName;
         if (entity instanceof Item) entityName = ((Item) entity).getItemStack().getType().name();

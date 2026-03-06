@@ -73,7 +73,7 @@ public class Athlete extends AbstractMovementSkill {
     public void executeReward(@NotNull Player player, Object... skillData) {
         final PlayerRecord record = getRecord(player);
         if (record == null) return;
-        if (!configService.getConfig().getBoolean("athleteBenefitEnabled", true)) return;
+        if (!isBenefitEnabled()) return;
         if (!chanceCalculator.roll(record, this, 0.10)) return;
         if (player.hasPotionEffect(PotionEffectType.DOLPHINS_GRACE)) {
             player.removePotionEffect(PotionEffectType.DOLPHINS_GRACE);
