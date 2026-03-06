@@ -219,14 +219,17 @@ public abstract class AbstractSkill implements Listener {
      */
     protected boolean isBenefitEnabled() {
         // Convert skill name to camelCase config key (e.g., "Boating" -> "boating", "Monster Hunting" -> "monsterHunting")
-        String skillName = name.replaceAll("_", " ");
+        String skillName = name.replaceAll("_", " ");  // Handle underscore-separated names (if any)
         String[] words = skillName.split("\\s+");
         StringBuilder configKey = new StringBuilder();
         for (int i = 0; i < words.length; i++) {
-            String word = words[i].toLowerCase();
-            if (i == 0) {
+            String word = words[i].trim().toLowerCase();
+            if (word.isEmpty()) continue;  // Skip empty words from multiple spaces
+            if (configKey.length() == 0) {
+                // First word is lowercase
                 configKey.append(word);
             } else {
+                // Subsequent words are capitalized
                 configKey.append(Character.toUpperCase(word.charAt(0)))
                          .append(word.substring(1));
             }
