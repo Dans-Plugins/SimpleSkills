@@ -77,6 +77,7 @@ public class Gliding extends AbstractMovementSkill {
     public void executeReward(@NotNull Player player, Object... skillData) {
         final PlayerRecord record = getRecord(player);
         if (record == null) return;
+        if (!configService.getConfig().getBoolean("glidingBenefitEnabled", true)) return;
         if (!chanceCalculator.roll(record, this, 0.10)) return;
         player.playSound(player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_CHIME, 5, 2);
         final ItemStack stack = new ItemStack(Objects.requireNonNull(XMaterial.FIREWORK_ROCKET.parseItem()));

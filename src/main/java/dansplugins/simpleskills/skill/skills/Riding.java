@@ -73,6 +73,7 @@ public class Riding extends AbstractMovementSkill {
     public void executeReward(@NotNull Player player, Object... skillData) {
         final PlayerRecord record = getRecord(player);
         if (record == null) return;
+        if (!configService.getConfig().getBoolean("ridingBenefitEnabled", true)) return;
         if (!chanceCalculator.roll(record, this, 0.10)) return;
         if (!(player.getVehicle() instanceof Creature)) return;
         final Creature vehicle = (Creature) player.getVehicle();
