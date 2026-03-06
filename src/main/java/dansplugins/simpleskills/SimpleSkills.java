@@ -107,7 +107,7 @@ public class SimpleSkills extends JavaPlugin {
         if (messageService.getlang().getDouble("message-version") != 0.2) {
             log.error("Outdated message.yml! Please backup & update message.yml file and restart server again!!");
         }
-        if (configService.getConfig().getDouble("config-version") != 0.1) {
+        if (configService.getConfig().getDouble("config-version") != 0.2) {
             log.error("Outdated config.yml! Please backup & update config.yml file and restart server again!!");
         }
     }

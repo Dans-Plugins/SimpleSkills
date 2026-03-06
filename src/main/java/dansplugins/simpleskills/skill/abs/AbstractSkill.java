@@ -38,6 +38,7 @@ public abstract class AbstractSkill implements Listener {
     protected final MessageService messageService;
 
     private final String name;
+    private final String benefitConfigKey;  // Cached config key for benefit checking
     private final HashMap<Class<? extends Event>, List<Method>> handlers = new HashMap<>();
     private final HashSet<Event> calledEvents = new HashSet<>();
     private int expReq;
@@ -82,6 +83,7 @@ public abstract class AbstractSkill implements Listener {
         if (name.isEmpty()) throw new IllegalArgumentException("Skill requires a name.");
         if (triggers.length == 0) throw new IllegalArgumentException("Skill cannot have zero triggers.");
         this.name = name;
+        this.benefitConfigKey = generateBenefitConfigKey(name);
         this.active = true;
         this.expReq = this.configService.getConfig().getInt("defaultBaseExperienceRequirement", 10);
         this.expFactor = this.configService.getConfig().getDouble("defaultDefaultExperienceIncreaseFactor", 1.2);
@@ -204,23 +206,19 @@ public abstract class AbstractSkill implements Listener {
     }
 
     /**
-     * Method to check if benefits are enabled for this skill.
+     * Generates a camelCase config key from the skill name for benefit checking.
      * <p>
-     * This method checks the configuration for a skill-specific benefit toggle.
-     * The config key follows the pattern: {@code <skillName>BenefitEnabled}
-     * where skillName is the camelCase version of the skill name (e.g., "boating", "monsterHunting").
-     * </p>
-     * <p>
-     * If the config key is not found, it defaults to {@code true} to maintain backward compatibility
-     * and ensure new skills work without manual config updates.
+     * This is a static helper method used during skill construction to generate
+     * the config key once and cache it for performance.
      * </p>
      *
-     * @return {@code true} if benefits are enabled for this skill, {@code false} otherwise.
+     * @param skillName the internal skill name
+     * @return the generated config key (e.g., "boatingBenefitEnabled", "monsterHuntingBenefitEnabled")
      */
-    protected boolean isBenefitEnabled() {
+    private static String generateBenefitConfigKey(@NotNull String skillName) {
         // Convert skill name to camelCase config key (e.g., "Boating" -> "boating", "Monster Hunting" -> "monsterHunting")
-        String skillName = name.replaceAll("_", " ");  // Handle underscore-separated names (if any)
-        String[] words = skillName.split("\\s+");
+        String processedName = skillName.replaceAll("_", " ");  // Handle underscore-separated names (if any)
+        String[] words = processedName.split("\\s+");
         StringBuilder configKey = new StringBuilder();
         for (int i = 0; i < words.length; i++) {
             String word = words[i].trim().toLowerCase();
@@ -235,8 +233,24 @@ public abstract class AbstractSkill implements Listener {
             }
         }
         configKey.append("BenefitEnabled");
-        
-        return configService.getConfig().getBoolean(configKey.toString(), true);
+        return configKey.toString();
+    }
+
+    /**
+     * Method to check if benefits are enabled for this skill.
+     * <p>
+     * This method checks the configuration for a skill-specific benefit toggle.
+     * The config key is generated from the skill name and cached for performance.
+     * </p>
+     * <p>
+     * If the config key is not found, it defaults to {@code true} to maintain backward compatibility
+     * and ensure new skills work without manual config updates.
+     * </p>
+     *
+     * @return {@code true} if benefits are enabled for this skill, {@code false} otherwise.
+     */
+    protected boolean isBenefitEnabled() {
+        return configService.getConfig().getBoolean(benefitConfigKey, true);
     }
 
     public double obtainRandomChance() {

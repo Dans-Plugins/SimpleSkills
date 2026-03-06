@@ -1,4 +1,4 @@
-config-version: 0.1
+config-version: 0.2
 debugMode: false
 defaultMaxLevel: 100
 defaultBaseExperienceRequirement: 10
@@ -14,7 +14,7 @@ hardinessBenefitEnabled: true
 strengthBenefitEnabled: true
 duelingBenefitEnabled: true
 monsterHuntingBenefitEnabled: true
-woodcuttingBenefitEnabled: true
+lumberjackBenefitEnabled: true
 miningBenefitEnabled: true
 fishingBenefitEnabled: true
 breedingBenefitEnabled: true
