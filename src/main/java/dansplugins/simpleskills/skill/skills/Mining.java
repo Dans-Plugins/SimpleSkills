@@ -13,6 +13,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.ExperienceOrb;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.FurnaceRecipe;
 import org.bukkit.inventory.ItemStack;
@@ -22,6 +24,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Objects;
+import java.util.Random;
 
 /**
  * @author Callum Johnson
@@ -118,31 +121,62 @@ public class Mining extends AbstractBlockSkill {
         if (record == null) return;
         final Block block = (Block) blockData;
         if (chanceCalculator.roll(record, this, 0.10)) {
-            final Iterator<Recipe> recipeIterator = Bukkit.recipeIterator();
-            while (recipeIterator.hasNext()) {
-                final Recipe recipe = recipeIterator.next();
-                if (!(recipe instanceof FurnaceRecipe)) continue;
-                final FurnaceRecipe furnaceRecipe = (FurnaceRecipe) recipe;
-                if (furnaceRecipe.getInput().getType().equals(block.getType()) ||
-                        furnaceRecipe.getInputChoice().test(new ItemStack(block.getType()))) {
-                    final ItemStack result = furnaceRecipe.getResult();
-                    if (block.getDrops().contains(result)) continue;
-                    block.getWorld().dropItemNaturally(block.getLocation(), result);
-                    player.playSound(player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_CHIME, 5, 2);
-                    player.playSound(player.getLocation(), Sound.BLOCK_LAVA_EXTINGUISH, 5, 2);
-                    player.sendMessage(messageService.convert(Objects.requireNonNull(messageService.getlang().getString("Skills.Mining.Smelt"))));
-                    return;
-                }
-            }
             player.playSound(player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_CHIME, 5, 2);
-            final Collection<ItemStack> drops = block.getDrops(player.getInventory().getItemInMainHand());
-            drops.forEach(drop -> {
-                if (drop.getType().isAir()) return;
-                block.getWorld().dropItemNaturally(block.getLocation(), drop);
-            });
-            player.sendMessage(messageService.convert(Objects.requireNonNull(Objects.requireNonNull(messageService.getlang().getString("Skills.Mining.Drop"))
-                    .replaceAll("%item%", WordUtils.capitalizeFully(block.getType().name()
-                            .replaceAll("_", " ").toLowerCase())))));
+            // Randomly choose between three possible benefits: auto-smelt, double drops, or experience
+            final Random random = new Random();
+            final int benefitType = random.nextInt(3); // 0, 1, or 2
+            
+            if (benefitType == 0) {
+                // Auto-smelt
+                final Iterator<Recipe> recipeIterator = Bukkit.recipeIterator();
+                boolean smelted = false;
+                while (recipeIterator.hasNext()) {
+                    final Recipe recipe = recipeIterator.next();
+                    if (!(recipe instanceof FurnaceRecipe)) continue;
+                    final FurnaceRecipe furnaceRecipe = (FurnaceRecipe) recipe;
+                    if (furnaceRecipe.getInput().getType().equals(block.getType()) ||
+                            furnaceRecipe.getInputChoice().test(new ItemStack(block.getType()))) {
+                        final ItemStack result = furnaceRecipe.getResult();
+                        if (block.getDrops().contains(result)) continue;
+                        block.getWorld().dropItemNaturally(block.getLocation(), result);
+                        player.playSound(player.getLocation(), Sound.BLOCK_LAVA_EXTINGUISH, 5, 2);
+                        player.sendMessage(messageService.convert(Objects.requireNonNull(messageService.getlang().getString("Skills.Mining.Smelt"))));
+                        smelted = true;
+                        break;
+                    }
+                }
+                // If no smelt recipe found, fall back to double drops
+                if (!smelted) {
+                    final Collection<ItemStack> drops = block.getDrops(player.getInventory().getItemInMainHand());
+                    drops.forEach(drop -> {
+                        if (drop.getType().isAir()) return;
+                        block.getWorld().dropItemNaturally(block.getLocation(), drop);
+                    });
+                    player.sendMessage(messageService.convert(Objects.requireNonNull(Objects.requireNonNull(messageService.getlang().getString("Skills.Mining.Drop"))
+                            .replaceAll("%item%", WordUtils.capitalizeFully(block.getType().name()
+                                    .replaceAll("_", " ").toLowerCase())))));
+                }
+            } else if (benefitType == 1) {
+                // Double drops
+                final Collection<ItemStack> drops = block.getDrops(player.getInventory().getItemInMainHand());
+                drops.forEach(drop -> {
+                    if (drop.getType().isAir()) return;
+                    block.getWorld().dropItemNaturally(block.getLocation(), drop);
+                });
+                player.sendMessage(messageService.convert(Objects.requireNonNull(Objects.requireNonNull(messageService.getlang().getString("Skills.Mining.Drop"))
+                        .replaceAll("%item%", WordUtils.capitalizeFully(block.getType().name()
+                                .replaceAll("_", " ").toLowerCase())))));
+            } else {
+                // Experience orbs
+                final ExperienceOrb entity = (ExperienceOrb) block.getWorld()
+                        .spawnEntity(block.getLocation(), EntityType.EXPERIENCE_ORB);
+                final int exp = random.nextInt(5) + 1; // 1-5 experience points
+                entity.setExperience(exp);
+                entity.setGlowing(true);
+                final String expMessage = messageService.getlang().getString("Skills.Mining.Exp");
+                player.sendMessage(messageService.convert(Objects.requireNonNull(expMessage)
+                        .replaceAll("%exp%", String.valueOf(exp))));
+            }
         }
     }
 
