@@ -36,7 +36,7 @@ skills:
     active: true
   Mining:
     active: true
-  MonsterHunting:
+  "Monster Hunting":
     active: true
   Pyromaniac:
     active: true
@@ -46,5 +46,5 @@ skills:
     active: true
   Strength:
     active: true
-  Woodcutting:
+  Lumberjack:
     active: true
