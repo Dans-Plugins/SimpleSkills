@@ -91,7 +91,7 @@ public class ForceCommand extends AbstractPluginCommand {
         }
         skill.setActive(true);
         configService.setSkillActive(skill.getName(), true);
-        commandSender.sendMessage(ChatColor.GREEN + "The '" + skill.getName() + "' is now active.");
+        commandSender.sendMessage(ChatColor.GREEN + "The '" + skill.getName() + "' skill is now active. A server restart is required for this change to take full effect.");
         return true;
     }
 
@@ -111,7 +111,7 @@ public class ForceCommand extends AbstractPluginCommand {
         }
         skill.setActive(false);
         configService.setSkillActive(skill.getName(), false);
-        commandSender.sendMessage(ChatColor.GREEN + "The '" + skill.getName() + "' is now inactive.");
+        commandSender.sendMessage(ChatColor.GREEN + "The '" + skill.getName() + "' skill is now inactive.");
         return true;
     }
 }
