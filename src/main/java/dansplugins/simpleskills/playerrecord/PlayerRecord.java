@@ -13,7 +13,7 @@ import dansplugins.simpleskills.logging.Log;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import preponderous.ponder.minecraft.bukkit.tools.UUIDChecker;
+import preponderous.ponder.minecraft.spigot.tools.UUIDChecker;
 import preponderous.ponder.misc.abs.Cacheable;
 import preponderous.ponder.misc.abs.Savable;
 
@@ -84,7 +84,13 @@ public class PlayerRecord implements Savable, Cacheable {
     }
 
     public int getOverallSkillLevel() {
-        return skillLevels.values().stream().mapToInt(value -> value).sum();
+        return skillLevels.entrySet().stream()
+                .filter(entry -> {
+                    AbstractSkill skill = skillRepository.getSkill(entry.getKey());
+                    return skill != null && skill.isActive();
+                })
+                .mapToInt(Map.Entry::getValue)
+                .sum();
     }
 
     public void setSkillLevel(int ID, int value) {
@@ -169,7 +175,7 @@ public class PlayerRecord implements Savable, Cacheable {
             int currentLevel = getSkillLevel(skillID, true);
             int currentExperience = getExperience(skillID);
             AbstractSkill skill = skillRepository.getSkill(skillID);
-            if (skill == null) {
+            if (skill == null || !skill.isActive()) {
                 continue;
             }
             int experienceRequired = experienceCalculator

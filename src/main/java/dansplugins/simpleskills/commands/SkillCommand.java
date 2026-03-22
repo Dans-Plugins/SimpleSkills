@@ -1,12 +1,11 @@
 package dansplugins.simpleskills.commands;
 
-import dansplugins.simpleskills.playerrecord.PlayerRecordRepository;
 import dansplugins.simpleskills.message.MessageService;
 import dansplugins.simpleskills.skill.SkillRepository;
 import dansplugins.simpleskills.skill.abs.AbstractSkill;
 
 import org.bukkit.command.CommandSender;
-import preponderous.ponder.minecraft.bukkit.abs.AbstractPluginCommand;
+import preponderous.ponder.minecraft.abs.AbstractPluginCommand;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -36,7 +35,7 @@ public class SkillCommand extends AbstractPluginCommand {
     @Override
     public boolean execute(CommandSender commandSender, String[] args) {
         String skillName = args[0];
-        AbstractSkill skill = skillRepository.getSkill(skillName);
+        AbstractSkill skill = skillRepository.getActiveSkill(skillName);
         if (skill == null) {
             commandSender.sendMessage(messageService
                     .convert(messageService.getlang().getString("SkillNotFound")));

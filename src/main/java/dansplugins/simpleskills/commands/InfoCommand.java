@@ -9,8 +9,8 @@ import dansplugins.simpleskills.message.MessageService;
 import dansplugins.simpleskills.skill.SkillRepository;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import preponderous.ponder.minecraft.bukkit.abs.AbstractPluginCommand;
-import preponderous.ponder.minecraft.bukkit.tools.UUIDChecker;
+import preponderous.ponder.minecraft.abs.AbstractPluginCommand;
+import preponderous.ponder.minecraft.spigot.tools.UUIDChecker;
 
 import java.util.ArrayList;
 import java.util.Collections;
