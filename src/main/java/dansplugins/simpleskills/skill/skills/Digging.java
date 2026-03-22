@@ -185,7 +185,7 @@ public class Digging extends AbstractBlockSkill {
             case "RED_SAND":
                 return Arrays.asList(XMaterial.IRON_NUGGET.parseMaterial(), XMaterial.RAW_COPPER.parseMaterial());
             case "SAND":
-                return Arrays.asList(XMaterial.IRON_NUGGET.parseMaterial(), XMaterial.GOLD_NUGGET.parseMaterial());
+                return Arrays.asList(XMaterial.IRON_NUGGET.parseMaterial(), XMaterial.GOLD_NUGGET.parseMaterial(), XMaterial.COPPER_INGOT.parseMaterial());
             case "GRAVEL":
                 return Collections.singletonList(XMaterial.FLINT.parseMaterial());
             case "SOUL_SAND":

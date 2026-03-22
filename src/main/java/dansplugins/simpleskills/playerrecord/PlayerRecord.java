@@ -84,7 +84,13 @@ public class PlayerRecord implements Savable, Cacheable {
     }
 
     public int getOverallSkillLevel() {
-        return skillLevels.values().stream().mapToInt(value -> value).sum();
+        return skillLevels.entrySet().stream()
+                .filter(entry -> {
+                    AbstractSkill skill = skillRepository.getSkill(entry.getKey());
+                    return skill != null && skill.isActive();
+                })
+                .mapToInt(Map.Entry::getValue)
+                .sum();
     }
 
     public void setSkillLevel(int ID, int value) {
@@ -168,7 +174,7 @@ public class PlayerRecord implements Savable, Cacheable {
             int currentLevel = getSkillLevel(skillID, true);
             int currentExperience = getExperience(skillID);
             AbstractSkill skill = skillRepository.getSkill(skillID);
-            if (skill == null) {
+            if (skill == null || !skill.isActive()) {
                 continue;
             }
             int experienceRequired = experienceCalculator
