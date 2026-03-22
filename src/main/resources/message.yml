@@ -47,6 +47,7 @@ Skills:
   Digging:
     DoubleDrop: "&bYou got double drops for that &a%type% &b!"
     Special: "&bYou got extra lucky and found something &6special&b!"
+    Exp: "&bYou found &a%exp%&b experience while digging!"
   Dueling: "&bYou got a boost after killing &a%type% &b!"
   Enchanting: "&bYou got lucky and got &6%enchant% %level% &b!"
   Farming:
@@ -62,13 +63,17 @@ Skills:
   Mining:
     Smelt: "&6*Sizzle* &aThat ore was automagically smelted!"
     Drop: "&bYou got double drops for that &a%item%&b!"
+    Exp: "&bYou found &a%exp%&b experience while mining!"
   Quarrying:
     DoubleDrop: "&bYou got double drops for that &a%item%&b!"
     Water: "&bMake sure you get water for your thirst!"
     Luck: "&bYou got extra lucky and found something &6special&b!"
+    Exp: "&bYou found &a%exp%&b experience while quarrying!"
   Riding: "&bYour companion has received a &aSpeed Boost&b!"
   Strength: "&bAfter attacking %attacked% &b you have a &cbloodlust&b, you must continue to &aattack&b to satisfy your urges!"
-  WoodCutting: "&bYou got double drops for that &a%item%&b!"
+  WoodCutting:
+    DoubleDrop: "&bYou got double drops for that &a%item%&b!"
+    Exp: "&bYou found &a%exp%&b experience while woodcutting!"
   MonsterHunting: "&bUsing your hunting skills, you tracked down &a%nearbyEntities% &b other &a%mobName% &b!"
   Pyromaniac: "&bThe fire has made you &6crazy&b!"
   Crafting: "&bYou were sneaky and quickly grabbed a &a%typeName% &bfrom the recipe book!"
