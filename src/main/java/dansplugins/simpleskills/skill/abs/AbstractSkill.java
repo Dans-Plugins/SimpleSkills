@@ -138,8 +138,12 @@ public abstract class AbstractSkill implements Listener {
                 method.invoke(this, event);
             } catch (IllegalAccessException | InvocationTargetException exception) {
                 exception.printStackTrace();
+                // Log the underlying cause if available (InvocationTargetException wraps the actual exception)
+                if (exception instanceof InvocationTargetException && exception.getCause() != null) {
+                    exception.getCause().printStackTrace();
+                }
                 throw new IllegalStateException("Failed to trigger '" + name + "' with event '" +
-                        event.getEventName() + "'!");
+                        event.getEventName() + "'!", exception);
             }
         }
     }
