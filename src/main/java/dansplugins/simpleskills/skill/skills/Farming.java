@@ -156,6 +156,7 @@ public class Farming extends AbstractBlockSkill {
         if (!(eventData instanceof Event)) throw new IllegalArgumentException("SkillData[1] is not Event");
         final PlayerRecord record = getRecord(player);
         if (record == null) return;
+        if (!isBenefitEnabled()) return;
         final Block block = (Block) blockData;
         final Event event = (Event) eventData;
         if (!chanceCalculator.roll(record, this, 0.10)) return;
