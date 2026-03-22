@@ -11,6 +11,7 @@ import dansplugins.simpleskills.skill.abs.AbstractSkill;
 import dansplugins.simpleskills.experience.ExperienceCalculator;
 import dansplugins.simpleskills.logging.Log;
 import org.bukkit.Bukkit;
+import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import preponderous.ponder.minecraft.spigot.tools.UUIDChecker;
@@ -83,7 +84,13 @@ public class PlayerRecord implements Savable, Cacheable {
     }
 
     public int getOverallSkillLevel() {
-        return skillLevels.values().stream().mapToInt(value -> value).sum();
+        return skillLevels.entrySet().stream()
+                .filter(entry -> {
+                    AbstractSkill skill = skillRepository.getSkill(entry.getKey());
+                    return skill != null && skill.isActive();
+                })
+                .mapToInt(Map.Entry::getValue)
+                .sum();
     }
 
     public void setSkillLevel(int ID, int value) {
@@ -129,6 +136,18 @@ public class PlayerRecord implements Savable, Cacheable {
                 .getConfig().getInt("defaultMaxLevel"))) { // TODO fix max level
             return;
         }
+        
+        // Send action bar notification for experience gain if enabled
+        if (configService.getConfig().getBoolean("actionBarNotifications", true)) {
+            Player player = Bukkit.getPlayer(playerUUID);
+            if (player != null) {
+                String expMessage = messageService.getlang().getString("ExperienceGain");
+                if (expMessage != null && skill.getName() != null) {
+                    player.sendActionBar(messageService.convert(expMessage.replaceAll("%skill%", skill.getName())));
+                }
+            }
+        }
+        
         checkForLevelUp(ID);
     }
 
@@ -155,7 +174,7 @@ public class PlayerRecord implements Savable, Cacheable {
             int currentLevel = getSkillLevel(skillID, true);
             int currentExperience = getExperience(skillID);
             AbstractSkill skill = skillRepository.getSkill(skillID);
-            if (skill == null) {
+            if (skill == null || !skill.isActive()) {
                 continue;
             }
             int experienceRequired = experienceCalculator
@@ -202,7 +221,24 @@ public class PlayerRecord implements Savable, Cacheable {
         // attempt to inform player
         Player player = Bukkit.getPlayer(playerUUID);
         if (player != null) {
+            // Send chat message
             player.sendMessage(messageService.convert(messageService.getlang().getString("LearnedSkill").replaceAll("%skill%", skill.getName())));
+            
+            // Send title notification if enabled
+            if (configService.getConfig().getBoolean("titleNotifications", true)) {
+                String title = messageService.getlang().getString("LearnedSkillTitle");
+                String subtitle = messageService.getlang().getString("LearnedSkillSubtitle");
+                if (title != null && subtitle != null && skill.getName() != null) {
+                    title = messageService.convert(title);
+                    subtitle = messageService.convert(subtitle.replaceAll("%skill%", skill.getName()));
+                    player.sendTitle(title, subtitle, 10, 70, 20);
+                }
+            }
+            
+            // Play sound if enabled
+            if (configService.getConfig().getBoolean("soundNotifications", true)) {
+                player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1.0f, 1.0f);
+            }
         }
         log.info(new UUIDChecker().findPlayerNameBasedOnUUID(playerUUID) + " learned the " + skill.getName() + " skill.");
     }
@@ -217,11 +253,35 @@ public class PlayerRecord implements Savable, Cacheable {
         if (player != null) {
             AbstractSkill skill = skillRepository.getSkill(ID);
             if (configService.getConfig().getBoolean("levelUpAlert")) {
+                // Send chat message
                 player.sendMessage(messageService
                         .convert(messageService.getlang().getString("LevelUp")
                                 .replaceAll("%skill%", skill.getName())
                                 .replaceAll("%level%", String.valueOf(getSkillLevel(ID, true)))));
-
+                
+                // Send helpful tip
+                String tip = messageService.getlang().getString("LevelUpTip");
+                if (tip != null) {
+                    player.sendMessage(messageService.convert(tip));
+                }
+                
+                // Send title notification if enabled
+                if (configService.getConfig().getBoolean("titleNotifications", true)) {
+                    String title = messageService.getlang().getString("LevelUpTitle");
+                    String subtitle = messageService.getlang().getString("LevelUpSubtitle");
+                    if (title != null && subtitle != null && skill.getName() != null) {
+                        title = messageService.convert(title);
+                        subtitle = messageService.convert(subtitle
+                                .replaceAll("%skill%", skill.getName())
+                                .replaceAll("%level%", String.valueOf(getSkillLevel(ID, true))));
+                        player.sendTitle(title, subtitle, 10, 70, 20);
+                    }
+                }
+                
+                // Play sound if enabled
+                if (configService.getConfig().getBoolean("soundNotifications", true)) {
+                    player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1.0f, 1.0f);
+                }
             }
 
         }
