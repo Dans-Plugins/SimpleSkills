@@ -60,7 +60,7 @@ SimpleSkills includes 20 skills, each tied to a specific activity. Benefits trig
 | **Quarrying** | Breaking stone with a pickaxe | Double drops, special materials, or bonus XP |
 | **Riding** | Riding animals | Speed boost for mount |
 | **Strength** | Hitting entities | Strength boost |
-| **Woodcutting** | Chopping wood with an axe | Double wood drops or bonus XP |
+| **Lumberjack** | Chopping wood with an axe | Double wood drops or bonus XP |
 
 ---
 
@@ -80,7 +80,7 @@ SimpleSkills includes 20 skills, each tied to a specific activity. Benefits trig
 === Skills of Steve ===
 Mining - LVL: 15 - EXP: 230/276
 Farming - LVL: 8 - EXP: 45/99
-Woodcutting - LVL: 3 - EXP: 10/17
+Lumberjack - LVL: 3 - EXP: 10/17
 ```
 
 ---

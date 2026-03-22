@@ -20,7 +20,7 @@ SimpleSkills is an open source Minecraft plugin that systematically introduces s
 
 ### Wiki & Additional Resources
 
-- [FAQ](https://github.com/dmccoystephenson/SimpleSkills/wiki/FAQ)
+- [FAQ](https://github.com/Dans-Plugins/SimpleSkills/wiki/FAQ)
 
 ## Support
 
@@ -34,7 +34,7 @@ Please fill out a bug report [here](https://github.com/Dans-Plugins/SimpleSkills
 
 ## Contributing
 
-- [Notes for Developers](https://github.com/dmccoystephenson/SimpleSkills/wiki/Developer-Notes)
+- [Notes for Developers](https://github.com/Dans-Plugins/SimpleSkills/wiki/Developer-Notes)
 
 ## Development
 
@@ -45,8 +45,12 @@ For development purposes, a Docker-based test server is available.
 #### Setup
 
 1. Copy `sample.env` to `.env` and configure as needed.
-2. Build the plugin: `mvn clean package`
-3. Start the test server: `./up.sh`
+2. Install the Ponder dependency (required once per machine):
+   ```bash
+   mvn install:install-file -Dfile=dependencies/ponder-v0.14-alpha-2.jar -DgroupId=preponderous -DartifactId=ponder -Dversion=v0.14-alpha-2 -Dpackaging=jar
+   ```
+3. Build the plugin: `mvn clean package`
+4. Start the test server: `./up.sh`
 
 #### Stopping the Test Server
 

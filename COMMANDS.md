@@ -100,7 +100,7 @@ The main SimpleSkills command can be accessed using any of the following aliases
 **Permission:** `ss.force.deactivate` (default: op)  
 **Description:** Deactivates a skill so players cannot gain experience in it and its benefits will not trigger.  
 **Usage:** `/ss force deactivate <skillName>`  
-**Example:** `/ss force deactivate MonsterHunting`
+**Example:** `/ss force deactivate Mining`
 
 ---
 

@@ -111,21 +111,21 @@ skills:
 | Gliding | `skills.Gliding.active` |
 | Hardiness | `skills.Hardiness.active` |
 | Mining | `skills.Mining.active` |
-| Monster Hunting | `skills."Monster Hunting".active` |
+| Monster Hunting | `skills.Monster Hunting.active` |
 | Pyromaniac | `skills.Pyromaniac.active` |
 | Quarrying | `skills.Quarrying.active` |
 | Riding | `skills.Riding.active` |
 | Strength | `skills.Strength.active` |
 | Woodcutting | `skills.Lumberjack.active` |
 
-> **Note:** Skill names with spaces (e.g., Monster Hunting) must be quoted in YAML:
+> **Note:** Skill names with spaces (e.g., Monster Hunting) must be quoted as YAML keys, but the config path used by the plugin does **not** include quotes:
 > ```yaml
 > skills:
 >   "Monster Hunting":
 >     active: false
 > ```
 
-> **Note:** The Woodcutting skill uses `Lumberjack` as its internal config key. Use `Lumberjack` when referencing it in `config.yml` or with `/ss force activate`/`/ss force deactivate`.
+> **Note:** The Woodcutting skill uses `Lumberjack` as its internal config key. Use `Lumberjack` when referencing it in `config.yml`. The `/ss force activate` and `/ss force deactivate` commands currently only accept single-word skill keys (e.g., `Lumberjack`, `Mining`) and cannot target skills whose names contain spaces such as `Monster Hunting`; toggle those via `config.yml` instead.
 
 Skills can also be toggled at runtime using the admin commands `/ss force activate <skillName>` and `/ss force deactivate <skillName>` without restarting the server.
 
