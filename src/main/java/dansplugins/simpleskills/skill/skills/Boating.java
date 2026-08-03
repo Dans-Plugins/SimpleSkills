@@ -72,6 +72,7 @@ public class Boating extends AbstractMovementSkill {
     public void executeReward(@NotNull Player player, Object... skillData) {
         final PlayerRecord record = getRecord(player);
         if (record == null) return;
+        if (!isBenefitEnabled()) return;
         if (!chanceCalculator.roll(record, this, 0.10)) return;
         if (!(player.getVehicle() instanceof Boat)) return;
         final Boat boat = (Boat) player.getVehicle();

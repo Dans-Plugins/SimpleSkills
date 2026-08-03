@@ -1,4 +1,4 @@
-config-version: 0.1
+config-version: 0.2
 debugMode: false
 defaultMaxLevel: 100
 defaultBaseExperienceRequirement: 10

@@ -38,6 +38,7 @@ public abstract class AbstractSkill implements Listener {
     protected final MessageService messageService;
 
     private final String name;
+    private final String benefitConfigKey;  // Cached config key for benefit checking
     private final HashMap<Class<? extends Event>, List<Method>> handlers = new HashMap<>();
     private final HashSet<Event> calledEvents = new HashSet<>();
     private int expReq;
@@ -82,6 +83,7 @@ public abstract class AbstractSkill implements Listener {
         if (name.isEmpty()) throw new IllegalArgumentException("Skill requires a name.");
         if (triggers.length == 0) throw new IllegalArgumentException("Skill cannot have zero triggers.");
         this.name = name;
+        this.benefitConfigKey = generateBenefitConfigKey(name);
         // Read activation state from config, default to true for backward compatibility
         this.active = this.configService.getConfig().getBoolean("skills." + getName() + ".active", true);
         this.expReq = this.configService.getConfig().getInt("defaultBaseExperienceRequirement", 10);
@@ -203,6 +205,54 @@ public abstract class AbstractSkill implements Listener {
     @Nullable
     public PlayerRecord getRecord(@NotNull Player player) {
         return playerRecordRepository.getPlayerRecord(player.getUniqueId());
+    }
+
+    /**
+     * Generates a camelCase config key from the skill name for benefit checking.
+     * <p>
+     * This is a static helper method used during skill construction to generate
+     * the config key once and cache it for performance.
+     * </p>
+     *
+     * @param skillName the internal skill name
+     * @return the generated config key (e.g., "boatingBenefitEnabled", "monsterHuntingBenefitEnabled")
+     */
+    private static String generateBenefitConfigKey(@NotNull String skillName) {
+        // Convert skill name to camelCase config key (e.g., "Boating" -> "boating", "Monster Hunting" -> "monsterHunting")
+        String processedName = skillName.replaceAll("_", " ");  // Handle underscore-separated names (if any)
+        String[] words = processedName.split("\\s+");
+        StringBuilder configKey = new StringBuilder();
+        for (int i = 0; i < words.length; i++) {
+            String word = words[i].trim().toLowerCase();
+            if (word.isEmpty()) continue;  // Skip empty words from multiple spaces
+            if (configKey.length() == 0) {
+                // First word is lowercase
+                configKey.append(word);
+            } else {
+                // Subsequent words are capitalized
+                configKey.append(Character.toUpperCase(word.charAt(0)))
+                         .append(word.substring(1));
+            }
+        }
+        configKey.append("BenefitEnabled");
+        return configKey.toString();
+    }
+
+    /**
+     * Method to check if benefits are enabled for this skill.
+     * <p>
+     * This method checks the configuration for a skill-specific benefit toggle.
+     * The config key is generated from the skill name and cached for performance.
+     * </p>
+     * <p>
+     * If the config key is not found, it defaults to {@code true} to maintain backward compatibility
+     * and ensure new skills work without manual config updates.
+     * </p>
+     *
+     * @return {@code true} if benefits are enabled for this skill, {@code false} otherwise.
+     */
+    protected boolean isBenefitEnabled() {
+        return configService.getConfig().getBoolean(benefitConfigKey, true);
     }
 
     public double obtainRandomChance() {

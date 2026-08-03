@@ -111,6 +111,7 @@ public class Pyromaniac extends AbstractBlockSkill {
     public void executeReward(@NotNull Player player, Object... skillData) {
         final PlayerRecord record = getRecord(player);
         if (record == null) return;
+        if (!isBenefitEnabled()) return;
         if (!chanceCalculator.roll(record, this, 0.10)) return;
         player.sendMessage(messageService.convert(Objects.requireNonNull(messageService.getlang().getString("Skills.Pyromaniac"))));
         player.playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_SCREAM, 5, 2);

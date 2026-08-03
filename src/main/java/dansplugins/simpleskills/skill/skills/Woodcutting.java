@@ -76,6 +76,7 @@ public class Woodcutting extends AbstractBlockSkill {
         if (!(blockData instanceof Block)) throw new IllegalArgumentException("SkillData[0] is not Block");
         final PlayerRecord record = getRecord(player);
         if (record == null) return;
+        if (!isBenefitEnabled()) return;
         final Block block = (Block) blockData;
         if (chanceCalculator.roll(record, this, 0.10)) {
             player.playSound(player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_CHIME, 5, 2);
