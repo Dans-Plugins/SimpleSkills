@@ -85,7 +85,9 @@ public class Crafting extends AbstractSkill {
         if (!isBenefitEnabled()) return;
         if (skillData.length != 1) throw new IllegalArgumentException("Skill Data is not of length '1'");
         final Object createdData = skillData[0];
-        if (!(createdData instanceof Recipe)) throw new IllegalArgumentException("SkillData[0] is not Recipe");
+        // CraftItemEvent#getRecipe() can legitimately return null (e.g. certain merge/repair
+        // crafts), so this is skipped rather than treated as a programmer error.
+        if (!(createdData instanceof Recipe)) return;
         final Recipe created = (Recipe) createdData;
         if (!(created instanceof ShapedRecipe) && !(created instanceof ShapelessRecipe)) return;
         if (!chanceCalculator.roll(record, this, 0.10)) return;
