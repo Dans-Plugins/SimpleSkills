@@ -1,6 +1,7 @@
 package dansplugins.simpleskills.skill.abs;
 
 import dansplugins.simpleskills.SimpleSkills;
+import dansplugins.simpleskills.listeners.PlacedBlockListener;
 import dansplugins.simpleskills.playerrecord.PlayerRecordRepository;
 import dansplugins.simpleskills.config.ConfigService;
 import dansplugins.simpleskills.message.MessageService;
@@ -57,6 +58,10 @@ public abstract class AbstractBlockSkill extends AbstractSkill {
         log.debug("Block skill type is valid for this event.");
         if (!isValidMaterial(event.getBlock().getType())) return;
         log.debug("Block material is valid for this skill.");
+        if (PlacedBlockListener.isPlayerPlaced(event.getBlock())) {
+            log.debug("Block was placed by a player; skipping skill experience to prevent farming exploits.");
+            return;
+        }
         incrementExperience(event.getPlayer());
         log.debug("Incremented experience for player: " + event.getPlayer().getName());
         executeReward(event.getPlayer(), event.getBlock(), event);
