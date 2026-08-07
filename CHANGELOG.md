@@ -8,11 +8,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Added
 - Unit tests for `PlayerRecord` (skill levels, experience, overall level, save/load) and `ExperienceCalculator`
+- Unit tests for `MessageService` (bundled-default fallback, on-disk overrides, saving) and `AbstractSkill` trigger failure reporting
 
 ### Fixed
 - Broken `Ponder` dependency coordinates in `pom.xml` that made the project (and CI) fail to build: the pinned tag `v0.14-alpha-2` no longer exists upstream, and the `groupId`/`artifactId` combination was never resolvable via jitpack for this repository
 - Silk Touch mining/quarrying/digging/woodcutting/floriculture/pyromaniac experience farming exploit: breaking a block that a player placed (e.g. a Silk Touch-harvested ore placed back down) no longer grants skill experience or rewards
 - `IllegalArgumentException` thrown (and logged to console) by the Crafting skill's reward handler when `CraftItemEvent#getRecipe()` reports no recipe (e.g. certain merge/repair crafts); the reward is now skipped instead
+- `IllegalStateException: Failed to trigger '<skill>' with event '<event>'!` raised on servers whose `message.yml` predates a message key the plugin now uses (the file on disk is never rewritten on upgrade): message lookups now fall back to the copy of `message.yml` bundled in the jar, while any value present on disk still takes precedence
+
+### Changed
+- `IllegalStateException` reported when a skill trigger fails now carries the underlying failure as its cause, and the failure is logged through the plugin logger instead of a bare stack trace
 
 ## [2.4.1]
 

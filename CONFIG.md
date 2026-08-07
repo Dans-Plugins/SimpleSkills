@@ -135,6 +135,8 @@ Skills can also be toggled at runtime using the admin commands `/ss force activa
 
 The `message.yml` file is located in `plugins/SimpleSkills/message.yml` on your server. It controls all user-facing messages displayed by the plugin.
 
+An existing `message.yml` is never overwritten when the plugin is updated, so a file written by an older version can be missing keys that a newer version uses. Any such key falls back to the value bundled with the plugin; keys present in the file on disk always take precedence, so customised messages are kept.
+
 ### `message-version`
 
 **Type:** String  
