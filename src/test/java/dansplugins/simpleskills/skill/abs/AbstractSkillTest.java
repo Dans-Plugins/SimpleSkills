@@ -65,7 +65,7 @@ public class AbstractSkillTest {
     @Test
     public void handle_carriesTheUnderlyingFailureAsTheCause_whenATriggerThrows() {
         try {
-            skill.handle((org.bukkit.event.Event) new BlockBreakEvent(block, player));
+            skill.handle(new BlockBreakEvent(block, player));
             fail("Expected the failing trigger to be reported as an IllegalStateException");
         } catch (IllegalStateException exception) {
             assertEquals("Failed to trigger 'Throwing' with event 'BlockBreakEvent'!", exception.getMessage());
