@@ -3,7 +3,6 @@ package dansplugins.simpleskills.skill.abs;
 import dansplugins.simpleskills.SimpleSkills;
 import dansplugins.simpleskills.playerrecord.PlayerRecordRepository;
 import dansplugins.simpleskills.playerrecord.PlayerRecord;
-import dansplugins.simpleskills.enums.Triggers;
 import dansplugins.simpleskills.config.ConfigService;
 
 import dansplugins.simpleskills.message.MessageService;
@@ -18,6 +17,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.plugin.EventExecutor;
+import org.bukkit.plugin.PluginManager;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -40,7 +40,6 @@ public abstract class AbstractSkill implements Listener {
     private final String name;
     private final String benefitConfigKey;  // Cached config key for benefit checking
     private final HashMap<Class<? extends Event>, List<Method>> handlers = new HashMap<>();
-    private final HashSet<Event> calledEvents = new HashSet<>();
     private int expReq;
     private double expFactor;
     private boolean active;
@@ -124,15 +123,19 @@ public abstract class AbstractSkill implements Listener {
      * <p>
      * This method references {@link #handlers} which is defined by {@link #setupTriggers(Class[])},
      * each method within the map is called if the event currently being handled by this method
-     * is compatible with the specific trigger.
+     * is compatible with the specific trigger. Dispatch is on the event's exact class, so an
+     * event only reaches a trigger method declared for that class.
+     * </p>
+     * <p>
+     * Delivering the same event to a skill more than once is prevented by {@link #register()},
+     * which forwards each registration only the class it was made for, rather than by this
+     * method remembering the events it has already seen.
      * </p>
      *
      * @param event to handle.
      */
     public void handle(Event event) {
         if (!active) return;
-        if (calledEvents.contains(event)) return;
-        calledEvents.add(event);
         if (event instanceof Cancellable) if (((Cancellable) event).isCancelled()) return;
         final List<Method> methods = handlers.getOrDefault(event.getClass(), new ArrayList<>());
         for (Method method : methods) {
@@ -264,22 +267,48 @@ public abstract class AbstractSkill implements Listener {
     }
 
     /**
-     * Method to dynamically register every listener defined in {@link Triggers}.
+     * Method to dynamically register a listener for every event this skill declares a trigger for.
      * <p>
      * This enables the "Skill" class to listen to multiple events for the
      * listener-trigger-hook system.
      * </p>
+     * <p>
+     * Only the classes in {@link #handlers} are registered: an event no trigger method accepts
+     * is discarded by {@link #handle(Event)} anyway, so registering for it costs a listener call
+     * per event for nothing.
+     * </p>
+     * <p>
+     * Each registration forwards only events of the exact class it was made for. Bukkit keys its
+     * handler lists on whichever class declares one, so a registration made for an event class
+     * that shares its handler list with a relative also receives that relative's events — without
+     * this filter a skill declaring triggers for both would see one event twice.
+     * </p>
      */
     public void register() {
         log.debug("Registering skill: " + getName());
-        final EventExecutor executor = (listener, event) -> handle(event);
-        for (Triggers value : Triggers.values()) {
-            log.debug("Registering trigger " + value.name());
-            Bukkit.getPluginManager().registerEvent(
-                    value.getTriggerClass(), this, EventPriority.MONITOR, executor, simpleSkills
+        for (Class<? extends Event> trigger : handlers.keySet()) {
+            log.debug("Registering trigger " + trigger.getSimpleName());
+            final EventExecutor executor = (listener, event) -> {
+                if (event.getClass() == trigger) handle(event);
+            };
+            getPluginManager().registerEvent(
+                    trigger, this, EventPriority.MONITOR, executor, simpleSkills
             );
-            log.debug("Registered trigger " + value.name() + " for skill " + getName());
+            log.debug("Registered trigger " + trigger.getSimpleName() + " for skill " + getName());
         }
+    }
+
+    /**
+     * Method to obtain the plugin manager the skill registers its listeners with.
+     * <p>
+     * {@link Bukkit#getPluginManager()} reads static server state that no unit test has a server
+     * to provide, so this indirection exists for tests to substitute a plugin manager.
+     * </p>
+     *
+     * @return the server's {@link PluginManager}.
+     */
+    PluginManager getPluginManager() {
+        return Bukkit.getPluginManager();
     }
 
     // Id-generation and equality overriding
