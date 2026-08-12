@@ -10,6 +10,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - A `Dev Release` workflow, which republishes a rolling `dev` prerelease of `main` on every non-documentation push. This is what Dan's Plugin Manager's experimental channel installs from: `/dpm get simpleskills --experimental` reads `releases/tags/dev`, so without it there is nothing for that command to download. The prerelease is unreleased, unreviewed code and is marked as such.
 
+### Fixed
+
+- Growing memory use on long-running servers: every skill kept a reference to every event it had ever handled — and, through it, to that event's block, player and entities — for as long as the server ran. The events were remembered only so that a skill would not act on the same one twice, which is now prevented where the duplicate arose instead, by each skill listening only for the events its triggers accept and each listener taking only the event class it was registered for.
+
 ## [3.0.0-SNAPSHOT-8-8-2026] – 2026-08-08
 
 ### Changed
