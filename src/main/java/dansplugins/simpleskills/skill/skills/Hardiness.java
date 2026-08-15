@@ -29,12 +29,12 @@ public class Hardiness extends AbstractSkill {
     /**
      * The Hardiness skill is levelled by taking damage.
      * <p>
-     * A skill is dispatched on the exact runtime class of the event, so every class damage is
-     * actually delivered as has to be declared as a trigger. Damage with no source behind it — falling,
-     * fire, drowning — arrives as an {@link EntityDamageEvent}, damage dealt by a mob or another
-     * player as an {@link EntityDamageByEntityEvent}, and damage dealt by a block such as a cactus
-     * or a magma block as an {@link EntityDamageByBlockEvent}. Declaring only the base class left
-     * the latter two unhandled, so being hit did nothing.
+     * A trigger is matched on the event's exact runtime class, so every class that damage is
+     * actually delivered as has to be declared here. Damage with nothing behind it — falling, fire,
+     * drowning — arrives as an {@link EntityDamageEvent}; damage dealt by a mob, another player or
+     * a projectile as an {@link EntityDamageByEntityEvent}; and damage dealt by a block such as a
+     * cactus or a magma block as an {@link EntityDamageByBlockEvent}. Declaring only the base class
+     * left the latter two reaching no handler, so being hit did nothing.
      * </p>
      */
     public Hardiness(ConfigService configService, Log log, PlayerRecordRepository playerRecordRepository, SimpleSkills simpleSkills, MessageService messageService, ChanceCalculator chanceCalculator) {
