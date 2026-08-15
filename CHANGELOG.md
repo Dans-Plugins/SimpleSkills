@@ -6,7 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Removed
+
+- The `dansplugins.simpleskills.enums.Triggers` enum, which listed twelve event classes a skill could be triggered by. Nothing has referenced it since each skill began naming its own trigger classes directly, and any Bukkit event class is a valid trigger, so the list neither constrained nor described what the skill system accepts. The rule it left implicit — that a trigger is matched on the event's exact runtime class, so declaring a base class does not catch its subclasses — is now stated on the `AbstractSkill` constructor a skill author already reads.
+
 ### Fixed
+
+- Hardiness now triggers on damage dealt by a mob, another player, a projectile or a block. It declared only `EntityDamageEvent` as a trigger, and a trigger is matched on the event's exact runtime class, so damage from an attacker (an `EntityDamageByEntityEvent`) and damage from a block such as a cactus (an `EntityDamageByBlockEvent`) reached no handler. In game the skill therefore gained experience, and reduced or negated damage, only for damage with nothing behind it — falling, fire, drowning, suffocation, poison — and not for being hit, which is what it is most expected to cover. Note that the skill is now reached far more often than before; its 10% benefit roll and its negation weights are unchanged and are worth reviewing against live play.
 
 - The `Dev Release` workflow now retries publishing the `dev` prerelease before giving up. The release and its tag have to be deleted and recreated for the tag to move to the new commit, and a transient API failure inside that window previously left the repository with no `dev` release at all until the workflow was re-run by hand. Each attempt now starts from a clean slate, and an exhausted retry fails loudly.
 
