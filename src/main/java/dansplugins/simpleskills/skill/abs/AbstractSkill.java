@@ -63,6 +63,13 @@ public abstract class AbstractSkill implements Listener {
      * }
      * </code>
      * </p>
+     * <p>
+     * There is no fixed set of events a skill may listen to: any Bukkit {@link Event} class is a
+     * valid trigger. A trigger is matched on the event's <em>exact</em> runtime class, though, so
+     * declaring a base class does not catch its subclasses — a skill reacting to damage dealt by
+     * a mob has to declare {@code EntityDamageByEntityEvent} itself rather than relying on
+     * {@code EntityDamageEvent} to cover it.
+     * </p>
      * @param configService
      * @param log
      * @param playerRecordRepository
