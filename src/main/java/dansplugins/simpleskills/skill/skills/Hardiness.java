@@ -12,6 +12,8 @@ import org.bukkit.Sound;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.entity.EntityDamageByBlockEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.jetbrains.annotations.NotNull;
 
@@ -26,9 +28,18 @@ public class Hardiness extends AbstractSkill {
 
     /**
      * The Hardiness skill is levelled by taking damage.
+     * <p>
+     * A trigger is matched on the event's exact runtime class, so every class that damage is
+     * actually delivered as has to be declared here. Damage with nothing behind it — falling, fire,
+     * drowning — arrives as an {@link EntityDamageEvent}; damage dealt by a mob, another player or
+     * a projectile as an {@link EntityDamageByEntityEvent}; and damage dealt by a block such as a
+     * cactus or a magma block as an {@link EntityDamageByBlockEvent}. Declaring only the base class
+     * left the latter two reaching no handler, so being hit did nothing.
+     * </p>
      */
     public Hardiness(ConfigService configService, Log log, PlayerRecordRepository playerRecordRepository, SimpleSkills simpleSkills, MessageService messageService, ChanceCalculator chanceCalculator) {
-        super(configService, log, playerRecordRepository, simpleSkills, messageService, "Hardiness", EntityDamageEvent.class);
+        super(configService, log, playerRecordRepository, simpleSkills, messageService, "Hardiness",
+                EntityDamageEvent.class, EntityDamageByEntityEvent.class, EntityDamageByBlockEvent.class);
         this.chanceCalculator = chanceCalculator;
     }
 
@@ -54,12 +65,56 @@ public class Hardiness extends AbstractSkill {
     }
 
     /**
-     * Method to handle the {@link EntityDamageEvent} event
+     * Method to handle the {@link EntityDamageEvent} event, which covers damage with no source
+     * behind it such as falling, fire, drowning, suffocation and poison.
      *
      * @param event to handle.
      */
     @EventHandler
     public void damageEvent(@NotNull EntityDamageEvent event) {
+        rewardDamageTaken(event);
+    }
+
+    /**
+     * Method to handle the {@link EntityDamageByEntityEvent} event, which covers being hit by a
+     * mob, another player or a projectile.
+     * <p>
+     * This class is dispatched separately from {@link EntityDamageEvent} rather than being caught
+     * by it, because a trigger is matched on the event's exact runtime class.
+     * </p>
+     *
+     * @param event to handle.
+     */
+    @EventHandler
+    public void damageByEntityEvent(@NotNull EntityDamageByEntityEvent event) {
+        rewardDamageTaken(event);
+    }
+
+    /**
+     * Method to handle the {@link EntityDamageByBlockEvent} event, which covers damage dealt by a
+     * block such as a cactus or a magma block.
+     * <p>
+     * This class is dispatched separately from {@link EntityDamageEvent} rather than being caught
+     * by it, because a trigger is matched on the event's exact runtime class.
+     * </p>
+     *
+     * @param event to handle.
+     */
+    @EventHandler
+    public void damageByBlockEvent(@NotNull EntityDamageByBlockEvent event) {
+        rewardDamageTaken(event);
+    }
+
+    /**
+     * Method to grant experience and run the benefit for a player who has taken damage.
+     * <p>
+     * Kept non-public so that the trigger scan, which matches a public single-argument method
+     * against each declared trigger class, does not pick it up as a trigger of its own.
+     * </p>
+     *
+     * @param event the damage the player took, of any {@link EntityDamageEvent} class.
+     */
+    private void rewardDamageTaken(@NotNull EntityDamageEvent event) {
         if (event.getEntityType() != EntityType.PLAYER) return;
         if (!(event.getEntity() instanceof Player)) return;
         incrementExperience((Player) event.getEntity());
