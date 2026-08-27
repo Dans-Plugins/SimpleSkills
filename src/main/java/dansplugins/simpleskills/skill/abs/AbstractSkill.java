@@ -204,9 +204,11 @@ public abstract class AbstractSkill implements Listener {
      * Method to obtain the highest level this skill can reach.
      * <p>
      * The cap is read from the config on every call rather than cached at construction, so that
-     * a value changed by {@code /ss reload} is reported without a restart. The same key backs the
-     * cap {@link dansplugins.simpleskills.playerrecord.PlayerRecord#incrementExperience(int)}
-     * enforces, so what is displayed and what is enforced cannot drift apart.
+     * a value changed by {@code /ss reload} is reported without a restart. The key read here is
+     * the one {@link dansplugins.simpleskills.playerrecord.PlayerRecord#incrementExperience(int)}
+     * enforces the cap from, so a configured value is displayed as what is actually enforced.
+     * The two differ only where the key is absent altogether, which that method reads as a cap
+     * of zero while this one falls back to the value {@code config.yml} ships.
      * </p>
      *
      * @return the configured {@code defaultMaxLevel}, or {@code 100} if the key is absent.
