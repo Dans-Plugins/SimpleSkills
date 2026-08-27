@@ -6,6 +6,7 @@ This document provides detailed information about all configuration options avai
 
 - [config.yml](#configyml)
   - [General Settings](#general-settings)
+  - [Experience Requirements](#experience-requirements)
   - [Alert Settings](#alert-settings)
   - [Skill Activation](#skill-activation)
 - [message.yml](#messageyml)
@@ -21,7 +22,7 @@ The `config.yml` file is located in `plugins/SimpleSkills/config.yml` on your se
 #### `config-version`
 
 **Type:** String  
-**Default:** `0.1`  
+**Default:** `0.2`  
 **Description:** Internal version identifier for the config file. Do not modify this manually. If this does not match the expected version, you will see an error in the server console prompting you to update your config.
 
 ---
@@ -38,7 +39,7 @@ The `config.yml` file is located in `plugins/SimpleSkills/config.yml` on your se
 
 **Type:** Integer  
 **Default:** `100`  
-**Description:** The maximum level a skill can reach.  
+**Description:** The maximum level a skill can reach. Once a skill is at this level it stops gaining levels, and the value is what `/ss skill <skillName>` reports as the skill's max level.  
 **Range:** Any positive integer
 
 ---
@@ -47,7 +48,7 @@ The `config.yml` file is located in `plugins/SimpleSkills/config.yml` on your se
 
 **Type:** Integer  
 **Default:** `10`  
-**Description:** The amount of experience required to reach level 2. Each subsequent level requires more experience based on the `defaultExperienceIncreaseFactor`.  
+**Description:** The base of the experience curve described under [Experience Requirements](#experience-requirements). Since the curve evaluates to exactly this number at level 1, it is also the amount of experience required to get from level 1 to level 2.  
 **Range:** Any positive integer
 
 ---
@@ -56,8 +57,35 @@ The `config.yml` file is located in `plugins/SimpleSkills/config.yml` on your se
 
 **Type:** Float  
 **Default:** `1.2`  
-**Description:** The multiplier applied to the experience requirement at each level. For example, with a base requirement of 10 and a factor of 1.2, level 2 requires 10 XP, level 3 requires 12 XP, level 4 requires ~14.4 XP, and so on.  
-**Range:** Any value greater than 1.0
+**Description:** The exponent of the experience curve described under [Experience Requirements](#experience-requirements). Raising it steepens the curve, so that high levels cost disproportionately more than low ones. At `1.0` the cost grows in a straight line (level 2 costs twice level 1, level 3 three times, and so on), and at `0.0` every level costs the base requirement.  
+**Range:** Any non-negative value
+
+---
+
+### Experience Requirements
+
+The experience needed to advance from a skill's current level is:
+
+```
+experienceRequired = floor(defaultBaseExperienceRequirement × currentLevel ^ defaultExperienceIncreaseFactor)
+```
+
+Note that the requirement is raised from the level a skill is **currently** at, not the level it is heading towards, and that the cost of each level is calculated independently rather than compounded onto the previous level's cost. Experience is not reset on level up: the requirement that was met is subtracted from the total, and the remainder counts towards the next level.
+
+With the shipped defaults (a base of `10` and a factor of `1.2`) the requirements are:
+
+| Current level | Experience needed for the next level |
+|---|---|
+| 0 | 0 (a skill leaves level 0 as soon as any experience is gained) |
+| 1 | 10 |
+| 2 | 22 |
+| 3 | 37 |
+| 5 | 68 |
+| 10 | 158 |
+| 20 | 364 |
+| 50 | 1093 |
+
+The right-hand number is what `/ss info` shows after the slash for a skill at that level.
 
 ---
 

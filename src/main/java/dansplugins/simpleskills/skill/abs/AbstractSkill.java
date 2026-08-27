@@ -93,7 +93,7 @@ public abstract class AbstractSkill implements Listener {
         // Read activation state from config, default to true for backward compatibility
         this.active = this.configService.getConfig().getBoolean("skills." + getName() + ".active", true);
         this.expReq = this.configService.getConfig().getInt("defaultBaseExperienceRequirement", 10);
-        this.expFactor = this.configService.getConfig().getDouble("defaultDefaultExperienceIncreaseFactor", 1.2);
+        this.expFactor = this.configService.getConfig().getDouble("defaultExperienceIncreaseFactor", 1.2);
         setupTriggers(triggers);
     }
 
@@ -198,6 +198,21 @@ public abstract class AbstractSkill implements Listener {
 
     public void setExpFactor(double expFactor) {
         this.expFactor = expFactor;
+    }
+
+    /**
+     * Method to obtain the highest level this skill can reach.
+     * <p>
+     * The cap is read from the config on every call rather than cached at construction, so that
+     * a value changed by {@code /ss reload} is reported without a restart. The same key backs the
+     * cap {@link dansplugins.simpleskills.playerrecord.PlayerRecord#incrementExperience(int)}
+     * enforces, so what is displayed and what is enforced cannot drift apart.
+     * </p>
+     *
+     * @return the configured {@code defaultMaxLevel}, or {@code 100} if the key is absent.
+     */
+    public int getMaxLevel() {
+        return configService.getConfig().getInt("defaultMaxLevel", 100);
     }
 
     // Methods
@@ -368,7 +383,7 @@ public abstract class AbstractSkill implements Listener {
             commandSender.sendMessage(messageService.convert(sinfo)
                     .replaceAll("%skillname%", getName())
                     .replaceAll("%active%", String.valueOf(isActive()))
-                    .replaceAll("%mlevel%", String.valueOf(100))
+                    .replaceAll("%mlevel%", String.valueOf(getMaxLevel()))
                     .replaceAll("%ber%", String.valueOf(getExpRequirement()))
                     .replaceAll("%eif%", String.valueOf(getExpFactor())));
     }

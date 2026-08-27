@@ -78,10 +78,12 @@ SimpleSkills includes 20 skills, each tied to a specific activity. Benefits trig
 **Example output:**
 ```
 === Skills of Steve ===
-Mining - LVL: 15 - EXP: 230/276
-Farming - LVL: 8 - EXP: 45/99
-Lumberjack - LVL: 3 - EXP: 10/17
+Mining - LVL: 15 - EXP: 230/257
+Farming - LVL: 8 - EXP: 45/121
+Lumberjack - LVL: 3 - EXP: 10/37
 ```
+
+The number after the slash is the experience needed to reach the next level, which grows with the level a skill is already at. See [Experience Requirements](CONFIG.md#experience-requirements) for the curve and the settings that shape it.
 
 ---
 
@@ -121,6 +123,8 @@ Max Level: 100
 Base Experience Requirement: 10
 Experience Increase Factor: 1.2
 ```
+
+The three settings shown are read from `config.yml`, so a server whose values differ from the shipped defaults reports its own. What they mean is covered in [Experience Requirements](CONFIG.md#experience-requirements).
 
 ---
 

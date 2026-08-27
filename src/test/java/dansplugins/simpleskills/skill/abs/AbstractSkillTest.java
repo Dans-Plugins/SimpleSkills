@@ -6,6 +6,7 @@ import dansplugins.simpleskills.logging.Log;
 import dansplugins.simpleskills.message.MessageService;
 import dansplugins.simpleskills.playerrecord.PlayerRecordRepository;
 import org.bukkit.block.Block;
+import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -26,6 +27,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import java.lang.reflect.Field;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
@@ -47,7 +49,9 @@ import static org.mockito.Mockito.when;
  * Characterizes {@link AbstractSkill}'s event plumbing: the reporting of a trigger failure,
  * which is raised through reflection and therefore hides the real failure unless the cause is
  * carried over to the rethrown exception, and the listener registration, which decides both
- * which events reach a skill and how many times each one does.
+ * which events reach a skill and how many times each one does. The reading of the configured
+ * experience and level settings is covered too, as a key read under the wrong name is
+ * indistinguishable at runtime from one whose configured value happens to be the fallback.
  */
 @RunWith(MockitoJUnitRunner.Silent.class)
 public class AbstractSkillTest {
@@ -74,6 +78,10 @@ public class AbstractSkillTest {
     private Entity damager;
     @Mock
     private Entity damagee;
+    @Mock
+    private FileConfiguration lang;
+    @Mock
+    private CommandSender commandSender;
 
     private ThrowingSkill skill;
     private CountingSkill countingSkill;
@@ -156,6 +164,44 @@ public class AbstractSkillTest {
         assertEquals(1, countingSkill.attacks);
         assertEquals("A trigger declared for a superclass of the event must not be called",
                 0, countingSkill.damages);
+    }
+
+    @Test
+    public void construction_readsTheConfiguredExperienceSettings() {
+        // Sentinel values distinct from the fallbacks, so a key read under a name the config
+        // does not contain shows up as the fallback rather than passing unnoticed.
+        when(fileConfiguration.getInt("defaultBaseExperienceRequirement", 10)).thenReturn(42);
+        when(fileConfiguration.getDouble("defaultExperienceIncreaseFactor", 1.2)).thenReturn(2.5);
+
+        final CountingSkill configuredSkill = new CountingSkill(configService, log, playerRecordRepository,
+                simpleSkills, messageService, pluginManager);
+
+        assertEquals(42, configuredSkill.getExpRequirement());
+        assertEquals(2.5, configuredSkill.getExpFactor(), 0.0);
+    }
+
+    @Test
+    public void getMaxLevel_returnsTheConfiguredCap() {
+        when(fileConfiguration.getInt("defaultMaxLevel", 100)).thenReturn(55);
+
+        assertEquals(55, countingSkill.getMaxLevel());
+    }
+
+    @Test
+    public void sendInfo_rendersTheConfiguredSettingsRatherThanTheFallbacks() {
+        when(fileConfiguration.getInt("defaultBaseExperienceRequirement", 10)).thenReturn(42);
+        when(fileConfiguration.getDouble("defaultExperienceIncreaseFactor", 1.2)).thenReturn(2.5);
+        when(fileConfiguration.getInt("defaultMaxLevel", 100)).thenReturn(55);
+        when(messageService.getlang()).thenReturn(lang);
+        when(lang.getStringList("Skill-Info"))
+                .thenReturn(Collections.singletonList("%skillname%|%active%|%mlevel%|%ber%|%eif%"));
+        when(messageService.convert(anyString())).thenAnswer(invocation -> invocation.getArgument(0));
+        final CountingSkill configuredSkill = new CountingSkill(configService, log, playerRecordRepository,
+                simpleSkills, messageService, pluginManager);
+
+        configuredSkill.sendInfo(commandSender);
+
+        verify(commandSender).sendMessage("Counting|true|55|42|2.5");
     }
 
     /**
