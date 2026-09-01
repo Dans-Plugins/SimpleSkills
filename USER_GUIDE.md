@@ -11,6 +11,7 @@ This guide provides step-by-step instructions for getting started with SimpleSki
   - [Leveling Up a Skill](#leveling-up-a-skill)
   - [Viewing Skill Details](#viewing-skill-details)
   - [Checking the Leaderboard](#checking-the-leaderboard)
+- [How Progress Is Saved](#how-progress-is-saved)
 - [Tips and Best Practices](#tips-and-best-practices)
 
 ## Getting Started
@@ -149,6 +150,20 @@ Top Players in Mining
 2: Alex - LVL: 37
 3: Notch - LVL: 25
 ```
+
+---
+
+## How Progress Is Saved
+
+Skill levels and experience are held in memory while the server runs and written to `plugins/SimpleSkills/playerRecords.json`. That file is rewritten:
+
+- **When the server shuts down cleanly.** A clean shutdown always writes the current state.
+- **Every 5 minutes.** A scheduled autosave runs in the background from 5 minutes after startup onward.
+- **Whenever the server saves a world.** This covers the server's own periodic world autosave and an operator running `/save-all`.
+
+Because a server fires its save once per world, several worlds saving together would otherwise rewrite the file several times in a row; consecutive saves less than 5 seconds apart are therefore collapsed into a single write.
+
+The practical effect for players is that a server crash costs at most the progress made since the server last saved, rather than since the plugin's own last autosave. No player action is needed to save progress.
 
 ---
 

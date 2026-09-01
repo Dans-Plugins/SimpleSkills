@@ -36,7 +36,17 @@ public class StorageService {
         jsonWriterReader.initialize(FILE_PATH);
     }
 
-    public void save() {
+    /**
+     * Writes the plugin's data out.
+     * <p>
+     * Synchronized because the callers do not share a thread: the scheduled autosave in
+     * {@code SimpleSkills#scheduleAutoSave()} runs asynchronously, while shutdown and
+     * {@link dansplugins.simpleskills.listeners.WorldSaveEventListener} both run on the main
+     * thread. Without this, an autosave landing on the same tick as a world save would have two
+     * threads writing the same file at once.
+     * </p>
+     */
+    public synchronized void save() {
         savePlayerRecords();
     }
 

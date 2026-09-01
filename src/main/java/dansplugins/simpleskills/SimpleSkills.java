@@ -5,6 +5,7 @@ import dansplugins.simpleskills.commands.*;
 import dansplugins.simpleskills.commands.tab.TabCommand;
 import dansplugins.simpleskills.listeners.PlacedBlockListener;
 import dansplugins.simpleskills.listeners.PlayerJoinEventListener;
+import dansplugins.simpleskills.listeners.WorldSaveEventListener;
 import dansplugins.simpleskills.playerrecord.PlayerRecordRepository;
 import dansplugins.simpleskills.config.ConfigService;
 import dansplugins.simpleskills.message.MessageService;
@@ -46,6 +47,7 @@ public class SimpleSkills extends JavaPlugin {
     private final ChanceCalculator chanceCalculator = new ChanceCalculator(playerRecordRepository, configService, skillRepository, messageService, experienceCalculator, log);
     private final PlayerJoinEventListener playerJoinEventListener = new PlayerJoinEventListener(playerRecordRepository, log);
     private final PlacedBlockListener placedBlockListener = new PlacedBlockListener(this);
+    private final WorldSaveEventListener worldSaveEventListener = new WorldSaveEventListener(storageService, log);
 
 
     /**
@@ -171,6 +173,7 @@ public class SimpleSkills extends JavaPlugin {
         }
 
         Bukkit.getPluginManager().registerEvents(playerJoinEventListener, this);
+        Bukkit.getPluginManager().registerEvents(worldSaveEventListener, this);
         // Registered after skills so its BlockBreakEvent cleanup (also MONITOR priority) runs
         // after the skills' own handlers have checked PlacedBlockListener.isPlayerPlaced().
         Bukkit.getPluginManager().registerEvents(placedBlockListener, this);
