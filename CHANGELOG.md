@@ -24,6 +24,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Added
 
+- Player records are now written out whenever the server saves a world, in addition to the existing 5-minute autosave and the write on shutdown. A crash therefore costs at most the progress made since the server's own last save — previously up to five minutes of skill progress could be lost, since an unclean shutdown never reaches `onDisable()`. A server fires the event once per world, so consecutive saves less than 5 seconds apart are collapsed into one write rather than rewriting the same file once per world. Unlike the scheduled autosave, this write runs on the main thread, which is where the records are mutated, so it cannot iterate them mid-change. How progress is saved is now described in `USER_GUIDE.md`, where it was previously documented nowhere.
+
 - A `Dev Release` workflow, which republishes a rolling `dev` prerelease of `main` on every non-documentation push. This is what Dan's Plugin Manager's experimental channel installs from: `/dpm get simpleskills --experimental` reads `releases/tags/dev`, so without it there is nothing for that command to download. The prerelease is unreleased, unreviewed code and is marked as such.
 
 ### Fixed
