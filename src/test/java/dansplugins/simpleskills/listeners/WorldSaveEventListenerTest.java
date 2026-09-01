@@ -19,11 +19,10 @@ import static org.mockito.Mockito.when;
  * saves a world, and the window over which the per-world burst of events a single server save
  * produces is coalesced into one write.
  * <p>
- * A real {@link WorldSaveEvent} is constructed (rather than mocked) for the same reason
- * {@link PlacedBlockListenerTest} does so: {@code WorldEvent#getWorld()} is inherited rather than
- * declared on the event, and constructing the event exercises the same path the server takes.
- * The clock is substituted through the package-private {@code currentTimeMillis()} seam so that
- * the coalescing window can be crossed without waiting for it to pass.
+ * A real {@link WorldSaveEvent} is constructed rather than mocked, as {@link PlacedBlockListenerTest}
+ * also does, so that the event the listener receives is the one the server would hand it. The clock
+ * is substituted through the package-private {@code currentTimeMillis()} seam so that the
+ * coalescing window can be crossed without waiting for it to pass.
  * </p>
  */
 @RunWith(MockitoJUnitRunner.Silent.class)
