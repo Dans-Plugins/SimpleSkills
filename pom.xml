@@ -41,28 +41,31 @@
                             <shadedPattern>cryptomorin.xseries</shadedPattern>
                         </relocation>
                     </relocations>
-                    <!-- Here you can remove the classes you don't use. -->
-                    <!-- These are some examples. -->
-                    <!-- The "unused" package and SkullCacheListener are excluded by default. -->
-                    <!-- Some utilities such a XItemStack depend on more than 3 other classes, so watch out. -->
+                    <!--
+                      Only the classes XMaterial needs are shaded. This list is the transitive
+                      reference closure of com.cryptomorin.xseries.XMaterial in the pinned XSeries
+                      version. Regenerate it when bumping XSeries: a class that is reachable from
+                      XMaterial but filtered out here does not fail the build, it fails at runtime
+                      as a NoClassDefFoundError on the server.
+
+                      The filter is scoped to the XSeries artifact on purpose. An <includes> list
+                      under <artifact>*:*</artifact> would also drop this plugin's own classes.
+                    -->
                     <filters>
                         <filter>
-                            <artifact>*:*</artifact>
-                            <excludes>
-                                <exclude>com/cryptomorin/xseries/NMSExtras*</exclude>
-                                <exclude>com/cryptomorin/xseries/NoteBlockMusic*</exclude>
-                                <exclude>com/cryptomorin/xseries/ReflectionUtils*</exclude>
-                                <exclude>com/cryptomorin/xseries/SkullCacheListener*</exclude>
-                                <exclude>com/cryptomorin/xseries/SkullUtils*</exclude>
-                                <exclude>com/cryptomorin/xseries/XBiome*</exclude>
-                                <exclude>com/cryptomorin/xseries/XPotion*</exclude>
-                                <exclude>com/cryptomorin/xseries/XSound*</exclude>
-                                <exclude>com/cryptomorin/xseries/XTag*</exclude>
-                                <exclude>com/cryptomorin/xseries/XEntity*</exclude>
-                                <exclude>com/cryptomorin/xseries/XItemStack*</exclude>
-                                <exclude>com/cryptomorin/xseries/XEnchantment*</exclude>
-                                <exclude>com/cryptomorin/xseries/XBlock*</exclude>
-                            </excludes>
+                            <artifact>com.github.cryptomorin:XSeries</artifact>
+                            <includes>
+                                <include>com/cryptomorin/xseries/XMaterial*</include>
+                                <include>com/cryptomorin/xseries/XAttribute*</include>
+                                <include>com/cryptomorin/xseries/XBiome*</include>
+                                <include>com/cryptomorin/xseries/XEnchantment*</include>
+                                <include>com/cryptomorin/xseries/XEntityType*</include>
+                                <include>com/cryptomorin/xseries/XItemFlag*</include>
+                                <include>com/cryptomorin/xseries/XPotion*</include>
+                                <include>com/cryptomorin/xseries/XSound*</include>
+                                <include>com/cryptomorin/xseries/base/**</include>
+                                <include>com/cryptomorin/xseries/particles/**</include>
+                            </includes>
                         </filter>
                     </filters>
                 </configuration>
@@ -113,7 +116,7 @@
         <dependency>
             <groupId>com.github.cryptomorin</groupId>
             <artifactId>XSeries</artifactId>
-            <version>8.6.1</version>
+            <version>13.7.1</version>
             <scope>compile</scope>
         </dependency>
         <!-- Test dependencies -->
