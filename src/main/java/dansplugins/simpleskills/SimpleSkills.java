@@ -17,6 +17,7 @@ import dansplugins.simpleskills.experience.ExperienceCalculator;
 
 import dansplugins.simpleskills.logging.Log;
 import dansplugins.simpleskills.skill.skills.*;
+import com.cryptomorin.xseries.XMaterial;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -24,7 +25,6 @@ import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import preponderous.ponder.minecraft.abs.AbstractPluginCommand;
-import preponderous.ponder.minecraft.nms.NMSAssistant;
 import preponderous.ponder.minecraft.spigot.PonderMC;
 
 import java.util.ArrayList;
@@ -34,6 +34,13 @@ import java.util.Arrays;
  * @author Daniel Stephenson
  */
 public class SimpleSkills extends JavaPlugin {
+    /**
+     * The oldest Minecraft version this plugin will run on: 1.13, the "flattening" release.
+     * Below it the material names the skills look up do not exist.
+     */
+    private static final int MINIMUM_MAJOR_VERSION = 1;
+    private static final int MINIMUM_MINOR_VERSION = 13;
+
     private final String pluginVersion = "v" + getDescription().getVersion();
     private PonderMC ponder;
 
@@ -116,20 +123,35 @@ public class SimpleSkills extends JavaPlugin {
         }
     }
 
+    /**
+     * Refuses to run on a server older than the 1.13 "flattening", where the material names every
+     * skill looks up did not yet exist.
+     * <p>
+     * The version is read from XSeries rather than from Ponder's {@code NMSAssistant}. That class
+     * derived the version by parsing the relocated {@code org.bukkit.craftbukkit.vX_Y_RZ} package
+     * name, which Spigot no longer versions, so it threw {@link NumberFormatException} on every
+     * startup and this check never reached either branch. It cannot be fixed upstream either: the
+     * whole {@code preponderous.ponder.minecraft.nms} package was removed from Ponder in 2022 and
+     * survives only in the v0.14 pinned here. XSeries is used instead because it is already shaded
+     * in, is maintained, and is the same version detection every material lookup already depends
+     * on — so this check cannot disagree with the lookups it is guarding.
+     * </p>
+     */
     private void performNMSChecks() {
         try {
-            final NMSAssistant nmsAssistant = new NMSAssistant();
-            if (nmsAssistant.isVersionGreaterThan(12)) {
-                log.info("Loading data for NMS " + nmsAssistant.getNMSVersion().toString());
+            if (XMaterial.supports(MINIMUM_MAJOR_VERSION, MINIMUM_MINOR_VERSION)) {
+                log.info("Loading data for Minecraft " + XMaterial.getVersionMajor() + "."
+                        + XMaterial.getVersionMinor());
             } else {
                 log.warning("The server version is not suitable to load the plugin");
-                log.warning("This plugin is tested on a 1.21.4 server.");
+                log.warning("This plugin requires at least Minecraft " + MINIMUM_MAJOR_VERSION + "."
+                        + MINIMUM_MINOR_VERSION + ".");
                 Bukkit.getServer().getPluginManager().disablePlugin(this);
             }
-        } catch(NumberFormatException e) {
-            log.warning("Failed to determine NMS version due to NumberFormatException. Some features may not work correctly.");
-        } catch (Exception e) {
-            log.warning("Failed to determine NMS version due to an exception. Some features may not work correctly. Error: " + e.getMessage());
+        } catch (Exception | LinkageError e) {
+            // A version this build cannot recognise is not a per-event condition, so it is reported
+            // once here rather than left to surface as a failure on every material lookup later.
+            log.warning("Failed to determine the server version. Some features may not work correctly. Error: " + e);
         }
     }
 
