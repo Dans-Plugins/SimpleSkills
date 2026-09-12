@@ -9,6 +9,7 @@ This document provides detailed information about all configuration options avai
   - [Experience Requirements](#experience-requirements)
   - [Alert Settings](#alert-settings)
   - [Skill Activation](#skill-activation)
+  - [Skill Benefit Toggles](#skill-benefit-toggles)
   - [Usage Reporting](#usage-reporting)
 - [message.yml](#messageyml)
 
@@ -157,6 +158,50 @@ skills:
 > **Note:** The Woodcutting skill uses `Lumberjack` as its internal config key. Use `Lumberjack` when referencing it in `config.yml`. The `/ss force activate` and `/ss force deactivate` commands currently only accept single-word skill keys (e.g., `Lumberjack`, `Mining`) and cannot target skills whose names contain spaces such as `Monster Hunting`; toggle those via `config.yml` instead.
 
 Skills can also be toggled at runtime using the admin commands `/ss force activate <skillName>` and `/ss force deactivate <skillName>` without restarting the server.
+
+---
+
+### Skill Benefit Toggles
+
+Each skill's benefit can be switched off on its own, independently of the skill's activation state. A skill whose benefit is disabled keeps granting experience and levelling up as normal; only its reward stops triggering. This is the difference from [Skill Activation](#skill-activation): deactivating a skill stops both its experience gain and its benefit, whereas disabling its benefit stops the benefit alone.
+
+The toggles are top-level keys in `config.yml`, one per skill, named after the skill in camelCase with the suffix `BenefitEnabled`:
+
+```yaml
+miningBenefitEnabled: true
+monsterHuntingBenefitEnabled: false
+```
+
+**Type:** Boolean  
+**Default:** `true`  
+**Description:** When `false`, the named skill's benefit never triggers. A key that is missing from `config.yml` is treated as `true`, so a file written by an older version of the plugin leaves every benefit enabled until the key is added.
+
+**Available skills and their config keys:**
+
+| Skill | Config Key |
+|---|---|
+| Athlete | `athleteBenefitEnabled` |
+| Boating | `boatingBenefitEnabled` |
+| Breeding | `breedingBenefitEnabled` |
+| Cardio | `cardioBenefitEnabled` |
+| Crafting | `craftingBenefitEnabled` |
+| Digging | `diggingBenefitEnabled` |
+| Dueling | `duelingBenefitEnabled` |
+| Enchanting | `enchantingBenefitEnabled` |
+| Farming | `farmingBenefitEnabled` |
+| Fishing | `fishingBenefitEnabled` |
+| Floriculture | `floricultureBenefitEnabled` |
+| Gliding | `glidingBenefitEnabled` |
+| Hardiness | `hardinessBenefitEnabled` |
+| Mining | `miningBenefitEnabled` |
+| Monster Hunting | `monsterHuntingBenefitEnabled` |
+| Pyromaniac | `pyromaniacBenefitEnabled` |
+| Quarrying | `quarryingBenefitEnabled` |
+| Riding | `ridingBenefitEnabled` |
+| Strength | `strengthBenefitEnabled` |
+| Woodcutting | `lumberjackBenefitEnabled` |
+
+> **Note:** As with skill activation, the Woodcutting skill is keyed as `lumberjack`. There is no command for these toggles; edit `config.yml` and restart the server, or run `/ss reload`, for a change to take effect.
 
 ---
 

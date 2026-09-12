@@ -63,6 +63,8 @@ SimpleSkills includes 20 skills, each tied to a specific activity. Benefits trig
 | **Strength** | Hitting entities | Strength boost |
 | **Lumberjack** | Chopping wood with an axe | Double wood drops or bonus XP |
 
+A server owner can switch off any skill entirely, or switch off just its benefit while leaving its levelling intact. See [Skill Activation](CONFIG.md#skill-activation) and [Skill Benefit Toggles](CONFIG.md#skill-benefit-toggles).
+
 ---
 
 ## Common Scenarios

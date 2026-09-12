@@ -204,6 +204,78 @@ public class AbstractSkillTest {
         verify(commandSender).sendMessage("Counting|true|55|42|2.5");
     }
 
+    // The benefit toggle keys are documented in CONFIG.md and shipped in config.yml by name, so
+    // the name the skill derives from its internal name is the contract these tests pin down.
+    // Each stubs a sentinel of false under the documented key: a skill reading any other key
+    // falls through to the catch-all stub of true and the mismatch shows up.
+
+    @Test
+    public void isBenefitEnabled_readsTheSkillNameLowerCasedWithTheBenefitEnabledSuffix() {
+        when(fileConfiguration.getBoolean("miningBenefitEnabled", true)).thenReturn(false);
+
+        final NamedSkill mining = new NamedSkill(configService, log, playerRecordRepository, simpleSkills,
+                messageService, "Mining");
+
+        assertFalse(mining.isBenefitEnabled());
+    }
+
+    @Test
+    public void isBenefitEnabled_camelCasesAMultiWordSkillName() {
+        when(fileConfiguration.getBoolean("monsterHuntingBenefitEnabled", true)).thenReturn(false);
+
+        final NamedSkill monsterHunting = new NamedSkill(configService, log, playerRecordRepository,
+                simpleSkills, messageService, "Monster Hunting");
+
+        assertFalse(monsterHunting.isBenefitEnabled());
+    }
+
+    @Test
+    public void isBenefitEnabled_keysWoodcuttingUnderItsInternalLumberjackName() {
+        when(fileConfiguration.getBoolean("lumberjackBenefitEnabled", true)).thenReturn(false);
+
+        final NamedSkill woodcutting = new NamedSkill(configService, log, playerRecordRepository,
+                simpleSkills, messageService, "lumberjack");
+
+        assertFalse(woodcutting.isBenefitEnabled());
+    }
+
+    @Test
+    public void isBenefitEnabled_fallsBackToTrueWhenTheKeyIsAbsent() {
+        final NamedSkill mining = new NamedSkill(configService, log, playerRecordRepository, simpleSkills,
+                messageService, "Mining");
+
+        mining.isBenefitEnabled();
+
+        // The fallback passed to the config is what an older config.yml without the key gets.
+        verify(fileConfiguration).getBoolean("miningBenefitEnabled", true);
+    }
+
+    /**
+     * Minimal concrete {@link AbstractSkill} constructed under an arbitrary internal name, standing
+     * in for whichever real skill's config keys are derived from that name.
+     */
+    public static class NamedSkill extends AbstractSkill {
+        NamedSkill(ConfigService configService, Log log, PlayerRecordRepository playerRecordRepository,
+                   SimpleSkills simpleSkills, MessageService messageService, String name) {
+            super(configService, log, playerRecordRepository, simpleSkills, messageService, name,
+                    BlockBreakEvent.class);
+        }
+
+        @Override
+        public double getChance() {
+            return 0;
+        }
+
+        @Override
+        public boolean randomExpGainChance() {
+            return false;
+        }
+
+        @Override
+        public void executeReward(@NotNull Player player, Object... skillData) {
+        }
+    }
+
     /**
      * Minimal concrete {@link AbstractSkill} counting the events its triggers receive, standing in
      * for any skill declaring triggers for event classes that share a handler list.
