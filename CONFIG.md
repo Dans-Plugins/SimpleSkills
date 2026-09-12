@@ -201,7 +201,7 @@ monsterHuntingBenefitEnabled: false
 | Strength | `strengthBenefitEnabled` |
 | Woodcutting | `lumberjackBenefitEnabled` |
 
-> **Note:** As with skill activation, the Woodcutting skill is keyed as `lumberjack`. There is no command for these toggles; edit `config.yml` and restart the server, or run `/ss reload`, for a change to take effect.
+> **Note:** The Woodcutting skill's key is derived from its internal name, `Lumberjack`, just as its activation key `skills.Lumberjack.active` is — so it is `lumberjackBenefitEnabled`, not `woodcuttingBenefitEnabled`. There is no command for these toggles; edit `config.yml` and restart the server, or run `/ss reload`, for a change to take effect.
 
 ---
 
