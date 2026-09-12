@@ -12,6 +12,11 @@ import java.io.IOException;
  * @author Daniel Stephenson
  */
 public class ConfigService {
+    private static final String USAGE_REPORTING_ENABLED_KEY = "usage-reporting.enabled";
+    private static final String USAGE_REPORTING_ENDPOINT_KEY = "usage-reporting.endpoint";
+    private static final String USAGE_REPORTING_KEY_KEY = "usage-reporting.key";
+    private static final String DEFAULT_USAGE_REPORTING_ENDPOINT = "https://trace.danielstephenson.dev";
+
     private final SimpleSkills simpleSkills;
 
     private final boolean altered = false;
@@ -59,6 +64,33 @@ public class ConfigService {
     public void setSkillActive(String skillName, boolean active) {
         config.set("skills." + skillName + ".active", active);
         saveConfig();
+    }
+
+    // The usage-reporting settings are read through the plugin's own getConfig()
+    // rather than the FileConfiguration this service loads, and with the
+    // one-argument getters, deliberately. createConfig() never touches a
+    // config.yml that already exists, so a server upgraded from a version before
+    // usage reporting has no usage-reporting block on disk. The YamlConfiguration
+    // loaded above sees only that file, whereas Bukkit registers the jar's
+    // config.yml as the defaults for the plugin's getConfig(), and the
+    // one-argument getters fall through to them -- but the two-argument getters
+    // return their explicit fallback instead, which for the key would be "" and
+    // would turn reporting off on every existing installation. Verified against
+    // YamlConfiguration, not assumed.
+
+    public boolean isUsageReportingEnabled() {
+        return simpleSkills.getConfig().getBoolean(USAGE_REPORTING_ENABLED_KEY);
+    }
+
+    public String getUsageReportingEndpoint() {
+        String endpoint = simpleSkills.getConfig().getString(USAGE_REPORTING_ENDPOINT_KEY);
+        return endpoint != null ? endpoint : DEFAULT_USAGE_REPORTING_ENDPOINT;
+    }
+
+    /** Empty when no key is configured or bundled, which the client treats as "off". */
+    public String getUsageReportingKey() {
+        String key = simpleSkills.getConfig().getString(USAGE_REPORTING_KEY_KEY);
+        return key != null ? key : "";
     }
 
 }

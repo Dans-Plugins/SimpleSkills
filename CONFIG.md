@@ -9,6 +9,7 @@ This document provides detailed information about all configuration options avai
   - [Experience Requirements](#experience-requirements)
   - [Alert Settings](#alert-settings)
   - [Skill Activation](#skill-activation)
+  - [Usage Reporting](#usage-reporting)
 - [message.yml](#messageyml)
 
 ---
@@ -156,6 +157,36 @@ skills:
 > **Note:** The Woodcutting skill uses `Lumberjack` as its internal config key. Use `Lumberjack` when referencing it in `config.yml`. The `/ss force activate` and `/ss force deactivate` commands currently only accept single-word skill keys (e.g., `Lumberjack`, `Mining`) and cannot target skills whose names contain spaces such as `Monster Hunting`; toggle those via `config.yml` instead.
 
 Skills can also be toggled at runtime using the admin commands `/ss force activate <skillName>` and `/ss force deactivate <skillName>` without restarting the server.
+
+---
+
+### Usage Reporting
+
+When the plugin is enabled, and each time one of its commands is used, a small event is sent to the author's [trace](https://github.com/Stephenson-Software/trace-client-java) server so it is known which plugins are actually in use. An event carries the plugin's name, the event name (`startup` or `command`), and either the plugin version or the command name — nothing about players, the world, or the server. Sending happens off the main thread, never delays a tick, and is dropped silently if the server cannot be reached. Set `usage-reporting.enabled` to `false` to turn it off.
+
+An existing `config.yml` is never overwritten when the plugin is updated, so a file written by an older version has no `usage-reporting` block. The three settings below then fall back to the values bundled with the plugin, so reporting is active on upgraded servers as well unless it is turned off.
+
+#### `usage-reporting.enabled`
+
+**Type:** Boolean  
+**Default:** `true`  
+**Description:** Whether the plugin reports usage events. Set to `false` to turn it off.
+
+---
+
+#### `usage-reporting.endpoint`
+
+**Type:** String  
+**Default:** `https://trace.danielstephenson.dev`  
+**Description:** The trace server events are sent to.
+
+---
+
+#### `usage-reporting.key`
+
+**Type:** String  
+**Default:** the plugin's key  
+**Description:** Identifies this plugin to the trace server so reports are attributed to it. Not a secret: it ships in the default config and can only report as SimpleSkills. Empty means reporting is off regardless of `usage-reporting.enabled`.
 
 ---
 
