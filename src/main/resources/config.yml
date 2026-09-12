@@ -49,6 +49,31 @@ skills:
   Lumberjack:
     active: true
 
+# Per-skill benefit toggles. Set one to false to stop that skill's benefit
+# from triggering while leaving its experience gain and levelling intact.
+# (To stop both, deactivate the skill under "skills" above instead.)
+# Any key missing from this file is treated as true.
+athleteBenefitEnabled: true
+boatingBenefitEnabled: true
+breedingBenefitEnabled: true
+cardioBenefitEnabled: true
+craftingBenefitEnabled: true
+diggingBenefitEnabled: true
+duelingBenefitEnabled: true
+enchantingBenefitEnabled: true
+farmingBenefitEnabled: true
+fishingBenefitEnabled: true
+floricultureBenefitEnabled: true
+glidingBenefitEnabled: true
+hardinessBenefitEnabled: true
+miningBenefitEnabled: true
+monsterHuntingBenefitEnabled: true
+pyromaniacBenefitEnabled: true
+quarryingBenefitEnabled: true
+ridingBenefitEnabled: true
+strengthBenefitEnabled: true
+lumberjackBenefitEnabled: true
+
 # Usage reporting. When the plugin is enabled, and each time one of its
 # commands is used, a small event (plugin name, event name, plugin version)
 # is sent to the author's trace server so it is known which plugins are
