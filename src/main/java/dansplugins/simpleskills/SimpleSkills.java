@@ -17,6 +17,7 @@ import dansplugins.simpleskills.experience.ExperienceCalculator;
 
 import dansplugins.simpleskills.logging.Log;
 import dansplugins.simpleskills.skill.skills.*;
+import dansplugins.simpleskills.trace.TraceClient;
 import com.cryptomorin.xseries.XMaterial;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -29,6 +30,7 @@ import preponderous.ponder.minecraft.spigot.PonderMC;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
 /**
  * @author Daniel Stephenson
@@ -56,6 +58,9 @@ public class SimpleSkills extends JavaPlugin {
     private final PlacedBlockListener placedBlockListener = new PlacedBlockListener(this);
     private final WorldSaveEventListener worldSaveEventListener = new WorldSaveEventListener(storageService, log);
 
+    // A no-op until the config has been read, so a command arriving before
+    // onEnable() finishes has something safe to report to.
+    private TraceClient trace = TraceClient.disabled();
 
     /**
      * This runs when the server starts.
@@ -76,6 +81,7 @@ public class SimpleSkills extends JavaPlugin {
         initializeCommandService();
         checkFilesVersion();
         scheduleAutoSave();
+        setupUsageReporting();
     }
 
     /**
@@ -83,6 +89,7 @@ public class SimpleSkills extends JavaPlugin {
      */
     @Override
     public void onDisable() {
+        trace.close();
         log.debug("Saving files.");
         storageService.save();
         log.debug("Saving language files.");
@@ -101,6 +108,7 @@ public class SimpleSkills extends JavaPlugin {
      * @return A boolean indicating whether the execution of the command was successful.
      */
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, String[] args) {
+        trace.report("command", null, Collections.singletonMap("name", cmd.getName()));
         if (args.length == 0) {
             DefaultCommand defaultCommand = new DefaultCommand(messageService, this);
             return defaultCommand.execute(sender);
@@ -175,6 +183,19 @@ public class SimpleSkills extends JavaPlugin {
         metrics.addCustomChart(new Metrics.SimplePie("benefit_alert", () -> String.valueOf(benefitAlert)));
     }
 
+
+    /**
+     * Usage reporting: one event now, one per command; see config.yml.
+     */
+    private void setupUsageReporting() {
+        log.debug("Setting up usage reporting.");
+        trace = TraceClient.builder(configService.getUsageReportingEndpoint(), getName())
+                .key(configService.getUsageReportingKey())
+                .enabled(configService.isUsageReportingEnabled())
+                .logger(getLogger())
+                .build();
+        trace.report("startup", null, Collections.singletonMap("version", getDescription().getVersion()));
+    }
 
     private void setTabCompleterForCoreCommands() {
         log.debug("Setting up tab completers for core commands.");
