@@ -185,15 +185,29 @@ public class SimpleSkills extends JavaPlugin {
 
 
     /**
-     * Usage reporting: one event now, one per command; see config.yml.
+     * Usage reporting: one event now, one per command; see config.yml. The
+     * block is written to disk first if an upgraded server does not have it,
+     * so the switch is where the console line says it is, and the outcome is
+     * logged either way.
      */
     private void setupUsageReporting() {
         log.debug("Setting up usage reporting.");
+        configService.saveUsageReportingDefaultsIfNotPresent();
         trace = TraceClient.builder(configService.getUsageReportingEndpoint(), getName())
                 .key(configService.getUsageReportingKey())
                 .enabled(configService.isUsageReportingEnabled())
+                .serverWideConfig(getDataFolder().getParentFile())
                 .logger(getLogger())
                 .build();
+        if (trace.isEnabled()) {
+            getLogger().info("Usage reporting is on: " + getName() + " sends its name, version and command names to "
+                    + "https://trace.danielstephenson.dev - nothing about players or the server. Turn it off with "
+                    + "usage-reporting.enabled: false in this plugin's config.yml, or for every plugin with "
+                    + "enabled: false in plugins/trace/config.yml. "
+                    + "Details: https://github.com/Stephenson-Software/trace#usage-reporting");
+        } else {
+            getLogger().info("Usage reporting is off (" + trace.disabledReason() + ").");
+        }
         trace.report("startup", null, Collections.singletonMap("version", getDescription().getVersion()));
     }
 

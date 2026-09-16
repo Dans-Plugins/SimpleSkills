@@ -1,6 +1,7 @@
 package dansplugins.simpleskills.config;
 
 import dansplugins.simpleskills.SimpleSkills;
+import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -12,6 +13,7 @@ import java.io.IOException;
  * @author Daniel Stephenson
  */
 public class ConfigService {
+    private static final String USAGE_REPORTING_SECTION = "usage-reporting";
     private static final String USAGE_REPORTING_ENABLED_KEY = "usage-reporting.enabled";
     private static final String USAGE_REPORTING_ENDPOINT_KEY = "usage-reporting.endpoint";
     private static final String USAGE_REPORTING_KEY_KEY = "usage-reporting.key";
@@ -32,6 +34,12 @@ public class ConfigService {
         configFile = new File(simpleSkills.getDataFolder(), "config.yml");
 
         if (!configFile.exists()) simpleSkills.saveResource("config.yml", false);
+        load(configFile);
+    }
+
+    /** What createConfig() does once it knows the file; package-private so a test can hand it a file of its own. */
+    void load(File file) {
+        configFile = file;
         config = new YamlConfiguration();
 
         try {
@@ -63,6 +71,30 @@ public class ConfigService {
      */
     public void setSkillActive(String skillName, boolean active) {
         config.set("skills." + skillName + ".active", active);
+        saveConfig();
+    }
+
+    /**
+     * Puts the usage-reporting block on disk if the file does not have one.
+     * createConfig() never touches an existing config.yml, so a server upgraded
+     * in place from before usage reporting kept reporting through the bundled
+     * defaults (see the getters below) with no visible switch to turn it off.
+     * The values are copied from the jar's config.yml, not written as new
+     * literals, and they go through this service's own configuration, because
+     * that is what saveConfig() writes back on every disable -- a write through
+     * the plugin's getConfig() alone would be lost at the next shutdown.
+     */
+    public void saveUsageReportingDefaultsIfNotPresent() {
+        if (config == null || config.isSet(USAGE_REPORTING_SECTION)) {
+            return;
+        }
+        Configuration defaults = simpleSkills.getConfig().getDefaults();
+        if (defaults == null) {
+            return;
+        }
+        config.set(USAGE_REPORTING_ENABLED_KEY, defaults.get(USAGE_REPORTING_ENABLED_KEY));
+        config.set(USAGE_REPORTING_ENDPOINT_KEY, defaults.get(USAGE_REPORTING_ENDPOINT_KEY));
+        config.set(USAGE_REPORTING_KEY_KEY, defaults.get(USAGE_REPORTING_KEY_KEY));
         saveConfig();
     }
 
