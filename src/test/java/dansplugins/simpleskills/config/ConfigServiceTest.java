@@ -2,11 +2,19 @@ package dansplugins.simpleskills.config;
 
 import dansplugins.simpleskills.SimpleSkills;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -34,6 +42,9 @@ public class ConfigServiceTest {
 
     @Mock
     private FileConfiguration pluginConfig;
+
+    @Rule
+    public TemporaryFolder dataFolder = new TemporaryFolder();
 
     private ConfigService configService;
 
@@ -85,6 +96,65 @@ public class ConfigServiceTest {
 
         verify(pluginConfig).getString("usage-reporting.key");
         verify(pluginConfig, never()).getString(eq("usage-reporting.key"), anyString());
+    }
+
+    /** A data folder holding the given config.yml, loaded the way onEnable() loads it. */
+    private File loadFromDisk(String onDisk) throws IOException {
+        File file = new File(dataFolder.getRoot(), "config.yml");
+        Files.write(file.toPath(), onDisk.getBytes(StandardCharsets.UTF_8));
+        // createConfig() itself needs the plugin's final getDataFolder()/getLogger(), which a
+        // mock cannot provide, so the file is handed over at the point where it is known.
+        configService.load(file);
+        return file;
+    }
+
+    private YamlConfiguration bundledDefaults() {
+        YamlConfiguration bundled = new YamlConfiguration();
+        bundled.set("usage-reporting.enabled", true);
+        bundled.set("usage-reporting.endpoint", "https://trace.danielstephenson.dev");
+        bundled.set("usage-reporting.key", "bundled-key");
+        return bundled;
+    }
+
+    @Test
+    public void missingUsageReportingBlockIsWrittenToDiskFromTheBundledDefaults() throws IOException {
+        // The in-place upgrade case: the file predates the block, the getters fall through to
+        // the bundled key, and the switch the console line points at does not exist on disk.
+        File file = loadFromDisk("version: 2.0.0\nskills:\n  Mining:\n    active: true\n");
+        when(pluginConfig.getDefaults()).thenReturn(bundledDefaults());
+
+        configService.saveUsageReportingDefaultsIfNotPresent();
+
+        YamlConfiguration onDisk = YamlConfiguration.loadConfiguration(file);
+        assertTrue(onDisk.getBoolean("usage-reporting.enabled"));
+        assertEquals("https://trace.danielstephenson.dev", onDisk.getString("usage-reporting.endpoint"));
+        assertEquals("bundled-key", onDisk.getString("usage-reporting.key"));
+        assertTrue(onDisk.getBoolean("skills.Mining.active"));
+        // and it is in the configuration saveConfig() writes back on disable, so it survives.
+        assertEquals("bundled-key", configService.getConfig().getString("usage-reporting.key"));
+    }
+
+    @Test
+    public void existingUsageReportingBlockIsLeftAlone() throws IOException {
+        File file = loadFromDisk("usage-reporting:\n  enabled: false\n  endpoint: http://localhost:8080\n  key: abc\n");
+        long before = file.lastModified();
+
+        configService.saveUsageReportingDefaultsIfNotPresent();
+
+        YamlConfiguration onDisk = YamlConfiguration.loadConfiguration(file);
+        assertFalse(onDisk.getBoolean("usage-reporting.enabled"));
+        assertEquals("abc", onDisk.getString("usage-reporting.key"));
+        assertEquals(before, file.lastModified());
+    }
+
+    @Test
+    public void usageReportingBlockIsNotInventedWithoutBundledDefaults() throws IOException {
+        File file = loadFromDisk("version: 2.0.0\n");
+        when(pluginConfig.getDefaults()).thenReturn(null);
+
+        configService.saveUsageReportingDefaultsIfNotPresent();
+
+        assertFalse(YamlConfiguration.loadConfiguration(file).isSet("usage-reporting"));
     }
 
     @Test
