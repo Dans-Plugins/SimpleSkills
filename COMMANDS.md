@@ -62,7 +62,7 @@ The main SimpleSkills command can be accessed using any of the following aliases
 ### `/ss stats`
 
 **Permission:** `ss.stats` (default: true)  
-**Description:** Displays server-wide statistics, including the total number of skills, player records, and unknown skills.  
+**Description:** Displays server-wide statistics: the number of active skills, the number of player records, and the number of unknown skills (active skills that no player has learned yet).  
 **Usage:** `/ss stats`
 
 ---
