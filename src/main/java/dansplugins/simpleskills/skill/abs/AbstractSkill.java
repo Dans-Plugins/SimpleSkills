@@ -224,10 +224,20 @@ public abstract class AbstractSkill implements Listener {
             final double randomChance = obtainRandomChance();
             if (!(randomChance <= getChance())) return;
         }
-        final PlayerRecord playerRecord = getRecord(player);
+        PlayerRecord playerRecord = getRecord(player);
         if (playerRecord == null) {
-            log.error("A player record wasn't found for " + player.getName() + " while attempting to increment experience.");
-            return;
+            // Records are created on join, so an online player can be without one only if the
+            // records were cleared while they were online (as /ss force wipe does).
+            log.debug("No player record found for " + player.getName() + ". Creating a new one.");
+            if (!playerRecordRepository.createPlayerRecord(player.getUniqueId())) {
+                log.error("Failed to create player record for " + player.getName() + " while attempting to increment experience.");
+                return;
+            }
+            playerRecord = getRecord(player);
+            if (playerRecord == null) {
+                log.error("A player record wasn't found for " + player.getName() + " while attempting to increment experience.");
+                return;
+            }
         }
         final int skillId = getId();
         playerRecord.incrementExperience(skillId);

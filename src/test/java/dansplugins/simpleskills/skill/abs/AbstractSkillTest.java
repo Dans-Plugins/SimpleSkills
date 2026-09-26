@@ -4,6 +4,7 @@ import dansplugins.simpleskills.SimpleSkills;
 import dansplugins.simpleskills.config.ConfigService;
 import dansplugins.simpleskills.logging.Log;
 import dansplugins.simpleskills.message.MessageService;
+import dansplugins.simpleskills.playerrecord.PlayerRecord;
 import dansplugins.simpleskills.playerrecord.PlayerRecordRepository;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
@@ -29,6 +30,7 @@ import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
+import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -40,6 +42,7 @@ import static org.mockito.ArgumentMatchers.anyDouble;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
@@ -82,6 +85,8 @@ public class AbstractSkillTest {
     private FileConfiguration lang;
     @Mock
     private CommandSender commandSender;
+    @Mock
+    private PlayerRecord playerRecord;
 
     private ThrowingSkill skill;
     private CountingSkill countingSkill;
@@ -202,6 +207,33 @@ public class AbstractSkillTest {
         configuredSkill.sendInfo(commandSender);
 
         verify(commandSender).sendMessage("Counting|true|55|42|2.5");
+    }
+
+    @Test
+    public void incrementExperience_createsAMissingRecordAndIncrementsIt() {
+        // An online player is without a record after /ss force wipe, as records are otherwise
+        // created only on join; the experience they earn must not be dropped until they rejoin.
+        final UUID uuid = UUID.fromString("22222222-2222-2222-2222-222222222222");
+        when(player.getUniqueId()).thenReturn(uuid);
+        when(playerRecordRepository.getPlayerRecord(uuid)).thenReturn(null, playerRecord);
+        when(playerRecordRepository.createPlayerRecord(uuid)).thenReturn(true);
+
+        countingSkill.incrementExperience(player);
+
+        verify(playerRecordRepository).createPlayerRecord(uuid);
+        verify(playerRecord).incrementExperience(countingSkill.getId());
+    }
+
+    @Test
+    public void incrementExperience_doesNotCreateARecordThePlayerAlreadyHas() {
+        final UUID uuid = UUID.fromString("22222222-2222-2222-2222-222222222222");
+        when(player.getUniqueId()).thenReturn(uuid);
+        when(playerRecordRepository.getPlayerRecord(uuid)).thenReturn(playerRecord);
+
+        countingSkill.incrementExperience(player);
+
+        verify(playerRecordRepository, never()).createPlayerRecord(any());
+        verify(playerRecord).incrementExperience(countingSkill.getId());
     }
 
     // The benefit toggle keys are documented in CONFIG.md and shipped in config.yml by name, so

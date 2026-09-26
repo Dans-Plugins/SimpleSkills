@@ -80,9 +80,9 @@ The main SimpleSkills command can be accessed using any of the following aliases
 ### `/ss force wipe`
 
 **Permission:** `ss.force.wipe` (default: op, console only)  
-**Description:** Clears all player skill records from the server. **This action is irreversible.**  
+**Description:** Clears all player skill records from the server and saves the empty set to `playerRecords.json` immediately. **This action is irreversible.**  
 **Usage:** `/ss force wipe`  
-**Notes:** This command can only be run from the console.
+**Notes:** This command can only be run from the console. Players who are online during the wipe start again from level 0 and keep gaining experience without needing to rejoin.
 
 ---
 

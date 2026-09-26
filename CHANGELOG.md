@@ -10,6 +10,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - `/ss top <skillName>` now sends the `NoTop` message (`No one is very skilled at %skill%.`) when no player has the skill yet. The command checked the leaderboard for `null`, but `PlayerRecordRepository.getTopPlayerRecords` returns an empty list in that case, so the message was never sent and the sender saw only the `Top-Header` line.
 
+- Players who are online when `/ss force wipe` runs now keep gaining experience. Records are created on join, so the wipe left online players without one, and the experience path logged `A player record wasn't found for <name> while attempting to increment experience.` and dropped the gain on every activity until the player rejoined. A skill now creates a missing record before adding experience to it, as the benefit roll already did. The wipe is also saved to `playerRecords.json` straight away instead of at the next autosave, world save or shutdown, so a crash in between can no longer bring the old records back.
+
 ## [2.5.0] – 2026-09-19
 
 The first stable release on the AI-first line; it supersedes the `3.0.0-SNAPSHOT-8-8-2026` snapshot below and includes everything listed there.
