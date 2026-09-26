@@ -4,6 +4,7 @@ import dansplugins.simpleskills.config.ConfigService;
 import dansplugins.simpleskills.playerrecord.PlayerRecordRepository;
 import dansplugins.simpleskills.skill.SkillRepository;
 import dansplugins.simpleskills.skill.abs.AbstractSkill;
+import dansplugins.simpleskills.services.StorageService;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -20,8 +21,9 @@ public class ForceCommand extends AbstractPluginCommand {
     private final PlayerRecordRepository playerRecordRepository;
     private final SkillRepository skillRepository;
     private final ConfigService configService;
+    private final StorageService storageService;
 
-    public ForceCommand(PlayerRecordRepository playerRecordRepository, SkillRepository skillRepository, ConfigService configService) {
+    public ForceCommand(PlayerRecordRepository playerRecordRepository, SkillRepository skillRepository, ConfigService configService, StorageService storageService) {
         super(
                 new ArrayList<>(Collections.singletonList("force")),
                 new ArrayList<>(Collections.singletonList("ss.force"))
@@ -29,6 +31,7 @@ public class ForceCommand extends AbstractPluginCommand {
         this.playerRecordRepository = playerRecordRepository;
         this.skillRepository = skillRepository;
         this.configService = configService;
+        this.storageService = storageService;
     }
 
     @Override
@@ -71,6 +74,8 @@ public class ForceCommand extends AbstractPluginCommand {
             return false;
         }
         playerRecordRepository.getPlayerRecords().clear();
+        // Written out now rather than at the next autosave, so a crash cannot restore the old records.
+        storageService.save();
         commandSender.sendMessage("Player records have been cleared.");
         return true;
     }

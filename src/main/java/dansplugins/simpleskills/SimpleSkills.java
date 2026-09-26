@@ -242,7 +242,7 @@ public class SimpleSkills extends JavaPlugin {
                 new HelpCommand(messageService),
                 new InfoCommand(playerRecordRepository, messageService, skillRepository, configService, experienceCalculator, log),
                 new StatsCommand(messageService, playerRecordRepository, skillRepository),
-                new ForceCommand(playerRecordRepository, skillRepository, configService),
+                new ForceCommand(playerRecordRepository, skillRepository, configService, storageService),
                 new SkillCommand(messageService, skillRepository),
                 new TopCommand(playerRecordRepository, messageService, skillRepository),
                 new ReloadCommand(messageService, configService)
