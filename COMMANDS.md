@@ -50,7 +50,7 @@ The main SimpleSkills command can be accessed using any of the following aliases
 ### `/ss top [skillName]`
 
 **Permission:** `ss.top` (default: true)  
-**Description:** Displays the top players ranked by skill level. If a skill name is provided, shows the leaderboard for that skill specifically.  
+**Description:** Displays the top players ranked by skill level. If a skill name is provided, shows the leaderboard for that skill specifically; if no player has that skill yet, the `NoTop` message is sent instead of an empty leaderboard.  
 **Usage:**
 - `/ss top` – View top players overall
 - `/ss top <skillName>` – View top players in a specific skill

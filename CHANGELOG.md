@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Fixed
+
+- `/ss top <skillName>` now sends the `NoTop` message (`No one is very skilled at %skill%.`) when no player has the skill yet. The command checked the leaderboard for `null`, but `PlayerRecordRepository.getTopPlayerRecords` returns an empty list in that case, so the message was never sent and the sender saw only the `Top-Header` line.
+
 ## [2.5.0] – 2026-09-19
 
 The first stable release on the AI-first line; it supersedes the `3.0.0-SNAPSHOT-8-8-2026` snapshot below and includes everything listed there.
