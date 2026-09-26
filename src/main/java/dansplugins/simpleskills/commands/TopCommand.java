@@ -65,7 +65,7 @@ public class TopCommand extends AbstractPluginCommand {
             return false;
         }
         final List<PlayerRecord> topPlayerRecords = playerRecordRepository.getTopPlayerRecords(skill.getId());
-        if (topPlayerRecords == null) {
+        if (topPlayerRecords.isEmpty()) {
             commandSender.sendMessage(messageService
                     .convert(messageService.getlang().getString("NoTop")
                             .replaceAll("%skill%", skill.getName())));
