@@ -1,5 +1,6 @@
 package dansplugins.simpleskills.skill.skills;
 
+import dansplugins.simpleskills.utils.RenamedConstants;
 import dansplugins.simpleskills.SimpleSkills;
 import dansplugins.simpleskills.playerrecord.PlayerRecordRepository;
 import dansplugins.simpleskills.playerrecord.PlayerRecord;
@@ -15,7 +16,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
@@ -85,9 +85,9 @@ public class Strength extends AbstractSkill {
         if (!(entityData instanceof Entity)) return;
         final Entity entity = (Entity) entityData;
         if (!chanceCalculator.roll(record, this, 0.05)) return;
-        if (player.hasPotionEffect(PotionEffectType.INCREASE_DAMAGE))
-            player.removePotionEffect(PotionEffectType.INCREASE_DAMAGE);
-        player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 600, 1, true, false));
+        if (player.hasPotionEffect(RenamedConstants.strength()))
+            player.removePotionEffect(RenamedConstants.strength());
+        player.addPotionEffect(new PotionEffect(RenamedConstants.strength(), 600, 1, true, false));
         final String typeName = WordUtils.capitalizeFully(entity.getType().name().replaceAll("_", " ").toLowerCase());
         final boolean nRequired = "aeiou".contains(String.valueOf(typeName.toLowerCase().charAt(0)));
         final String attacked = entity instanceof Player ? entity.getName() :
