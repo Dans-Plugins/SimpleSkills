@@ -1,5 +1,6 @@
 package dansplugins.simpleskills.skill.skills;
 
+import dansplugins.simpleskills.utils.RenamedConstants;
 import dansplugins.simpleskills.SimpleSkills;
 import dansplugins.simpleskills.playerrecord.PlayerRecordRepository;
 import dansplugins.simpleskills.playerrecord.PlayerRecord;
@@ -107,7 +108,7 @@ public class MonsterHunting extends AbstractSkill {
             for (double i = 1; i <= start.distance(nearbyEntity.getEyeLocation()); i += 0.5) {
                 vector.multiply(i);
                 start.add(vector);
-                player.spawnParticle(Particle.REDSTONE, start, 50,
+                player.spawnParticle(RenamedConstants.dust(), start, 50,
                         new Particle.DustOptions(Color.fromRGB(128, 0, 128), 1.0f));
                 player.playSound(nearbyEntity.getEyeLocation(), Sound.ENTITY_ENDER_EYE_DEATH, 5, 2);
                 start.subtract(vector);

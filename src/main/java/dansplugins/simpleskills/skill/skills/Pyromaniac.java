@@ -1,5 +1,6 @@
 package dansplugins.simpleskills.skill.skills;
 
+import dansplugins.simpleskills.utils.RenamedConstants;
 import com.cryptomorin.xseries.XMaterial;
 
 import dansplugins.simpleskills.SimpleSkills;
@@ -118,7 +119,7 @@ public class Pyromaniac extends AbstractBlockSkill {
         player.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 320, 5, true, false));
         player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 320, 2, true, false));
         player.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 640, 5, true, false));
-        player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 100, 0, false, false));
+        player.addPotionEffect(new PotionEffect(RenamedConstants.nausea(), 100, 0, false, false));
     }
 
 }
