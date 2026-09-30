@@ -1,7 +1,7 @@
 package dansplugins.simpleskills.listeners;
 
 import dansplugins.simpleskills.logging.Log;
-import dansplugins.simpleskills.services.StorageService;
+import dansplugins.simpleskills.storage.StorageService;
 import org.bukkit.World;
 import org.bukkit.event.world.WorldSaveEvent;
 import org.junit.Before;

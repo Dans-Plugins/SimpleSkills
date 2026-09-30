@@ -10,6 +10,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - Usage reporting now honours server-wide tags: a `tags:` block in `plugins/trace/config.yml` is added to every event sent by each plugin on the server that reports this way (the release gates write `ci: "true"` there, so test-server boots are left out of real-installation figures). Nothing changes for a server without a `tags:` block. The vendored trace client is updated from 0.2.0 to 0.3.0.
 
+- `StorageService` is now declared in `dansplugins.simpleskills.storage`, the package matching the directory it has always lived in, instead of `dansplugins.simpleskills.services`. Its behaviour is unchanged; only the fully qualified class name differs.
+
 ### Fixed
 
 - `/ss top <skillName>` now sends the `NoTop` message (`No one is very skilled at %skill%.`) when no player has the skill yet. The command checked the leaderboard for `null`, but `PlayerRecordRepository.getTopPlayerRecords` returns an empty list in that case, so the message was never sent and the sender saw only the `Top-Header` line.
