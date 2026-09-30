@@ -193,7 +193,7 @@ public class SimpleSkills extends JavaPlugin {
     private void setupUsageReporting() {
         log.debug("Setting up usage reporting.");
         configService.saveUsageReportingDefaultsIfNotPresent();
-        trace = TraceClient.builder(configService.getUsageReportingEndpoint(), getName())
+        trace = TraceClient.builder(configService.getUsageReportingEndpoint(), getName(), getDescription().getVersion())
                 .key(configService.getUsageReportingKey())
                 .enabled(configService.isUsageReportingEnabled())
                 .serverWideConfig(getDataFolder().getParentFile())
@@ -208,7 +208,7 @@ public class SimpleSkills extends JavaPlugin {
         } else {
             getLogger().info("Usage reporting is off (" + trace.disabledReason() + ").");
         }
-        trace.report("startup", null, Collections.singletonMap("version", getDescription().getVersion()));
+        trace.report("startup");
     }
 
     private void setTabCompleterForCoreCommands() {
