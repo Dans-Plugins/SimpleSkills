@@ -4,7 +4,7 @@ import dansplugins.simpleskills.config.ConfigService;
 import dansplugins.simpleskills.playerrecord.PlayerRecordRepository;
 import dansplugins.simpleskills.skill.SkillRepository;
 import dansplugins.simpleskills.skill.abs.AbstractSkill;
-import dansplugins.simpleskills.services.StorageService;
+import dansplugins.simpleskills.storage.StorageService;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;

@@ -1,4 +1,4 @@
-package dansplugins.simpleskills.services;
+package dansplugins.simpleskills.storage;
 
 import dansplugins.simpleskills.config.ConfigService;
 import dansplugins.simpleskills.playerrecord.PlayerRecordRepository;
