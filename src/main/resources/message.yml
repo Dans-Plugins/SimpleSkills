@@ -17,6 +17,8 @@ NotFound: "&cThat player was not found."
 DoesntHaveRecord: "&cThat player doesn't have a player record."
 SkillHUsage: "&cUsage: /ss skill (skillName)"
 SkillNotFound: "&cThat skill wasn't found."
+NoSkillsYet-Self: "&bYou haven't made progress in any skill yet. Skills are learned by doing: mine, farm, fish, fight and more."
+NoSkillsYet-Other: "&b%player% hasn't made progress in any skill yet."
 Stats:
   - "&9=== SimpleSkills Stats ==="
   - "&bNumber of skills: %nos%"
