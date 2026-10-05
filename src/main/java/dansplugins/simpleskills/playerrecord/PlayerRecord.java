@@ -147,9 +147,7 @@ public class PlayerRecord implements Savable, Cacheable {
 
     public void sendInfo(CommandSender commandSender) {
         if (getKnownSkills().size() == 0) {
-            commandSender.sendMessage(messageService
-                    .convert(Objects.requireNonNull(messageService.getlang()
-                            .getString("SkillNotFound"))));
+            sendNoSkillsYet(commandSender);
             return;
         }
         for (String s : messageService.getlang().getStringList("SendInfo-Header")) {
@@ -179,6 +177,23 @@ public class PlayerRecord implements Savable, Cacheable {
                         .replaceAll("%max%", String.valueOf(experienceRequired)));
 
         }
+    }
+
+    /**
+     * Tells the sender that this record has no skills yet. It used to send {@code SkillNotFound},
+     * "That skill wasn't found.", which names a skill nobody asked about (#194).
+     */
+    private void sendNoSkillsYet(CommandSender commandSender) {
+        if (commandSender instanceof Player && playerUUID.equals(((Player) commandSender).getUniqueId())) {
+            commandSender.sendMessage(messageService
+                    .convert(Objects.requireNonNull(messageService.getlang()
+                            .getString("NoSkillsYet-Self"))));
+            return;
+        }
+        commandSender.sendMessage(messageService
+                .convert(Objects.requireNonNull(messageService.getlang()
+                        .getString("NoSkillsYet-Other")))
+                .replaceAll("%player%", new UUIDChecker().findPlayerNameBasedOnUUID(playerUUID)));
     }
 
     public void checkForLevelUp(int ID) {

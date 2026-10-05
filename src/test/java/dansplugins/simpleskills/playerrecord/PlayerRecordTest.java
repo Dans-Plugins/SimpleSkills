@@ -7,6 +7,11 @@ import dansplugins.simpleskills.message.MessageService;
 import dansplugins.simpleskills.skill.SkillRepository;
 import dansplugins.simpleskills.skill.abs.AbstractSkill;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
+
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,6 +28,9 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.anyDouble;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 /**
@@ -201,5 +209,21 @@ public class PlayerRecordTest {
         assertEquals(record.getPlayerUUID(), loaded.getPlayerUUID());
         assertEquals(record.getSkillLevels(), loaded.getSkillLevels());
         assertEquals(new HashMap<>(record.getExperience()), new HashMap<>(loaded.getExperience()));
+    }
+
+    @Test
+    public void sendInfo_withNoKnownSkills_toThePlayerThemselves_saysTheyHaveNoProgressYet() {
+        YamlConfiguration bundledLang = YamlConfiguration.loadConfiguration(new InputStreamReader(
+                getClass().getClassLoader().getResourceAsStream("message.yml"), StandardCharsets.UTF_8));
+        when(messageService.getlang()).thenReturn(bundledLang);
+        when(messageService.convert(anyString())).thenAnswer(invocation -> invocation.getArgument(0));
+        Player self = mock(Player.class);
+        when(self.getUniqueId()).thenReturn(PLAYER_UUID);
+
+        record.sendInfo(self);
+
+        verify(self).sendMessage(bundledLang.getString("NoSkillsYet-Self"));
+        verify(self, never()).sendMessage(bundledLang.getString("SkillNotFound"));
+        assertTrue(bundledLang.getString("NoSkillsYet-Self").contains("haven't made progress in any skill yet"));
     }
 }
