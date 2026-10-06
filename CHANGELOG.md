@@ -13,6 +13,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Added
 
 - Unit tests for `SkillRepository` (lookups by id and name, case-insensitive matching, and `getActiveSkill` hiding deactivated skills that `getSkill` still returns) and for `PlayerRecordRepository` (record creation and lookup by UUID, and the ordering, unknown-skill filtering and size limits of the overall and per-skill leaderboards)
+- Unit tests for `StatsCommand` (`/ss stats`): the skill, player-record and unknown-skill counts it fills into the `Stats` lines, with a skill known by several players counted only once
 
 ## [2.6.0] – 2026-10-03
 
