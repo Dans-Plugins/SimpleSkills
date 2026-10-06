@@ -204,7 +204,7 @@ public class SimpleSkills extends JavaPlugin {
                     + "https://trace.danielstephenson.dev, plus a random server ID (server-id in plugins/trace/config.yml) - nothing about players. Turn it off with "
                     + "usage-reporting.enabled: false in this plugin's config.yml, or for every plugin with "
                     + "enabled: false in plugins/trace/config.yml. "
-                    + "Details: https://github.com/Stephenson-Software/trace#usage-reporting");
+                    + "Details: https://danielstephenson.dev/usage-reporting");
         } else {
             getLogger().info("Usage reporting is off (" + trace.disabledReason() + ").");
         }
