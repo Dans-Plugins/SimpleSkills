@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Changed
+
+- The usage-reporting "Details" link (startup notice, `config.yml` and the docs) now points at https://danielstephenson.dev/usage-reporting, a public page; the previous link led to a private repository and returned 404 for everyone. The vendored trace client is now 0.6.1, which carries the same link in the `plugins/trace/config.yml` header it writes. Details: https://github.com/Stephenson-Software/trace-client-java/releases/tag/0.6.1.
+
 ### Added
 
 - Unit tests for `SkillRepository` (lookups by id and name, case-insensitive matching, and `getActiveSkill` hiding deactivated skills that `getSkill` still returns) and for `PlayerRecordRepository` (record creation and lookup by UUID, and the ordering, unknown-skill filtering and size limits of the overall and per-skill leaderboards)
