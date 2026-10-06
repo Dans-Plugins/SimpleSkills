@@ -113,6 +113,7 @@ public class StatsCommandTest {
         when(skillRepository.getActiveSkills()).thenReturn(new HashSet<>(Arrays.asList(mining, fishing, farming)));
         when(playerRecordRepository.getPlayerRecords()).thenReturn(new HashSet<>(Arrays.asList(alice, bob)));
         when(alice.isKnown(mining)).thenReturn(true);
+        when(bob.isKnown(fishing)).thenReturn(true);
 
         boolean result = statsCommand.execute(commandSender);
 
@@ -121,7 +122,7 @@ public class StatsCommandTest {
         inOrder.verify(commandSender).sendMessage("&9=== SimpleSkills Stats ===");
         inOrder.verify(commandSender).sendMessage("&bNumber of skills: 3");
         inOrder.verify(commandSender).sendMessage("&bNumber of player records: 2");
-        inOrder.verify(commandSender).sendMessage("&bUnknown skills: 2");
+        inOrder.verify(commandSender).sendMessage("&bUnknown skills: 1");
     }
 
     @Test
