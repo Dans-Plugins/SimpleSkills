@@ -16,6 +16,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Unit tests for `StatsCommand` (`/ss stats`): the skill, player-record and unknown-skill counts it fills into the `Stats` lines, with a skill known by several players counted only once
 - Unit tests for `InfoCommand` (`/ss info` without arguments): the rejection of a sender who is not a player, the existing record's info being sent, a missing record being created before its info is sent, and the error reply when that record cannot be created
 - Unit tests for `SkillCommand` (`/ss skill`): the usage reply without arguments, an active skill's info being sent (with the name matched ignoring case), and the not-found reply for an unknown skill and for a deactivated one (see #175)
+- Unit tests for `TabCommand` (first-argument completion of the `/ss` subcommands, matched by prefix ignoring case, with `force` offered only when the console is the first sender to complete, see #209) and for `ReloadCommand` (`/ss reload` reloading `message.yml`, then `config.yml`, then confirming)
 
 ## [2.6.0] – 2026-10-03
 
