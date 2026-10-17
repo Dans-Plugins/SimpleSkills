@@ -19,9 +19,8 @@ import static org.junit.Assert.assertNull;
  * Characterizes {@link TabCommand#onTabComplete}, the tab completer set on each {@code plugin.yml}
  * command, which completes the first argument from the list of {@code /ss} subcommands.
  * <p>
- * The subcommand list is built on the first completion and kept for the life of the instance, so
- * whether {@code force} is offered depends on whether the first sender to complete was the console.
- * The last two tests pin that current behavior (see #209).
+ * Whether {@code force} is offered is decided on every completion from the sender completing, so
+ * it does not depend on who completed first on the same instance (see #209).
  * </p>
  */
 @RunWith(MockitoJUnitRunner.Silent.class)
@@ -84,20 +83,20 @@ public class TabCommandTest {
     }
 
     @Test
-    public void onTabComplete_keepsForceForAPlayerOnceTheConsoleCompletedFirst() {
+    public void onTabComplete_hidesForceFromAPlayerEvenAfterTheConsoleCompletedFirst() {
         tabCommand.onTabComplete(console, command, "ss", new String[]{""});
 
         assertEquals(
-                Collections.singletonList("force"),
+                Collections.emptyList(),
                 tabCommand.onTabComplete(player, command, "ss", new String[]{"f"}));
     }
 
     @Test
-    public void onTabComplete_neverOffersForceToTheConsoleOnceAPlayerCompletedFirst() {
+    public void onTabComplete_offersForceToTheConsoleEvenAfterAPlayerCompletedFirst() {
         tabCommand.onTabComplete(player, command, "ss", new String[]{""});
 
         assertEquals(
-                Collections.emptyList(),
+                Collections.singletonList("force"),
                 tabCommand.onTabComplete(console, command, "ss", new String[]{"f"}));
     }
 }

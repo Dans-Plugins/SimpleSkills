@@ -10,13 +10,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - The usage-reporting "Details" link (startup notice, `config.yml` and the docs) now points at https://danielstephenson.dev/usage-reporting, a public page; the previous link led to a private repository and returned 404 for everyone. The vendored trace client is now 0.6.1, which carries the same link in the `plugins/trace/config.yml` header it writes. Details: https://github.com/Stephenson-Software/trace-client-java/releases/tag/0.6.1.
 
+### Fixed
+
+- Tab-completing `/ss` now offers `force` to the console and hides it from players on every completion. The subcommand list was built once, on the first completion after startup, so if the console completed first `force` was offered to every player from then on, and if a player completed first it was never offered, not even to the console (#209).
+
 ### Added
 
 - Unit tests for `SkillRepository` (lookups by id and name, case-insensitive matching, and `getActiveSkill` hiding deactivated skills that `getSkill` still returns) and for `PlayerRecordRepository` (record creation and lookup by UUID, and the ordering, unknown-skill filtering and size limits of the overall and per-skill leaderboards)
 - Unit tests for `StatsCommand` (`/ss stats`): the skill, player-record and unknown-skill counts it fills into the `Stats` lines, with a skill known by several players counted only once
 - Unit tests for `InfoCommand` (`/ss info` without arguments): the rejection of a sender who is not a player, the existing record's info being sent, a missing record being created before its info is sent, and the error reply when that record cannot be created
 - Unit tests for `SkillCommand` (`/ss skill`): the usage reply without arguments, an active skill's info being sent (with the name matched ignoring case), and the not-found reply for an unknown skill and for a deactivated one (see #175)
-- Unit tests for `TabCommand` (first-argument completion of the `/ss` subcommands, matched by prefix ignoring case, with `force` offered only when the console is the first sender to complete, see #209) and for `ReloadCommand` (`/ss reload` reloading `message.yml`, then `config.yml`, then confirming)
+- Unit tests for `TabCommand` (first-argument completion of the `/ss` subcommands, matched by prefix ignoring case, with `force` offered only to the console) and for `ReloadCommand` (`/ss reload` reloading `message.yml`, then `config.yml`, then confirming)
 
 ## [2.6.0] – 2026-10-03
 
