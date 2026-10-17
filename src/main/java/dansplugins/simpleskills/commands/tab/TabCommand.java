@@ -6,32 +6,26 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.command.TabCompleter;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class TabCommand implements TabCompleter {
 
-    private final List<String> arg = new ArrayList<>();
+    private static final List<String> SUBCOMMANDS = Arrays.asList("help", "info", "skill", "top", "stats", "reload");
 
     public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
-        if (arg.isEmpty()) {
-            arg.add("help");
-            arg.add("info");
-            arg.add("skill");
-            arg.add("top");
-            arg.add("stats");
-            arg.add("reload");
-            if (sender instanceof ConsoleCommandSender) {
-                arg.add("force");
-            }
+        if (args.length != 1) {
+            return null;
+        }
+        List<String> arg = new ArrayList<>(SUBCOMMANDS);
+        if (sender instanceof ConsoleCommandSender) {
+            arg.add("force");
         }
         List<String> result = new ArrayList<>();
-        if (args.length == 1) {
-            for (String a : arg) {
-                if (a.toLowerCase().startsWith(args[0].toLowerCase()))
-                    result.add(a);
-            }
-            return result;
+        for (String a : arg) {
+            if (a.toLowerCase().startsWith(args[0].toLowerCase()))
+                result.add(a);
         }
-        return null;
+        return result;
     }
 }
