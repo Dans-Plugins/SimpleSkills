@@ -1,5 +1,9 @@
 # SimpleSkills
 
+![Learning and levelling the Strength and Dueling skills by winning a fight, then /ss info](docs/images/skills.png)
+
+*Real in-game output from SimpleSkills 2.7.3 on a local throwaway Paper 1.21.11 test server: the commands were typed by a scripted bot client, and the chat it received is drawn as Minecraft-style chat (typed commands appear in the input bars; grey lines say what happened between commands).*
+
 ## Description
 
 SimpleSkills is an open source Minecraft plugin that systematically introduces skills into the game. As players perform in-game activities, they gain experience in corresponding skills and unlock beneficial effects. There are both useful and situational skills, and server owners can configure which skills are active and adjust experience progression to suit their server.
