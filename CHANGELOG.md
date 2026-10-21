@@ -24,6 +24,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Unit tests for `PlayerJoinEventListener`: a joining player's existing record being left alone, a missing record being created, and the logged error and player-facing reply when that record cannot be created
 - Unit tests for `AbstractMovementSkill`, the base of Cardio (sprinting), Athlete (swimming), Gliding, Riding and Boating: how far a player must travel before each type grants experience and its reward, the tally starting afresh after a reward and being kept per player, and the moves that are not counted (outside Survival, without a destination, under a quarter block on every axis, or in the wrong state or vehicle for the skill type)
 - Unit tests for the `Strength` skill: a player's melee hit granting experience and reaching the 5% benefit roll, and the hits and calls that do not (a non-player damager, a projectile shot by a player, a cancelled hit, the benefit disabled, a player without a record, or skill data that is not a single entity)
+- Unit tests for the `Dueling` skill: a player killed by another player granting the killer (not the victim) experience and reaching the 10% benefit roll, and the deaths and calls that do not (no killing player, the skill deactivated, a killer without a record, the benefit disabled, or skill data that is not a single value, which is rejected before the record is looked up)
 
 ## [2.6.0] – 2026-10-03
 
