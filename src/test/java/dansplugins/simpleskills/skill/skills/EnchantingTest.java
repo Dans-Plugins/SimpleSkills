@@ -25,14 +25,18 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyDouble;
@@ -47,10 +51,12 @@ import static org.mockito.Mockito.when;
  * Characterizes when {@link Enchanting} levels and how its reward rewrites the enchantments an
  * {@link EnchantItemEvent} is about to apply.
  * <p>
- * The reward bumps one offered enchantment by a level, unless that would reach (or pass) the
- * enchantment's maximum, in which case it adds a different enchantment drawn from
- * {@link Enchantment#values()}. Without a running server that registry is empty, so the reroll
- * test registers its own enchantments once for the whole JVM.
+ * The reward bumps one offered enchantment by a level, unless it is already at the enchantment's
+ * maximum, in which case it adds a different enchantment drawn from {@link Enchantment#values()}
+ * that the item accepts and that neither is offered nor conflicts with an offered one. Without a
+ * running server that registry is empty, so the reroll tests register their own enchantments once
+ * for the whole JVM; each reroll test enchants a different item type, which keeps its candidates
+ * apart from the other tests'.
  * </p>
  */
 @RunWith(MockitoJUnitRunner.Silent.class)
@@ -59,8 +65,17 @@ public class EnchantingTest {
     private static final UUID PLAYER_ID = UUID.fromString("88888888-8888-8888-8888-888888888888");
     private static final String TEMPLATE = "lucky %enchant% %level%";
 
-    private static final Enchantment REROLL_TARGET = new StubEnchantment("characterization_reroll", 2, true);
-    private static final Enchantment REROLL_UNFIT = new StubEnchantment("characterization_unfit", 2, false);
+    private static final Enchantment REROLL_TARGET =
+            new StubEnchantment("characterization_reroll", 2, Material.DIAMOND_SWORD);
+    private static final Enchantment REROLL_UNFIT = new StubEnchantment("characterization_unfit", 2);
+    private static final Enchantment REROLL_SINGLE_LEVEL =
+            new StubEnchantment("characterization_single_level", 1, Material.BOW);
+    private static final Enchantment REROLL_OFFERED =
+            new StubEnchantment("characterization_offered", 1, Material.TRIDENT);
+    private static final Enchantment REROLL_CONFLICTING =
+            new StubEnchantment("characterization_conflicting", 3, "characterization_offered", Material.TRIDENT);
+    private static final Enchantment REROLL_FREE =
+            new StubEnchantment("characterization_free", 3, Material.TRIDENT);
 
     @Mock
     private ConfigService configService;
@@ -91,7 +106,8 @@ public class EnchantingTest {
 
     @BeforeClass
     public static void registerRerollCandidates() {
-        for (Enchantment enchantment : new Enchantment[]{REROLL_TARGET, REROLL_UNFIT}) {
+        for (Enchantment enchantment : new Enchantment[]{REROLL_TARGET, REROLL_UNFIT, REROLL_SINGLE_LEVEL,
+                REROLL_OFFERED, REROLL_CONFLICTING, REROLL_FREE}) {
             if (Enchantment.getByKey(enchantment.getKey()) == null) Enchantment.registerEnchantment(enchantment);
         }
     }
@@ -114,8 +130,12 @@ public class EnchantingTest {
         when(chanceCalculator.roll(any(PlayerRecord.class), any(), anyDouble())).thenReturn(false);
     }
 
+    private EnchantItemEvent enchantOffering(Material item, Map<Enchantment, Integer> enchants) {
+        return new EnchantItemEvent(player, view, table, new ItemStack(item), 30, new HashMap<>(enchants), 2);
+    }
+
     private EnchantItemEvent enchantOffering(Map<Enchantment, Integer> enchants) {
-        return new EnchantItemEvent(player, view, table, new ItemStack(Material.DIAMOND_SWORD), 30, enchants, 2);
+        return enchantOffering(Material.DIAMOND_SWORD, enchants);
     }
 
     private EnchantItemEvent enchantOffering(Enchantment enchantment, int level) {
@@ -138,7 +158,7 @@ public class EnchantingTest {
 
     @Test
     public void handle_grantsExperienceAndRollsTheBenefit_forAnyEnchantment() {
-        dispatch(enchantOffering(new StubEnchantment("sharpness", 5, true), 1));
+        dispatch(enchantOffering(new StubEnchantment("sharpness", 5), 1));
 
         verify(playerRecord).incrementExperience(enchanting.getId());
         verify(chanceCalculator).roll(eq(playerRecord), eq(enchanting), eq(0.10));
@@ -148,7 +168,7 @@ public class EnchantingTest {
     public void handle_ignoresTheEnchant_whenTheSkillIsInactive() {
         enchanting.setActive(false);
 
-        dispatch(enchantOffering(new StubEnchantment("sharpness", 5, true), 1));
+        dispatch(enchantOffering(new StubEnchantment("sharpness", 5), 1));
 
         verify(playerRecord, never()).incrementExperience(anyInt());
         verify(chanceCalculator, never()).roll(any(PlayerRecord.class), any(), anyDouble());
@@ -156,7 +176,7 @@ public class EnchantingTest {
 
     @Test
     public void handle_ignoresTheEnchant_whenTheEventIsCancelled() {
-        final EnchantItemEvent event = enchantOffering(new StubEnchantment("sharpness", 5, true), 1);
+        final EnchantItemEvent event = enchantOffering(new StubEnchantment("sharpness", 5), 1);
         event.setCancelled(true);
 
         dispatch(event);
@@ -166,7 +186,7 @@ public class EnchantingTest {
 
     @Test
     public void executeReward_rejectsSkillDataThatIsNotASingleEnchantEvent() {
-        final EnchantItemEvent event = enchantOffering(new StubEnchantment("sharpness", 5, true), 1);
+        final EnchantItemEvent event = enchantOffering(new StubEnchantment("sharpness", 5), 1);
 
         assertThrows(IllegalArgumentException.class, () -> enchanting.executeReward(player));
         assertThrows(IllegalArgumentException.class, () -> enchanting.executeReward(player, event, event));
@@ -177,7 +197,7 @@ public class EnchantingTest {
     public void executeReward_skipsTheRoll_whenTheBenefitIsDisabled() {
         when(fileConfiguration.getBoolean(eq("enchantingBenefitEnabled"), anyBoolean())).thenReturn(false);
 
-        enchanting.executeReward(player, enchantOffering(new StubEnchantment("sharpness", 5, true), 1));
+        enchanting.executeReward(player, enchantOffering(new StubEnchantment("sharpness", 5), 1));
 
         verify(chanceCalculator, never()).roll(any(PlayerRecord.class), any(), anyDouble());
     }
@@ -186,14 +206,14 @@ public class EnchantingTest {
     public void executeReward_skipsTheRoll_whenThePlayerHasNoRecord() {
         when(playerRecordRepository.getPlayerRecord(PLAYER_ID)).thenReturn(null);
 
-        enchanting.executeReward(player, enchantOffering(new StubEnchantment("sharpness", 5, true), 1));
+        enchanting.executeReward(player, enchantOffering(new StubEnchantment("sharpness", 5), 1));
 
         verify(chanceCalculator, never()).roll(any(PlayerRecord.class), any(), anyDouble());
     }
 
     @Test
     public void executeReward_leavesTheEnchantmentsAlone_whenTheRollFails() {
-        final Enchantment sharpness = new StubEnchantment("sharpness", 5, true);
+        final Enchantment sharpness = new StubEnchantment("sharpness", 5);
         final EnchantItemEvent event = enchantOffering(sharpness, 1);
 
         enchanting.executeReward(player, event);
@@ -205,7 +225,7 @@ public class EnchantingTest {
     @Test
     public void executeReward_raisesTheOfferedEnchantmentByOneLevel_andAnnouncesItInRomanNumerals() {
         rollSucceeds();
-        final Enchantment sharpness = new StubEnchantment("sharpness", 5, true);
+        final Enchantment sharpness = new StubEnchantment("sharpness", 5);
         final EnchantItemEvent event = enchantOffering(sharpness, 1);
 
         enchanting.executeReward(player, event);
@@ -217,7 +237,7 @@ public class EnchantingTest {
     @Test
     public void executeReward_titleCasesMultiWordKeys_andWritesFourAsIV() {
         rollSucceeds();
-        final Enchantment fireAspect = new StubEnchantment("fire_aspect", 10, true);
+        final Enchantment fireAspect = new StubEnchantment("fire_aspect", 10);
 
         enchanting.executeReward(player, enchantOffering(fireAspect, 3));
 
@@ -228,26 +248,92 @@ public class EnchantingTest {
     public void executeReward_writesNineAsIX() {
         rollSucceeds();
 
-        enchanting.executeReward(player, enchantOffering(new StubEnchantment("power", 10, true), 8));
+        enchanting.executeReward(player, enchantOffering(new StubEnchantment("power", 10), 8));
 
         verify(player).sendMessage("lucky Power IX");
     }
 
     @Test
-    public void executeReward_rerollsInsteadOfReachingTheMaximum_whenOneLevelBelowIt() {
-        // The guard is maxLevel <= level + 1, so an enchantment one level below its maximum is never
-        // raised to that maximum; a different enchantment the item accepts is added instead (#222).
+    public void executeReward_raisesTheOfferedEnchantmentToItsMaximum_whenOneLevelBelowIt() {
         rollSucceeds();
-        final Enchantment sharpness = new StubEnchantment("sharpness", 5, true);
+        final Enchantment sharpness = new StubEnchantment("sharpness", 5);
         final EnchantItemEvent event = enchantOffering(sharpness, 4);
 
         enchanting.executeReward(player, event);
 
-        assertEquals(Integer.valueOf(4), event.getEnchantsToAdd().get(sharpness));
-        // REROLL_TARGET has a maximum of 2, so its level is nextInt(1) + 1, always 1.
-        assertEquals(Integer.valueOf(1), event.getEnchantsToAdd().get(REROLL_TARGET));
-        assertFalse(event.getEnchantsToAdd().containsKey(REROLL_UNFIT));
-        verify(player).sendMessage("lucky Characterization Reroll I");
+        assertEquals(Collections.singletonMap(sharpness, 5), event.getEnchantsToAdd());
+        verify(player).sendMessage("lucky Sharpness V");
+    }
+
+    @Test
+    public void executeReward_addsADifferentEnchantmentTheItemAccepts_atAnyOfItsLevels_whenAlreadyAtTheMaximum() {
+        rollSucceeds();
+        final Enchantment sharpness = new StubEnchantment("sharpness", 5);
+        final Set<Integer> levelsSeen = new HashSet<>();
+
+        for (int attempt = 0; attempt < 50; attempt++) {
+            final EnchantItemEvent event = enchantOffering(sharpness, 5);
+
+            enchanting.executeReward(player, event);
+
+            assertEquals(Integer.valueOf(5), event.getEnchantsToAdd().get(sharpness));
+            assertFalse(event.getEnchantsToAdd().containsKey(REROLL_UNFIT));
+            levelsSeen.add(event.getEnchantsToAdd().get(REROLL_TARGET));
+        }
+
+        // REROLL_TARGET has a maximum of 2: both levels, the maximum included, can be drawn (#222).
+        assertEquals(new HashSet<>(Arrays.asList(1, 2)), levelsSeen);
+    }
+
+    @Test
+    public void executeReward_addsAMaxLevelOneEnchantmentAtLevelOne_whenAlreadyAtTheMaximum() {
+        rollSucceeds();
+        final Enchantment power = new StubEnchantment("power", 5);
+        final EnchantItemEvent event = enchantOffering(Material.BOW, Collections.singletonMap(power, 5));
+
+        enchanting.executeReward(player, event);
+
+        assertEquals(Integer.valueOf(1), event.getEnchantsToAdd().get(REROLL_SINGLE_LEVEL));
+        verify(player).sendMessage("lucky Characterization Single Level I");
+    }
+
+    @Test
+    public void executeReward_neverRerollsIntoAnOfferedOrConflictingEnchantment() {
+        rollSucceeds();
+
+        for (int attempt = 0; attempt < 30; attempt++) {
+            final EnchantItemEvent event = enchantOffering(Material.TRIDENT,
+                    Collections.singletonMap(REROLL_OFFERED, 1));
+
+            enchanting.executeReward(player, event);
+
+            assertEquals(Integer.valueOf(1), event.getEnchantsToAdd().get(REROLL_OFFERED));
+            assertFalse(event.getEnchantsToAdd().containsKey(REROLL_CONFLICTING));
+            assertTrue(event.getEnchantsToAdd().containsKey(REROLL_FREE));
+        }
+    }
+
+    @Test
+    public void executeReward_leavesTheOfferAlone_whenAlreadyAtTheMaximumAndNoOtherEnchantmentFits() {
+        rollSucceeds();
+        final Enchantment efficiency = new StubEnchantment("efficiency", 5);
+        final EnchantItemEvent event = enchantOffering(Material.SHEARS, Collections.singletonMap(efficiency, 5));
+
+        enchanting.executeReward(player, event);
+
+        assertEquals(Collections.singletonMap(efficiency, 5), event.getEnchantsToAdd());
+        verify(player, never()).sendMessage(anyString());
+    }
+
+    @Test
+    public void executeReward_doesNothing_whenNothingIsOffered() {
+        rollSucceeds();
+        final EnchantItemEvent event = enchantOffering(new HashMap<>());
+
+        enchanting.executeReward(player, event);
+
+        assertTrue(event.getEnchantsToAdd().isEmpty());
+        verify(player, never()).sendMessage(anyString());
     }
 
     /**
@@ -256,13 +342,19 @@ public class EnchantingTest {
      */
     private static final class StubEnchantment extends Enchantment {
         private final int maxLevel;
-        private final boolean fitsAnyItem;
+        private final String conflictKey;
+        private final Set<Material> fits;
+
+        StubEnchantment(String key, int maxLevel, Material... fits) {
+            this(key, maxLevel, null, fits);
+        }
 
         @SuppressWarnings("deprecation")
-        StubEnchantment(String key, int maxLevel, boolean fitsAnyItem) {
+        StubEnchantment(String key, int maxLevel, String conflictKey, Material... fits) {
             super(NamespacedKey.minecraft(key));
             this.maxLevel = maxLevel;
-            this.fitsAnyItem = fitsAnyItem;
+            this.conflictKey = conflictKey;
+            this.fits = new HashSet<>(Arrays.asList(fits));
         }
 
         @Override
@@ -297,12 +389,12 @@ public class EnchantingTest {
 
         @Override
         public boolean conflictsWith(Enchantment other) {
-            return false;
+            return other.getKey().getKey().equals(conflictKey);
         }
 
         @Override
         public boolean canEnchantItem(ItemStack item) {
-            return fitsAnyItem;
+            return fits.contains(item.getType());
         }
     }
 }

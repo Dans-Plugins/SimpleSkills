@@ -84,17 +84,24 @@ public class Enchanting extends AbstractSkill {
         if (!chanceCalculator.roll(record, this, 0.10)) return;
         final EnchantItemEvent event = (EnchantItemEvent) skillData[0];
         final Random random = new Random();
-        final List<Enchantment> enchants = new ArrayList<>(event.getEnchantsToAdd().keySet());
+        final Map<Enchantment, Integer> offered = event.getEnchantsToAdd();
+        if (offered.isEmpty()) return;
+        final List<Enchantment> enchants = new ArrayList<>(offered.keySet());
         Enchantment enchant = enchants.get(random.nextInt(enchants.size()));
-        int level = event.getEnchantsToAdd().get(enchant);
-        if (enchant.getMaxLevel() <= level + 1) {
+        int level = offered.get(enchant);
+        if (level < enchant.getMaxLevel()) offered.put(enchant, level + 1);
+        else {
+            // Already at its maximum: add an enchantment the item accepts that is neither offered nor conflicting.
             final List<Enchantment> collect = Arrays.stream(Enchantment.values())
                     .filter(e -> e.canEnchantItem(event.getItem()))
+                    .filter(e -> !offered.containsKey(e))
+                    .filter(e -> enchants.stream().noneMatch(o -> e.conflictsWith(o) || o.conflictsWith(e)))
                     .collect(Collectors.toList());
+            if (collect.isEmpty()) return;
             enchant = collect.get(random.nextInt(collect.size()));
-            event.getEnchantsToAdd().put(enchant, random.nextInt(enchant.getMaxLevel() - 1) + 1);
-        } else event.getEnchantsToAdd().put(enchant, level + 1);
-        level = event.getEnchantsToAdd().get(enchant);
+            offered.put(enchant, random.nextInt(enchant.getMaxLevel()) + 1);
+        }
+        level = offered.get(enchant);
         player.playSound(player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_CHIME, 5, 2);
         player.playSound(event.getEnchantBlock().getLocation(), Sound.ENTITY_ENDERMAN_AMBIENT, 5, 2);
         player.sendMessage(messageService.convert(Objects.requireNonNull(Objects.requireNonNull(messageService.getlang().getString("Skills.Enchanting"))
