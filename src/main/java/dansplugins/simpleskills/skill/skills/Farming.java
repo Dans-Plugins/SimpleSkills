@@ -55,6 +55,7 @@ public class Farming extends AbstractBlockSkill {
     public boolean isRequiredItem(@NotNull ItemStack item, @NotNull Block targetBlock, @NotNull String context) {
         if (context.contains("break")) return true;
         else return isValidMaterial(item.getType()) &&
+                !isFruitBlock(item.getType()) &&
                 targetBlock.getRelative(BlockFace.DOWN).getType().equals(XMaterial.FARMLAND.parseMaterial()) &&
                 item.getType() != XMaterial.FARMLAND.parseMaterial();
     }
@@ -91,14 +92,21 @@ public class Farming extends AbstractBlockSkill {
             case "WHEAT":
             case "WHEAT_SEEDS":
             case "BEETROOT":
+            case "BEETROOTS":
             case "BEETROOT_SEEDS":
             case "CARROT":
             case "CARROTS":
             case "POTATO":
             case "POTATOES":
+            case "MELON":
             case "MELON_SEEDS":
+            case "MELON_STEM":
+            case "PUMPKIN":
             case "PUMPKIN_SEEDS":
+            case "PUMPKIN_STEM":
+            case "COCOA":
             case "COCOA_BEANS":
+            case "NETHER_WART":
             case "SUGAR_CANE":
             case "CHORUS_FLOWER":
             case "CHORUS_PLANT":
@@ -112,12 +120,25 @@ public class Farming extends AbstractBlockSkill {
             case "CRIMSON_FUNGUS":
             case "WARPED_FUNGUS":
             case "GLOW_BERRIES":
+            case "CAVE_VINES":
+            case "CAVE_VINES_PLANT":
             case "FARMLAND":
             case "KELP":
                 return true;
             default:
                 return false;
         }
+    }
+
+    /**
+     * Melons and pumpkins are harvested as blocks, and the same material is the item those blocks
+     * drop with Silk Touch, so placing one on farmland must not count as planting a crop.
+     *
+     * @param material to test.
+     * @return {@code true} if the material is a fruit block rather than something planted.
+     */
+    private boolean isFruitBlock(@NotNull Material material) {
+        return material == Material.MELON || material == Material.PUMPKIN;
     }
 
     /**

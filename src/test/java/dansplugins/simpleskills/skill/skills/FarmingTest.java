@@ -37,6 +37,7 @@ import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -169,17 +170,17 @@ public class FarmingTest {
     }
 
     @Test
-    public void handle_ignoresTheBreak_ofCropBlocksWhoseNameDiffersFromTheirItem() {
-        // The material list names some crops by their item (BEETROOT, COCOA_BEANS, GLOW_BERRIES)
-        // rather than by the block that is actually broken, so these crops never level the skill.
-        for (Material material : new Material[]{Material.BEETROOTS, Material.COCOA, Material.CAVE_VINES,
-                Material.CAVE_VINES_PLANT, Material.NETHER_WART, Material.MELON, Material.PUMPKIN}) {
+    public void handle_grantsExperience_forBreakingCropBlocksWhoseNameDiffersFromTheirItem() {
+        final Material[] crops = {Material.BEETROOTS, Material.COCOA, Material.CAVE_VINES,
+                Material.CAVE_VINES_PLANT, Material.NETHER_WART, Material.MELON, Material.MELON_STEM,
+                Material.PUMPKIN, Material.PUMPKIN_STEM};
+        for (Material material : crops) {
             when(block.getType()).thenReturn(material);
 
             dispatch(breaking());
         }
 
-        verifyNothingGranted();
+        verify(playerRecord, times(crops.length)).incrementExperience(farming.getId());
     }
 
     @Test
@@ -240,19 +241,12 @@ public class FarmingTest {
     }
 
     @Test
-    public void handle_ignoresThePlacement_ofCropBlocksWhoseNameDiffersFromTheirItem() {
-        // The placed block's material is checked before the item in hand, so planting beetroot,
-        // melon, pumpkin or cocoa (which place BEETROOTS, MELON_STEM, PUMPKIN_STEM and COCOA)
-        // never levels the skill, even though the seeds themselves are on the material list.
-        final Material[][] plantings = {
-                {Material.BEETROOT_SEEDS, Material.BEETROOTS},
-                {Material.MELON_SEEDS, Material.MELON_STEM},
-                {Material.PUMPKIN_SEEDS, Material.PUMPKIN_STEM},
-                {Material.COCOA_BEANS, Material.COCOA},
-        };
-        for (Material[] planting : plantings) {
-            holding(planting[0]);
-            when(block.getType()).thenReturn(planting[1]);
+    public void handle_ignoresThePlacement_ofAMelonOrPumpkinBlock() {
+        // Both are valid materials so that harvesting them counts, but putting one down is not
+        // planting. They are rejected before the farmland check, which needs a running server.
+        for (Material material : new Material[]{Material.MELON, Material.PUMPKIN}) {
+            holding(material);
+            when(block.getType()).thenReturn(material);
 
             dispatch(placement());
         }
@@ -283,13 +277,21 @@ public class FarmingTest {
     }
 
     @Test
+    public void isRequiredItem_rejectsAMelonOrPumpkinBlock_outsideABreak() {
+        assertFalse(farming.isRequiredItem(new ItemStack(Material.MELON), block, "blockplaceevent"));
+        assertFalse(farming.isRequiredItem(new ItemStack(Material.PUMPKIN), block, "blockplaceevent"));
+    }
+
+    @Test
     public void isValidMaterial_acceptsTheListedCropsSeedsAndFarmland() {
         for (Material material : new Material[]{Material.WHEAT, Material.WHEAT_SEEDS, Material.BEETROOT,
-                Material.BEETROOT_SEEDS, Material.CARROT, Material.CARROTS, Material.POTATO, Material.POTATOES,
-                Material.MELON_SEEDS, Material.PUMPKIN_SEEDS, Material.COCOA_BEANS, Material.SUGAR_CANE,
-                Material.CHORUS_FLOWER, Material.CHORUS_PLANT, Material.CHORUS_FRUIT, Material.BAMBOO,
-                Material.SWEET_BERRY_BUSH, Material.CACTUS, Material.SEA_PICKLE, Material.BROWN_MUSHROOM,
-                Material.RED_MUSHROOM, Material.CRIMSON_FUNGUS, Material.WARPED_FUNGUS, Material.GLOW_BERRIES,
+                Material.BEETROOTS, Material.BEETROOT_SEEDS, Material.CARROT, Material.CARROTS, Material.POTATO,
+                Material.POTATOES, Material.MELON, Material.MELON_SEEDS, Material.MELON_STEM, Material.PUMPKIN,
+                Material.PUMPKIN_SEEDS, Material.PUMPKIN_STEM, Material.COCOA, Material.COCOA_BEANS,
+                Material.NETHER_WART, Material.SUGAR_CANE, Material.CHORUS_FLOWER, Material.CHORUS_PLANT,
+                Material.CHORUS_FRUIT, Material.BAMBOO, Material.SWEET_BERRY_BUSH, Material.CACTUS,
+                Material.SEA_PICKLE, Material.BROWN_MUSHROOM, Material.RED_MUSHROOM, Material.CRIMSON_FUNGUS,
+                Material.WARPED_FUNGUS, Material.GLOW_BERRIES, Material.CAVE_VINES, Material.CAVE_VINES_PLANT,
                 Material.FARMLAND, Material.KELP}) {
             assertTrue(material.name(), farming.isValidMaterial(material));
         }
@@ -298,7 +300,7 @@ public class FarmingTest {
     @Test
     public void isValidMaterial_rejectsUnlistedMaterials() {
         for (Material material : new Material[]{Material.STONE, Material.DIRT, Material.IRON_HOE,
-                Material.KELP_PLANT, Material.MELON, Material.PUMPKIN}) {
+                Material.KELP_PLANT}) {
             assertFalse(material.name(), farming.isValidMaterial(material));
         }
     }
