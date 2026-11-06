@@ -16,6 +16,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.data.Ageable;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.ExperienceOrb;
 import org.bukkit.entity.Player;
@@ -139,6 +140,23 @@ public class Farming extends AbstractBlockSkill {
      */
     private boolean isFruitBlock(@NotNull Material material) {
         return material == Material.MELON || material == Material.PUMPKIN;
+    }
+
+    /**
+     * A crop planted by a player is fully grown only once time or bone meal has aged it, so
+     * harvesting it counts, while an unripe crop stays refused. Bamboo is the exception: a stalk
+     * placed on a thick stalk starts at its maximum age, so its age shows no growth.
+     *
+     * @param block a block placed by a player.
+     * @return {@code true} if it is a fully grown crop.
+     */
+    @Override
+    protected boolean hasGrownSincePlaced(@NotNull Block block) {
+        if (block.getType() == Material.BAMBOO) return false;
+        final BlockData blockData = block.getBlockData();
+        if (!(blockData instanceof Ageable)) return false;
+        final Ageable crop = (Ageable) blockData;
+        return crop.getAge() == crop.getMaximumAge();
     }
 
     /**
