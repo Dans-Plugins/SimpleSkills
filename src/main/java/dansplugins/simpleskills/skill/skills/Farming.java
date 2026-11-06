@@ -143,19 +143,43 @@ public class Farming extends AbstractBlockSkill {
     }
 
     /**
-     * A crop planted by a player is fully grown only once time or bone meal has aged it, so
-     * harvesting it counts, while an unripe crop stays refused. Bamboo is the exception: a stalk
-     * placed on a thick stalk starts at its maximum age, so its age shows no growth.
+     * A crop planted by a player reaches its maximum age only once it has ripened, so harvesting
+     * it counts, while an unripe crop stays refused.
      *
      * @param block a block placed by a player.
-     * @return {@code true} if it is a fully grown crop.
+     * @return {@code true} if it is a ripe crop.
      */
     @Override
     protected boolean hasGrownSincePlaced(@NotNull Block block) {
-        if (block.getType() == Material.BAMBOO) return false;
+        if (!ripensInPlace(block.getType())) return false;
         final BlockData blockData = block.getBlockData();
-        if (!(blockData instanceof Ageable)) return false;
-        final Ageable crop = (Ageable) blockData;
+        return blockData instanceof Ageable && isFullyGrown((Ageable) blockData);
+    }
+
+    /**
+     * Only these crops are planted young and show ripeness by their age. Elsewhere in the material
+     * list, age does not mean a placed block has grown: bamboo can be placed at its maximum age, a
+     * chorus flower's maximum age is its dead state, and sugar cane and cactus age as a counter.
+     *
+     * @param material to test.
+     * @return {@code true} if the material's maximum age means it is ripe.
+     */
+    private boolean ripensInPlace(@NotNull Material material) {
+        switch (material.name()) {
+            case "WHEAT":
+            case "BEETROOTS":
+            case "CARROTS":
+            case "POTATOES":
+            case "COCOA":
+            case "NETHER_WART":
+            case "SWEET_BERRY_BUSH":
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    private boolean isFullyGrown(@NotNull Ageable crop) {
         return crop.getAge() == crop.getMaximumAge();
     }
 
@@ -204,7 +228,7 @@ public class Farming extends AbstractBlockSkill {
             final BlockState state = block.getState();
             if (state.getBlockData() instanceof Ageable) {
                 final Ageable cropState = (Ageable) state.getBlockData();
-                if (cropState.getMaximumAge() == cropState.getAge()) {
+                if (isFullyGrown(cropState)) {
                     player.playSound(block.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_CHIME, 5, 2);
                     ((BlockBreakEvent) event).setCancelled(true);
                     final Collection<ItemStack> drops = block.getDrops(player.getInventory().getItemInMainHand(), player);

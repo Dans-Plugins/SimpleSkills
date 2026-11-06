@@ -205,11 +205,16 @@ public class FarmingTest {
     public void handle_grantsExperienceAndRollsTheBenefit_whenAPlantedCropIsFullyGrown() {
         when(block.hasMetadata("simpleskills-player-placed")).thenReturn(true);
         cropAged(7, 7);
+        final Material[] crops = {Material.WHEAT, Material.BEETROOTS, Material.CARROTS, Material.POTATOES,
+                Material.COCOA, Material.NETHER_WART, Material.SWEET_BERRY_BUSH};
+        for (Material material : crops) {
+            when(block.getType()).thenReturn(material);
 
-        dispatch(breaking());
+            dispatch(breaking());
+        }
 
-        verify(playerRecord).incrementExperience(farming.getId());
-        verify(chanceCalculator).roll(eq(playerRecord), eq(farming), eq(0.10));
+        verify(playerRecord, times(crops.length)).incrementExperience(farming.getId());
+        verify(chanceCalculator, times(crops.length)).roll(eq(playerRecord), eq(farming), eq(0.10));
     }
 
     @Test
@@ -223,25 +228,20 @@ public class FarmingTest {
     }
 
     @Test
-    public void handle_ignoresTheBreak_whenPlacedBambooIsAtItsMaximumAge() {
-        // Bamboo placed on a thick stalk starts at its maximum age, so it could otherwise be placed
-        // and broken repeatedly.
-        when(block.getType()).thenReturn(Material.BAMBOO);
+    public void handle_ignoresTheBreak_whenAPlacedBlockIsAtAMaximumAgeThatDoesNotMeanRipe() {
+        // Bamboo can be placed at its maximum age and a chorus flower dies at its own, so either
+        // could otherwise be placed and broken repeatedly.
         when(block.hasMetadata("simpleskills-player-placed")).thenReturn(true);
-        cropAged(1, 1);
+        cropAged(5, 5);
+        for (Material material : new Material[]{Material.BAMBOO, Material.CHORUS_FLOWER, Material.SUGAR_CANE,
+                Material.CACTUS, Material.KELP, Material.CAVE_VINES, Material.MELON_STEM,
+                Material.PUMPKIN_STEM}) {
+            when(block.getType()).thenReturn(material);
 
-        dispatch(breaking());
+            dispatch(breaking());
+        }
 
         verifyNothingGranted();
-    }
-
-    @Test
-    public void handle_grantsExperience_whenAnUnripeCropWasNotPlacedByAPlayer() {
-        cropAged(0, 7);
-
-        dispatch(breaking());
-
-        verify(playerRecord).incrementExperience(farming.getId());
     }
 
     @Test
