@@ -81,6 +81,17 @@ public class PlacedBlockListenerTest {
     }
 
     @Test
+    public void onBlockBreak_keepsTrackingMetadata_whenTheBreakWasCancelled() {
+        when(block.hasMetadata(METADATA_KEY)).thenReturn(true);
+        final BlockBreakEvent event = new BlockBreakEvent(block, player);
+        event.setCancelled(true);
+
+        placedBlockListener.onBlockBreak(event);
+
+        verify(block, never()).removeMetadata(anyString(), any());
+    }
+
+    @Test
     public void onBlockBreak_doesNothing_whenBlockWasNotPlayerPlaced() {
         when(block.hasMetadata(METADATA_KEY)).thenReturn(false);
         final BlockBreakEvent event = new BlockBreakEvent(block, player);

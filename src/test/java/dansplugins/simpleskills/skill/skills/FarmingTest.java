@@ -11,6 +11,7 @@ import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
+import org.bukkit.block.data.Ageable;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -36,6 +37,7 @@ import static org.mockito.ArgumentMatchers.anyDouble;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -108,6 +110,13 @@ public class FarmingTest {
 
     private void holding(Material material) {
         when(inventory.getItemInMainHand()).thenReturn(new ItemStack(material));
+    }
+
+    private void cropAged(int age, int maximumAge) {
+        final Ageable crop = mock(Ageable.class);
+        when(crop.getAge()).thenReturn(age);
+        when(crop.getMaximumAge()).thenReturn(maximumAge);
+        when(block.getBlockData()).thenReturn(crop);
     }
 
     private BlockBreakEvent breaking() {
@@ -188,6 +197,49 @@ public class FarmingTest {
         when(block.hasMetadata("simpleskills-player-placed")).thenReturn(true);
 
         dispatch(breaking());
+
+        verifyNothingGranted();
+    }
+
+    @Test
+    public void handle_grantsExperienceAndRollsTheBenefit_whenAPlantedCropIsFullyGrown() {
+        when(block.hasMetadata("simpleskills-player-placed")).thenReturn(true);
+        cropAged(7, 7);
+        final Material[] crops = {Material.WHEAT, Material.BEETROOTS, Material.CARROTS, Material.POTATOES,
+                Material.COCOA, Material.NETHER_WART, Material.SWEET_BERRY_BUSH};
+        for (Material material : crops) {
+            when(block.getType()).thenReturn(material);
+
+            dispatch(breaking());
+        }
+
+        verify(playerRecord, times(crops.length)).incrementExperience(farming.getId());
+        verify(chanceCalculator, times(crops.length)).roll(eq(playerRecord), eq(farming), eq(0.10));
+    }
+
+    @Test
+    public void handle_ignoresTheBreak_whenAPlantedCropIsNotFullyGrown() {
+        when(block.hasMetadata("simpleskills-player-placed")).thenReturn(true);
+        cropAged(6, 7);
+
+        dispatch(breaking());
+
+        verifyNothingGranted();
+    }
+
+    @Test
+    public void handle_ignoresTheBreak_whenAPlacedBlockIsAtAMaximumAgeThatDoesNotMeanRipe() {
+        // Bamboo can be placed at its maximum age and a chorus flower dies at its own, so either
+        // could otherwise be placed and broken repeatedly.
+        when(block.hasMetadata("simpleskills-player-placed")).thenReturn(true);
+        cropAged(5, 5);
+        for (Material material : new Material[]{Material.BAMBOO, Material.CHORUS_FLOWER, Material.SUGAR_CANE,
+                Material.CACTUS, Material.KELP, Material.CAVE_VINES, Material.MELON_STEM,
+                Material.PUMPKIN_STEM}) {
+            when(block.getType()).thenReturn(material);
+
+            dispatch(breaking());
+        }
 
         verifyNothingGranted();
     }

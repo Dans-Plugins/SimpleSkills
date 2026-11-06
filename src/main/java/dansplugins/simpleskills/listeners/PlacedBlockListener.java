@@ -44,6 +44,8 @@ public class PlacedBlockListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onBlockBreak(@NotNull BlockBreakEvent event) {
+        // A cancelled break leaves the block in the world, which is how a replanted crop stays.
+        if (event.isCancelled()) return;
         final Block block = event.getBlock();
         if (block.hasMetadata(METADATA_KEY)) {
             block.removeMetadata(METADATA_KEY, simpleSkills);

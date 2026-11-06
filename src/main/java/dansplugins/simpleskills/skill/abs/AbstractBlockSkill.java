@@ -58,7 +58,7 @@ public abstract class AbstractBlockSkill extends AbstractSkill {
         log.debug("Block skill type is valid for this event.");
         if (!isValidMaterial(event.getBlock().getType())) return;
         log.debug("Block material is valid for this skill.");
-        if (PlacedBlockListener.isPlayerPlaced(event.getBlock())) {
+        if (PlacedBlockListener.isPlayerPlaced(event.getBlock()) && !hasGrownSincePlaced(event.getBlock())) {
             log.debug("Block was placed by a player; skipping skill experience to prevent farming exploits.");
             return;
         }
@@ -119,6 +119,17 @@ public abstract class AbstractBlockSkill extends AbstractSkill {
                 executeReward(event.getPlayer(), event.getClickedBlock(), event);
             }
         }
+    }
+
+    /**
+     * Method to determine if a block placed by a player has since grown, which lets it count when
+     * broken because it cannot be put straight back down and broken again.
+     *
+     * @param block a block placed by a player.
+     * @return {@code true} if it has grown; by default, blocks do not.
+     */
+    protected boolean hasGrownSincePlaced(@NotNull Block block) {
+        return false;
     }
 
     /**
