@@ -82,7 +82,7 @@ public class Mining extends AbstractBlockSkill {
      */
     @Override
     public boolean isValidMaterial(@NotNull Material material) {
-        return material.name().contains("ORE");
+        return material.name().endsWith("_ORE");
     }
 
     /**

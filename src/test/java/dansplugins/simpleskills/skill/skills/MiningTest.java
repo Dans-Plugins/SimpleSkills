@@ -261,9 +261,18 @@ public class MiningTest {
     }
 
     @Test
-    public void isValidMaterial_acceptsASporeBlossom_becauseItsNameContainsOre() {
-        // Pinned as it stands, not as intended: the material name is matched by substring (#247).
-        assertTrue(mining.isValidMaterial(Material.SPORE_BLOSSOM));
+    public void isValidMaterial_rejectsASporeBlossom_althoughItsNameContainsOre() {
+        // Regression guard for #247: only names ending in _ORE count, not any name containing the letters.
+        assertFalse(mining.isValidMaterial(Material.SPORE_BLOSSOM));
+    }
+
+    @Test
+    public void handle_ignoresTheBreak_whenTheBlockIsASporeBlossom() {
+        when(block.getType()).thenReturn(Material.SPORE_BLOSSOM);
+
+        dispatch(breaking());
+
+        verifyNothingGranted();
     }
 
     @Test
