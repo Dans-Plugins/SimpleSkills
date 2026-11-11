@@ -264,7 +264,7 @@ public class DiggingTest {
     }
 
     @Test
-    public void isValidMaterial_rejectsOtherShovelBlocks_becauseTheListIsExact() {
+    public void isValidMaterial_rejectsBlocksOutsideTheList_includingOtherShovelBlocks() {
         for (Material material : new Material[]{Material.CLAY, Material.SOUL_SOIL, Material.FARMLAND,
                 Material.DIRT_PATH, Material.SNOW_BLOCK, Material.SNOW, Material.SANDSTONE, Material.STONE}) {
             assertFalse(material.name(), digging.isValidMaterial(material));
