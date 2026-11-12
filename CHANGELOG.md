@@ -13,6 +13,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Fixed
 
+- `USER_GUIDE.md` now says that Digging and Lumberjack also level when the block is broken with an empty hand, not only with a shovel or an axe (#254).
 - Breaking a spore blossom with a pickaxe no longer levels Mining or rolls its benefit. Mining counted any block whose name contained the letters `ORE`; it now counts only blocks whose name ends in `_ORE`, which every ore does (#247).
 - A ripe wheat, beetroot, carrot, potato, cocoa, nether wart or sweet berry crop planted by a player now levels Farming and can roll Replant when harvested. Crops planted since the last server start were refused by the check that stops a placed block being broken for repeated experience, so on a player-built farm only the planting counted. An unripe crop is still refused, and so is any other block a player placed, since its age does not show that it has ripened. Blocks that grow out of a placed one, such as sugar cane above its base, already counted (#238).
 - A cancelled block break no longer clears the record that a player placed the block, which stayed in the world. Another plugin cancelling a break could otherwise make a placed block count, and a crop replanted by the Replant benefit stays refused until it ripens again (#238).
