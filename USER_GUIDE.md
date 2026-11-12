@@ -47,7 +47,7 @@ SimpleSkills includes 20 skills, each tied to a specific activity. Benefits trig
 | **Breeding** | Breeding mobs | Double breeding experience |
 | **Cardio** | Sprinting | Speed boost |
 | **Crafting** | Crafting items | Bonus crafting materials |
-| **Digging** | Digging with a shovel | Double drops, special items, or bonus XP |
+| **Digging** | Digging with a shovel or an empty hand | Double drops, special items, or bonus XP |
 | **Dueling** | Killing players | Absorption effect |
 | **Enchanting** | Enchanting items | Enhanced or bonus enchantments |
 | **Farming** | Harvesting crops | Auto-replant, bonus XP, or double crop drops |
@@ -61,7 +61,7 @@ SimpleSkills includes 20 skills, each tied to a specific activity. Benefits trig
 | **Quarrying** | Breaking stone with a pickaxe | Double drops, special materials, or bonus XP |
 | **Riding** | Riding animals | Speed boost for mount |
 | **Strength** | Hitting entities | Strength boost |
-| **Lumberjack** | Chopping wood with an axe | Double wood drops or bonus XP |
+| **Lumberjack** | Chopping wood with an axe or an empty hand | Double wood drops or bonus XP |
 
 A server owner can switch off any skill entirely, or switch off just its benefit while leaving its levelling intact. See [Skill Activation](CONFIG.md#skill-activation) and [Skill Benefit Toggles](CONFIG.md#skill-benefit-toggles).
 
