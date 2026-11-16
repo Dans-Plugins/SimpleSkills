@@ -205,6 +205,7 @@ public class FloricultureTest {
 
     @Test
     public void handle_grantsExperienceAndRollsTheBenefit_whenAFlowerIsPlantedFromTheMainHand() {
+        // Placement has no player-placed guard, so this is pinned as it stands: see #263.
         holding(Material.POPPY);
 
         dispatch(placing());
