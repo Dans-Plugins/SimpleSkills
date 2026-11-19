@@ -1,6 +1,7 @@
 package dansplugins.simpleskills.config;
 
 import dansplugins.simpleskills.SimpleSkills;
+import dansplugins.simpleskills.trace.UsageReportingSetting;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -57,7 +58,22 @@ public class ConfigService {
         config = YamlConfiguration.loadConfiguration(configFile);
     }
 
+    /**
+     * Writes this service's configuration to config.yml without ever turning usage reporting back
+     * on. Every write of config.yml goes through here (setSkillActive and the usage-reporting block
+     * written on upgrade). A config.yml that could not be parsed was loaded as empty, so writing it
+     * would replace the operator's whole file (an opt-out included) with whatever is in memory: it
+     * is left alone and an error is logged. And the configuration in memory can be older than the
+     * file, since an operator may set usage-reporting.enabled: false by hand while the server runs,
+     * so an opt-out on disk is carried into it first.
+     */
     public void saveConfig() {
+        if (config == null || configFile == null) {
+            return;
+        }
+        if (!UsageReportingSetting.prepareToSave(config, configFile, simpleSkills.getLogger())) {
+            return;
+        }
         try {
             config.save(configFile);
         } catch (IOException ignored) {
@@ -81,8 +97,8 @@ public class ConfigService {
      * defaults (see the getters below) with no visible switch to turn it off.
      * The values are copied from the jar's config.yml, not written as new
      * literals, and they go through this service's own configuration, because
-     * that is what saveConfig() writes back on every disable -- a write through
-     * the plugin's getConfig() alone would be lost at the next shutdown.
+     * that is what saveConfig() writes -- a write through the plugin's
+     * getConfig() alone would be lost the next time this service saves.
      */
     public void saveUsageReportingDefaultsIfNotPresent() {
         if (config == null || config.isSet(USAGE_REPORTING_SECTION)) {
@@ -110,8 +126,14 @@ public class ConfigService {
     // would turn reporting off on every existing installation. Verified against
     // YamlConfiguration, not assumed.
 
+    /**
+     * Fails closed: only a value that clearly means "on" turns reporting on (getBoolean() would
+     * read a quoted "false" as the bundled true), and config.yml as it is on disk right now must
+     * allow it too, so neither a stale loaded copy nor Bukkit's fallback to the defaults for a
+     * file it could not parse can override an opt-out.
+     */
     public boolean isUsageReportingEnabled() {
-        return simpleSkills.getConfig().getBoolean(USAGE_REPORTING_ENABLED_KEY);
+        return UsageReportingSetting.isEnabled(simpleSkills.getConfig(), configFile);
     }
 
     public String getUsageReportingEndpoint() {

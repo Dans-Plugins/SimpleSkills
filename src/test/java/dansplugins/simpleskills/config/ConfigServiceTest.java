@@ -19,9 +19,11 @@ import java.nio.file.Files;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -56,17 +58,18 @@ public class ConfigServiceTest {
 
     @Test
     public void usageReportingEnabledIsReadWithTheOneArgumentGetter() {
-        when(pluginConfig.getBoolean("usage-reporting.enabled")).thenReturn(true);
+        when(pluginConfig.get("usage-reporting.enabled")).thenReturn(true);
 
         assertTrue(configService.isUsageReportingEnabled());
 
-        verify(pluginConfig).getBoolean("usage-reporting.enabled");
+        verify(pluginConfig).get("usage-reporting.enabled");
+        verify(pluginConfig, never()).get(eq("usage-reporting.enabled"), any());
         verify(pluginConfig, never()).getBoolean(eq("usage-reporting.enabled"), anyBoolean());
     }
 
     @Test
     public void usageReportingEnabledFalseIsHonoured() {
-        when(pluginConfig.getBoolean("usage-reporting.enabled")).thenReturn(false);
+        when(pluginConfig.get("usage-reporting.enabled")).thenReturn(false);
 
         assertFalse(configService.isUsageReportingEnabled());
     }
@@ -162,5 +165,59 @@ public class ConfigServiceTest {
         when(pluginConfig.getString("usage-reporting.key")).thenReturn(null);
 
         assertEquals("", configService.getUsageReportingKey());
+    }
+
+    // An operator who turns usage reporting off must find it off, every time.
+
+    @Test
+    public void aQuotedFalseTurnsUsageReportingOff() {
+        // getBoolean() would return the bundled default, true, for the string "false".
+        when(pluginConfig.get("usage-reporting.enabled")).thenReturn("false");
+
+        assertFalse(configService.isUsageReportingEnabled());
+    }
+
+    @Test
+    public void anOptOutOnDiskWinsOverThePluginsLoadedConfig() throws IOException {
+        // Bukkit's getConfig() still says true: it was loaded before the operator's edit. (Lenient:
+        // the opt-out on disk decides before it is consulted.)
+        lenient().when(pluginConfig.get("usage-reporting.enabled")).thenReturn(true);
+        loadFromDisk("usage-reporting:\n  enabled: false\n");
+
+        assertFalse(configService.isUsageReportingEnabled());
+    }
+
+    @Test
+    public void aSkillToggleKeepsAnOptOutWrittenByHandWhileRunning() throws IOException {
+        File file = loadFromDisk("usage-reporting:\n  enabled: true\nskills:\n  Mining:\n    active: true\n");
+        // The operator turns reporting off by hand while the server runs.
+        Files.write(file.toPath(), "usage-reporting:\n  enabled: false\nskills:\n  Mining:\n    active: true\n"
+                .getBytes(StandardCharsets.UTF_8));
+
+        // /ss force writes this service's (stale) configuration back.
+        configService.setSkillActive("Mining", false);
+
+        YamlConfiguration onDisk = YamlConfiguration.loadConfiguration(file);
+        assertEquals(Boolean.FALSE, onDisk.get("usage-reporting.enabled"));
+        assertFalse(onDisk.getBoolean("skills.Mining.active"));
+    }
+
+    @Test
+    public void aConfigFileThatCannotBeParsedIsNeverOverwrittenAndReportingIsOff() throws IOException {
+        // load() logs and keeps an empty configuration, so the upgrade step would find no block,
+        // copy in the bundled enabled: true and write it over the operator's whole file. (load()
+        // logs through the plugin's final getLogger(), which a mock cannot provide, so "loaded as
+        // empty" is set up by loading an empty file and then breaking it.)
+        String broken = "usage-reporting:\n  enabled: false\n\tskills: [\n";
+        File file = loadFromDisk("");
+        Files.write(file.toPath(), broken.getBytes(StandardCharsets.UTF_8));
+        when(pluginConfig.getDefaults()).thenReturn(bundledDefaults());
+        lenient().when(pluginConfig.get("usage-reporting.enabled")).thenReturn(true);
+
+        configService.saveUsageReportingDefaultsIfNotPresent();
+        configService.setSkillActive("Mining", false);
+
+        assertEquals(broken, new String(Files.readAllBytes(file.toPath()), StandardCharsets.UTF_8));
+        assertFalse(configService.isUsageReportingEnabled());
     }
 }
