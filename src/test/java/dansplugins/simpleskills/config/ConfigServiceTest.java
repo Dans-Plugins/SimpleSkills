@@ -220,4 +220,27 @@ public class ConfigServiceTest {
         assertEquals(broken, new String(Files.readAllBytes(file.toPath()), StandardCharsets.UTF_8));
         assertFalse(configService.isUsageReportingEnabled());
     }
+
+    @Test
+    public void anOptOutWrittenUnderANearMissNameTurnsUsageReportingOff() throws IOException {
+        // usage_reporting is not the block the plugin reads, so its own getConfig() still says true.
+        lenient().when(pluginConfig.get("usage-reporting.enabled")).thenReturn(true);
+        loadFromDisk("usage_reporting:\n  enabled: false\n");
+
+        assertFalse(configService.isUsageReportingEnabled());
+    }
+
+    @Test
+    public void addingTheBlockOverANearMissOptOutWritesTheRealSwitchOff() throws IOException {
+        // The file has no usage-reporting block, only the operator's usage_reporting one, so the
+        // upgrade step copies in the bundled block, enabled: true; the save must write it off.
+        File file = loadFromDisk("version: 2.0.0\nusage_reporting:\n  enabled: false\n");
+        when(pluginConfig.getDefaults()).thenReturn(bundledDefaults());
+
+        configService.saveUsageReportingDefaultsIfNotPresent();
+
+        YamlConfiguration onDisk = YamlConfiguration.loadConfiguration(file);
+        assertEquals(Boolean.FALSE, onDisk.get("usage-reporting.enabled"));
+        assertEquals("bundled-key", onDisk.getString("usage-reporting.key"));
+    }
 }
