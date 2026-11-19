@@ -18,6 +18,7 @@ import dansplugins.simpleskills.experience.ExperienceCalculator;
 import dansplugins.simpleskills.logging.Log;
 import dansplugins.simpleskills.skill.skills.*;
 import dansplugins.simpleskills.trace.TraceClient;
+import dansplugins.simpleskills.trace.UsageReportingSetting;
 import com.cryptomorin.xseries.XMaterial;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -29,6 +30,7 @@ import org.jetbrains.annotations.NotNull;
 import preponderous.ponder.minecraft.abs.AbstractPluginCommand;
 import preponderous.ponder.minecraft.spigot.PonderMC;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -86,6 +88,19 @@ public class SimpleSkills extends JavaPlugin {
     }
 
     /**
+     * config.yml is written through ConfigService.saveConfig(), not this; nothing calls it. It is
+     * guarded the same way all the same, so that a later caller cannot write Bukkit's copy of the
+     * config (which falls back to the bundled enabled: true for a file it could not parse, and goes
+     * stale when the file is edited by hand) over an operator's opt-out.
+     */
+    @Override
+    public void saveConfig() {
+        if (UsageReportingSetting.prepareToSave(getConfig(), new File(getDataFolder(), "config.yml"), getLogger())) {
+            super.saveConfig();
+        }
+    }
+
+    /**
      * This runs when the server stops.
      */
     @Override
@@ -95,8 +110,9 @@ public class SimpleSkills extends JavaPlugin {
         storageService.save();
         log.debug("Saving language files.");
         messageService.savelang();
-        log.debug("Saving config files.");
-        configService.saveConfig();
+        // config.yml is not written here: every change (/ss force, the usage-reporting block) is
+        // saved when it is made, and writing the loaded config again would undo anything edited
+        // by hand while the server was running -- including usage-reporting.enabled: false.
     }
 
     /**
