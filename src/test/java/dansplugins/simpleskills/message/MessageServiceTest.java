@@ -68,6 +68,15 @@ public class MessageServiceTest {
     }
 
     @Test
+    public void savelang_doesNothing_whenCreatelangNeverRan() {
+        // onEnable() returns before createlang() when the player records cannot be loaded, and
+        // Bukkit still runs onDisable(), which calls savelang().
+        messageService.savelang();
+
+        assertNull(messageService.getlang());
+    }
+
+    @Test
     public void createlang_fallsBackToBundledValue_whenOnDiskFileIsMissingTheKey() {
         messageService.createlang();
 

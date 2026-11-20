@@ -93,6 +93,11 @@ public class MessageService {
     }
 
     public void savelang() {
+        // Nothing to save when createlang() never ran: onEnable() stops before it when the player
+        // records cannot be loaded, and onDisable() still calls this.
+        if (lang == null || langFile == null) {
+            return;
+        }
         try {
             lang.save(langFile);
         } catch (IOException ignored) {

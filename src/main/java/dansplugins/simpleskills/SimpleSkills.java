@@ -76,7 +76,14 @@ public class SimpleSkills extends JavaPlugin {
         setTabCompleterForCoreCommands();
         setupMetrics();
         log.debug("Loading files.");
-        storageService.load();
+        if (!storageService.load()) {
+            // playerRecords.json could not be read. Running on would let players earn levels that
+            // could never be saved (save() is refused, so the unreadable file is not overwritten),
+            // so the plugin is disabled until the file is repaired.
+            getLogger().severe("SimpleSkills is being disabled because its player records could not be loaded.");
+            getServer().getPluginManager().disablePlugin(this);
+            return;
+        }
         log.debug("Creating language files.");
         messageService.createlang();
         initializeSkills();

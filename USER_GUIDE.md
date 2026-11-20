@@ -167,6 +167,8 @@ Because a server fires its save once per world, several worlds saving together w
 
 The practical effect for players is that a server crash costs at most the progress made since the server last saved, rather than since the plugin's own last autosave. No player action is needed to save progress.
 
+Each save is written to `playerRecords.json.tmp` first and then moved into place, so a crash during a save leaves the previous file whole. If `playerRecords.json` cannot be read at startup (for example after a hand edit broke the JSON), the server log names the file and the error, the file is left untouched and is not saved over, and SimpleSkills disables itself. Repair the file or restore it from a backup, then restart the server.
+
 ---
 
 ## Tips and Best Practices
