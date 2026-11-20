@@ -102,7 +102,9 @@ public class StorageService {
         }
         playerRecordRepository.setPlayerRecords(playerRecords);
         loadFailed = false;
-        log.info("Loaded " + playerRecords.size() + " player record(s).");
+        // "<n> <label> loaded": the release gates' save-compatibility check compares this count
+        // between the stable release and the candidate.
+        log.info(playerRecords.size() + " player records loaded");
         return true;
     }
 
